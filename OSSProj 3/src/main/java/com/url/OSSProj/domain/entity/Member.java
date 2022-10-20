@@ -1,17 +1,18 @@
 package com.url.OSSProj.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import com.url.OSSProj.BaseTimeEntity;
+import com.url.OSSProj.domain.enums.UserRole;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Builder
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Member {
+public class Member extends BaseTimeEntity implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,5 +25,14 @@ public class Member {
 
     @Column(nullable = false)
     private String password;
+
+    @Setter
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role;
+
+    public String getRoleKey(){
+        return this.role.getKey();
+    }
 
 }
