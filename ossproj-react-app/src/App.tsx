@@ -1,15 +1,14 @@
+import { Route, Routes } from "react-router-dom";
+import { SignUp } from "./pages/siginup";
+import { SignIn } from "./pages/signin";
+
 function App() {
   return (
-    <StylesProvider injectFirst>
-      <QueryClientProvider client={queryClient}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-        </Routes>
-      </QueryClientProvider>
-    </StylesProvider>
+    <Routes>
+      {/* <Route path="/" element={<Home />} /> */}
+      <Route path="/signin" element={<SignIn />} />
+      <Route path="/signup" element={<SignUp />} />
+    </Routes>
   );
 }
 
