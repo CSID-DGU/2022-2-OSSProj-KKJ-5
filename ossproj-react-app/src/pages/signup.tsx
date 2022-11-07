@@ -6,8 +6,8 @@ import { makeStyles } from "@material-ui/core/styles";
 // import { useSignup } from '../hooks/use-signup';
 import { SignUpInputGroup } from "../components/signup/signup-input-group";
 import { useNavigate } from "react-router-dom";
-// import { proxy, useSnapshot } from 'valtio';
-// import SignEntity from '../entity/Sign';
+import { checkEmailValid } from "../hooks/check-email-valid";
+import { useSignup } from "../hooks/use-signup";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,28 +28,22 @@ export const SignUp = () => {
     setEmailValid(checkEmailValid(email));
   };
 
-  const checkEmailValid = (email: string) => {
-    return /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/.test(
-      email
-    );
-  };
-
   const handlePassword = (e: ChangeEvent<HTMLInputElement>) =>
     setPassword(e.target.value);
   const handleUsername = (e: ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
 
-  // const { signupHandler, isLoading, isSuccess } = useSignup({
-  //   email: email,
-  //   password: password,
-  //   name: name
-  // });
+  const { signupHandler, isLoading, isSuccess } = useSignup({
+    email: email,
+    password: password,
+    name: name,
+  });
 
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     navigate("/signin");
-  //   }
-  // }, [isSuccess]);
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/signin");
+    }
+  }, [isSuccess]);
 
   // if (isLoading) {
   //   return <div>Loading to signup ...</div>;
@@ -68,8 +62,7 @@ export const SignUp = () => {
           emailHandler={handleEmail}
           passwordHandler={handlePassword}
           usernameHandler={handleUsername}
-          buttonHandler={() => {}}
-          // buttonHandler={signupHandler}
+          buttonHandler={signupHandler}
           emailValid={emailValid}
           emailErrorMessage={emailValid ? "" : "Not a valid email address"}
         />
