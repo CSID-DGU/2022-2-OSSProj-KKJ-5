@@ -9,3 +9,8 @@ export interface ISignUpProps {
   password: string;
   name: string;
 }
+
+export interface ISignInProps {
+  email: string;
+  password: string;
+}
