@@ -74,6 +74,7 @@ export const SignUpInputGroup = ({
           }
         }}
       />
+
       <SubmitButton handler={buttonHandler}>sign Up</SubmitButton>
     </div>
   );
