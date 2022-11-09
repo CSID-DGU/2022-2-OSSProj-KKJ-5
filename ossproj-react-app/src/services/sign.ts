@@ -2,7 +2,7 @@ import axios from "axios";
 import { IResponseAuth, ISignInProps, ISignUpProps } from "../interface/user";
 
 export const signUp = ({ email, password, name }: ISignUpProps) => {
-  const url = `/member`;
+  const url = `/member/signUp`;
   return axios
     .post<IResponseAuth>(url, { email, password, name })
     .then((res) => {

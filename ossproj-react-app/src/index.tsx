@@ -8,7 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 export const API_URL = "http://localhost:8080";
 
 axios.defaults.baseURL = API_URL;
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

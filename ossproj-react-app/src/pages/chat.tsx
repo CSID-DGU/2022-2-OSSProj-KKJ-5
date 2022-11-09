@@ -18,7 +18,7 @@ export const Chat = () => {
 
   const connect = () => {
     client.current = new StompJs.Client({
-      brokerURL: "ws://localhost:8080/ws-stomp/websocket", // 웹소켓 서버로 직접 접속
+      brokerURL: "ws://localhost:8080/ws-stomp", // 웹소켓 서버로 직접 접속
       //   webSocketFactory: () => new SockJS("/ws-stomp"), // proxy를 통한 접속
       connectHeaders: {
         "auth-token": "spring-chat-auth-token",
