@@ -14,3 +14,16 @@ export interface ISignInProps {
   email: string;
   password: string;
 }
+
+export interface IUser {
+  name: string;
+  // rooms: [];
+  // urls: [];
+}
+
+export interface ISignInResponse {
+  name: string;
+  accessToken: string;
+  // rooms: [];
+  // urls: [];
+}
