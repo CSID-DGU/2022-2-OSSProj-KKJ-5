@@ -3,10 +3,9 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
-// import { useSignIn } from '../hooks/use-signin';
 import { SignInInputGroup } from "../components/signin/signin-input-group";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useSignIn } from "../hooks/use-signin";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,22 +25,16 @@ export const SignIn = () => {
   const handlePassword = (e: ChangeEvent<HTMLInputElement>) =>
     setPassword(e.target.value);
 
-  // const { signinHandler, isLoading, isSuccess, isError } = useSignIn({
-  //   email,
-  //   password,
-  // });
+  const { signinHandler, isLoading, isSuccess, isError } = useSignIn({
+    email,
+    password,
+  });
 
-  // useEffect(() => {
-  //   if (isError) {
-  //     setIsCorrect(true);
-  //   }
-  // }, [isError]);
-
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     navigate("/select");
-  //   }
-  // }, [isSuccess]);
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+    }
+  }, [isSuccess]);
 
   return (
     <Grid container justifyContent={"center"} className={classes.root}>
@@ -50,8 +43,7 @@ export const SignIn = () => {
         <SignInInputGroup
           emailHandler={handleEmail}
           passwordHandler={handlePassword}
-          // buttonHandler={signinHandler}
-          buttonHandler={() => {}}
+          buttonHandler={signinHandler}
           isCorrect={isCorrect}
         />
       </Grid>
