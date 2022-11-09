@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,7 +22,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtTokenInterceptor())
-                .excludePathPatterns("/member/signUp")
+                .excludePathPatterns("/member/signUp", "/member/signIn")
                 .addPathPatterns("/member/**");
     }
 
@@ -31,6 +32,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registrationBean.setOrder(Integer.MIN_VALUE);
         registrationBean.addUrlPatterns("/*");
         return registrationBean;
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowCredentials(true)
+                .maxAge(3600)
+                .allowedOriginPatterns("http://localhost:3000")
+                .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE");
     }
 
     @Bean

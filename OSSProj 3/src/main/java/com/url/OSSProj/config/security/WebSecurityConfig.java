@@ -1,5 +1,6 @@
 package com.url.OSSProj.config.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.url.OSSProj.login.authentication.CustomAuthenticationFilter;
 import com.url.OSSProj.login.authentication.CustomAuthenticationProvider;
 import com.url.OSSProj.login.handler.CustomFormLoginSuccessHandler;
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.boot.autoconfigure.security.servlet.StaticResourceRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,6 +24,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @RequiredArgsConstructor
 @Configuration
@@ -33,6 +40,9 @@ public class WebSecurityConfig {
     private final CookieUtils cookieUtils;
     private final UserDetailsService userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final ObjectMapper objectMapper;
+
+    private final CorsFilter corsFilter;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -45,18 +55,19 @@ public class WebSecurityConfig {
 
         http
                 .csrf().disable().authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin()
                 .disable()
+                .addFilterBefore(corsFilter, SecurityContextPersistenceFilter.class)
                 .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();
     }
-
     @Bean
     public AuthenticationManager authenticationManager() throws Exception{
         return authenticationConfiguration.getAuthenticationManager();
@@ -65,7 +76,7 @@ public class WebSecurityConfig {
     @Bean
     public CustomAuthenticationFilter customAuthenticationFilter() throws Exception{
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
-        customAuthenticationFilter.setFilterProcessesUrl("/member/login");
+        customAuthenticationFilter.setFilterProcessesUrl("/member/signIn");
         customAuthenticationFilter.setAuthenticationSuccessHandler(customFormLoginSuccessHandler());
         customAuthenticationFilter.afterPropertiesSet();
         return customAuthenticationFilter;
@@ -73,7 +84,7 @@ public class WebSecurityConfig {
 
     @Bean
     public CustomFormLoginSuccessHandler customFormLoginSuccessHandler(){
-        return new CustomFormLoginSuccessHandler(tokenUtils, cookieUtils, redisUtils);
+        return new CustomFormLoginSuccessHandler(tokenUtils, cookieUtils, redisUtils, objectMapper);
     }
 
     @Bean
