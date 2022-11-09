@@ -1,4 +1,9 @@
 spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
   cache:
     type: redis
   redis:

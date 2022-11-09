@@ -26,8 +26,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         final UsernamePasswordAuthenticationToken authRequest;
 
+
         try{
             final LoginMemberDto loginMemberDto = new ObjectMapper().readValue(request.getInputStream(), LoginMemberDto.class);
+            log.info("로그인 요청한 사용자 이메일 : {}", loginMemberDto.getEmail());
+            log.info("로그인 요청한 사용자 비밀번호 : {}", loginMemberDto.getPassword());
+
             authRequest = new UsernamePasswordAuthenticationToken(loginMemberDto.getEmail(), loginMemberDto.getPassword());
         } catch (IOException exception){
             throw new InputNotFoundException();
