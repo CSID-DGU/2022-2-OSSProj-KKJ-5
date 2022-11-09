@@ -31,13 +31,12 @@ export const SignIn = () => {
     password,
   });
 
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     navigate("/");
-  //   }
-  // }, [isSuccess]);
-  console.log(axios.defaults.headers.common["Authorization"])
-  console.log("12")
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+    }
+  }, [isSuccess]);
+  console.log(axios.defaults.headers.common["Authorization"]);
 
   return (
     <Grid container justifyContent={"center"} className={classes.root}>
