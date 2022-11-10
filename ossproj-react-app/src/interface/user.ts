@@ -17,13 +17,13 @@ export interface ISignInProps {
 
 export interface IUser {
   name: string;
-  // rooms: [];
-  // urls: [];
+  rooms: [];
+  urls: [];
 }
 
 export interface ISignInResponse {
   name: string;
   accessToken: string;
-  // rooms: [];
-  // urls: [];
+  rooms: [];
+  urls: [];
 }
