@@ -1,7 +1,9 @@
-import { Grid } from "@mui/material";
+import { Directions } from "@mui/icons-material";
+import { Box, Container, Grid } from "@mui/material";
 import * as StompJs from "@stomp/stompjs";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import SockJS from "sockjs-client";
+import { MessageInput } from "../components/chat/message-input";
 
 const ROOM_SEQ = 1;
 
@@ -10,6 +12,12 @@ export const Chat = () => {
   const [chatMessages, setChatMessages] = useState<string[]>([]);
   const [message, setMessage] = useState("");
 
+  const handleMessage = (e: ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value);
+  };
+  const handleDelete = () => {
+    setMessage("");
+  };
   useEffect(() => {
     connect();
 
@@ -51,7 +59,7 @@ export const Chat = () => {
     });
   };
 
-  const publish = (message: string) => {
+  const publish = () => {
     if (!client.current!.connected) {
       return;
     }
@@ -65,24 +73,50 @@ export const Chat = () => {
   };
 
   return (
-    <div>
-      {chatMessages && chatMessages.length > 0 && (
+    <Grid
+      container
+      height={`100vh`}
+      paddingTop={`50px`}
+      paddingLeft={`100px`}
+      paddingRight={`50px`}
+      paddingBottom={`100px`}
+      spacing={2}
+      direction={{ lg: "row", md: "row", sm: "column", xs: "column" }}
+    >
+      {/* {chatMessages && chatMessages.length > 0 && (
         <ul>
-          {chatMessages.map((_chatMessage, index) => (
-            <li key={index}>{_chatMessage}</li>
+        {chatMessages.map((_chatMessage, index) => (
+          <li key={index}>{_chatMessage}</li>
           ))}
-        </ul>
-      )}
-      <div>
-        <input
-          type={"text"}
-          placeholder={"message"}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={(e) => e.which === 13 && publish(message)}
-        />
-        <button onClick={() => publish(message)}>send</button>
-      </div>
-    </div>
+          </ul>
+          )}
+        <div> */}
+      {/* 메뉴 grid */}
+      <Grid item lg={1} md={1} sm={1} xs={1}>
+        <Box border={`1px solid black`} height={`100%`} width={`100%`}></Box>
+      </Grid>
+      {/* room list grid */}
+      <Grid item lg={3} md={3} sm={2} xs={2}>
+        <Box border={`1px solid black`} height={`100%`} width={`100%`}></Box>
+      </Grid>
+      {/* chatting room grid */}
+      <Grid item lg={8} md={8} sm={9} xs={9} container>
+        <Grid item container direction={"column"} spacing={1}>
+          {/* message Grid */}
+          <Grid item lg={11} md={11} sm={9} xs={8}>
+            <Box border={`1px solid black`} height={`100%`}></Box>
+          </Grid>
+          {/* input grid */}
+          <Grid item lg={1} md={1} sm={1} xs={1}>
+            <MessageInput
+              message={message}
+              handleMessage={handleMessage}
+              handleSend={publish}
+              handleDelete={handleDelete}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
