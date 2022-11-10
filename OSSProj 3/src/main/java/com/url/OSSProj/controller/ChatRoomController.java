@@ -1,5 +1,7 @@
 package com.url.OSSProj.controller;
 
+import com.url.OSSProj.domain.dto.ChatRoomDto;
+import com.url.OSSProj.domain.dto.NewChatRoomDto;
 import com.url.OSSProj.domain.entity.ChatRoom;
 import com.url.OSSProj.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +31,12 @@ public class ChatRoomController {
 
     @PostMapping("/room")
     @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name){
-        return chatRoomRepository.createChatRoom(name);
+    public ChatRoomDto createRoom(@RequestBody NewChatRoomDto newChatRoomDto){
+        ChatRoom chatRoom = chatRoomRepository.createChatRoom(newChatRoomDto.getRoomName());
+        return ChatRoomDto.builder()
+                .roomId(chatRoom.getRoomId())
+                .name(chatRoom.getName())
+                .build();
     }
 
     @GetMapping("/room/enter/{roomId}")

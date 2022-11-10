@@ -1,7 +1,9 @@
 package com.url.OSSProj.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.entity.ChatRoom;
+import com.url.OSSProj.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class ChatService {
 
     private final ObjectMapper objectMapper;
     private Map<String, ChatRoom> chatRooms;
+    private final ChatRoomRepository chatRoomRepository;
 
     @PostConstruct
     private void init(){
@@ -38,6 +41,7 @@ public class ChatService {
         ChatRoom chatRoom = ChatRoom.createRoom(randomId, name);
 
         chatRooms.put(randomId, chatRoom);
+
         return chatRoom;
     }
 

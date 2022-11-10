@@ -1,7 +1,9 @@
 package com.url.OSSProj.repository;
 
+import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.entity.ChatRoom;
 import com.url.OSSProj.domain.pubsub.RedisSubscriber;
+import com.url.OSSProj.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -40,7 +42,6 @@ public class ChatRoomRepository {
     public ChatRoom createChatRoom(String name){
         ChatRoom chatRoom = ChatRoom.create(name);
         opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
-
         return chatRoom;
     }
 
