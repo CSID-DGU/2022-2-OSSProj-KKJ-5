@@ -1,14 +1,68 @@
 import { Directions } from "@mui/icons-material";
 import { Box, Container, Grid } from "@mui/material";
 import * as StompJs from "@stomp/stompjs";
+import { Stomp } from "@stomp/stompjs";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import SockJS from "sockjs-client";
 import { MessageInput } from "../components/chat/message-input";
+// const connect = () => {
+//   client.current = new StompJs.Client({
+//     brokerURL: "ws://localhost:8080/ws-stomp", // 웹소켓 서버로 직접 접속
+//     //   webSocketFactory: () => new SockJS("/ws-stomp"), // proxy를 통한 접속
+//     connectHeaders: {
+//       "auth-token": "spring-chat-auth-token",
+//     },
+//     debug: function (str) {
+//       console.log(str);
+//     },
+//     reconnectDelay: 5000,
+//     heartbeatIncoming: 4000,
+//     heartbeatOutgoing: 4000,
+//     onConnect: () => {
+//       subscribe();
+//     },
+//     onStompError: (frame) => {
+//       console.error(frame);
+//     },
+//   });
+
+//   client.current.activate();
+// };
+// const disconnect = () => {
+//   if (client.current?.deactivate) {
+//     client.current.deactivate();
+//   }
+// };
+
+// const subscribe = () => {
+//   client.current!.subscribe(`/sub/chat/${ROOM_SEQ}`, ({ body }) => {
+//     setChatMessages([...chatMessages, JSON.parse(body)]);
+//   });
+// };
+
+// const publish = () => {
+//   if (!client.current!.connected) {
+//     return;
+//   }
+
+//   client.current!.publish({
+//     destination: "/pub/chat",
+//     body: JSON.stringify({ roomSeq: ROOM_SEQ, message }),
+//   });
+
+//   setMessage("");
+// };
+
+// useEffect(() => {
+//   connect();
+
+//   return () => disconnect();
+// }, []);
 
 const ROOM_SEQ = 1;
 
 export const Chat = () => {
-  const client = useRef<StompJs.Client>();
+  // const client = useRef<StompJs.Client>();
   const [chatMessages, setChatMessages] = useState<string[]>([]);
   const [message, setMessage] = useState("");
 
@@ -18,59 +72,27 @@ export const Chat = () => {
   const handleDelete = () => {
     setMessage("");
   };
+
+  // const sock = new SockJS("http://localhost:8080/ws-stomp");
+  // const client = Stomp.over(sock);
+  const client = Stomp.over(function () {
+    return new WebSocket("ws://localhost:8080/ws-stomp");
+  });
+  console.log(client);
   useEffect(() => {
-    connect();
+    client.connect({}, () => {
+      console.log("Connected : ");
+      // client.send("/app/join", )
+      // Create Message
 
-    return () => disconnect();
-  }, []);
+      client.send(`/sub/chat/${ROOM_SEQ}`, {}, JSON.stringify("되나"));
 
-  const connect = () => {
-    client.current = new StompJs.Client({
-      brokerURL: "ws://localhost:8080/ws-stomp", // 웹소켓 서버로 직접 접속
-      //   webSocketFactory: () => new SockJS("/ws-stomp"), // proxy를 통한 접속
-      connectHeaders: {
-        "auth-token": "spring-chat-auth-token",
-      },
-      debug: function (str) {
-        console.log(str);
-      },
-      reconnectDelay: 5000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
-      onConnect: () => {
-        subscribe();
-      },
-      onStompError: (frame) => {
-        console.error(frame);
-      },
+      // client.subscribe('/queue/addChatToClient/'+auth.user.id, function(messageDTO){
+      //     const messagedto = JSON.parse(messageDTO.body)
+      // })
     });
-
-    client.current.activate();
-  };
-  const disconnect = () => {
-    if (client.current?.deactivate) {
-      client.current.deactivate();
-    }
-  };
-
-  const subscribe = () => {
-    client.current!.subscribe(`/sub/chat/${ROOM_SEQ}`, ({ body }) => {
-      setChatMessages([...chatMessages, JSON.parse(body)]);
-    });
-  };
-
-  const publish = () => {
-    if (!client.current!.connected) {
-      return;
-    }
-
-    client.current!.publish({
-      destination: "/pub/chat",
-      body: JSON.stringify({ roomSeq: ROOM_SEQ, message }),
-    });
-
-    setMessage("");
-  };
+    // return () => client.disconnect();
+  }, [client]);
 
   return (
     <Grid
@@ -111,7 +133,7 @@ export const Chat = () => {
             <MessageInput
               message={message}
               handleMessage={handleMessage}
-              handleSend={publish}
+              handleSend={() => {}}
               handleDelete={handleDelete}
             />
           </Grid>
