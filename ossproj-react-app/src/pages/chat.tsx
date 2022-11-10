@@ -1,70 +1,29 @@
-import { Directions } from "@mui/icons-material";
-import { Box, Container, Grid } from "@mui/material";
-import * as StompJs from "@stomp/stompjs";
-import { Stomp } from "@stomp/stompjs";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import SockJS from "sockjs-client";
+import { Box, Grid } from "@mui/material";
+import { ChangeEvent, useState } from "react";
 import { MessageInput } from "../components/chat/message-input";
-// const connect = () => {
-//   client.current = new StompJs.Client({
-//     brokerURL: "ws://localhost:8080/ws-stomp", // 웹소켓 서버로 직접 접속
-//     //   webSocketFactory: () => new SockJS("/ws-stomp"), // proxy를 통한 접속
-//     connectHeaders: {
-//       "auth-token": "spring-chat-auth-token",
-//     },
-//     debug: function (str) {
-//       console.log(str);
-//     },
-//     reconnectDelay: 5000,
-//     heartbeatIncoming: 4000,
-//     heartbeatOutgoing: 4000,
-//     onConnect: () => {
-//       subscribe();
-//     },
-//     onStompError: (frame) => {
-//       console.error(frame);
-//     },
-//   });
+import { useCreateRoom } from "../hooks/use-create-room";
+import { CreateRoomDialog } from "../components/chat/create-room-dialog";
 
-//   client.current.activate();
-// };
-// const disconnect = () => {
-//   if (client.current?.deactivate) {
-//     client.current.deactivate();
-//   }
-// };
-
-// const subscribe = () => {
-//   client.current!.subscribe(`/sub/chat/${ROOM_SEQ}`, ({ body }) => {
-//     setChatMessages([...chatMessages, JSON.parse(body)]);
-//   });
-// };
-
-// const publish = () => {
-//   if (!client.current!.connected) {
-//     return;
-//   }
-
-//   client.current!.publish({
-//     destination: "/pub/chat",
-//     body: JSON.stringify({ roomSeq: ROOM_SEQ, message }),
-//   });
-
-//   setMessage("");
-// };
-
-// useEffect(() => {
-//   connect();
-
-//   return () => disconnect();
-// }, []);
+import face from "../assets/face.png";
+import { RoomListBox } from "../components/chat/room-list-box";
+import { FloatingButton } from "../components/chat/floating-button";
+import { MessageBox } from "../components/chat/message-box";
 
 const ROOM_SEQ = 1;
 
 export const Chat = () => {
   // const client = useRef<StompJs.Client>();
   const [chatMessages, setChatMessages] = useState<string[]>([]);
+  const [roomName, setRoomName] = useState("");
+  const [chatName, setChatName] = useState("");
   const [message, setMessage] = useState("");
+  const [open, setOpen] = useState(false);
+  const [mockRoomList, setMockRoomList] = useState([
+    { roomName: "1번방", roomId: 1, img: face, user: "kim" },
+    { roomName: "2번방", roomId: 2, img: face, user: "kim" },
+    { roomName: "3번방", roomId: 3, img: face, user: "kim" },
+  ]);
+  const [isChat, setIsChat] = useState(false);
 
   const handleMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
@@ -72,27 +31,26 @@ export const Chat = () => {
   const handleDelete = () => {
     setMessage("");
   };
-
-  // const sock = new SockJS("http://localhost:8080/ws-stomp");
-  // const client = Stomp.over(sock);
-  const client = Stomp.over(function () {
-    return new WebSocket("ws://localhost:8080/ws-stomp");
+  const handleRoomName = (e: ChangeEvent<HTMLInputElement>) => {
+    setRoomName(e.target.value);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleIsChat = (id: string) => {
+    setChatName(id);
+    setIsChat(true);
+  };
+  const { createRoomHandler, isLoading, isSuccess } = useCreateRoom({
+    roomName: roomName,
   });
-  console.log(client);
-  useEffect(() => {
-    client.connect({}, () => {
-      console.log("Connected : ");
-      // client.send("/app/join", )
-      // Create Message
 
-      client.send(`/sub/chat/${ROOM_SEQ}`, {}, JSON.stringify("되나"));
-
-      // client.subscribe('/queue/addChatToClient/'+auth.user.id, function(messageDTO){
-      //     const messagedto = JSON.parse(messageDTO.body)
-      // })
-    });
-    // return () => client.disconnect();
-  }, [client]);
+  // const client = Stomp.over(function () {
+  //   return new WebSocket("ws://localhost:8080/ws-stomp");
+  // });
 
   return (
     <Grid
@@ -105,40 +63,81 @@ export const Chat = () => {
       spacing={2}
       direction={{ lg: "row", md: "row", sm: "column", xs: "column" }}
     >
-      {/* {chatMessages && chatMessages.length > 0 && (
-        <ul>
-        {chatMessages.map((_chatMessage, index) => (
-          <li key={index}>{_chatMessage}</li>
-          ))}
-          </ul>
-          )}
-        <div> */}
       {/* 메뉴 grid */}
       <Grid item lg={1} md={1} sm={1} xs={1}>
         <Box border={`1px solid black`} height={`100%`} width={`100%`}></Box>
       </Grid>
       {/* room list grid */}
-      <Grid item lg={3} md={3} sm={2} xs={2}>
-        <Box border={`1px solid black`} height={`100%`} width={`100%`}></Box>
+      <Grid
+        item
+        container
+        direction={"column"}
+        position={"relative"}
+        lg={3}
+        md={3}
+        sm={2}
+        xs={2}
+      >
+        <Grid item container direction={"column"} lg={10} spacing={2}>
+          {mockRoomList.map((room) => {
+            return (
+              <Grid item>
+                <RoomListBox
+                  roomName={room.roomName}
+                  roomId={room.roomId}
+                  img={room.img}
+                  user={room.user}
+                  handleIsChat={handleIsChat}
+                  // todo sub, pub
+                />
+              </Grid>
+            );
+          })}
+        </Grid>
+        <Grid item lg={2}>
+          <FloatingButton handleOpen={handleOpen} />
+        </Grid>
       </Grid>
       {/* chatting room grid */}
       <Grid item lg={8} md={8} sm={9} xs={9} container>
-        <Grid item container direction={"column"} spacing={1}>
-          {/* message Grid */}
-          <Grid item lg={11} md={11} sm={9} xs={8}>
-            <Box border={`1px solid black`} height={`100%`}></Box>
+        {isChat ? (
+          <Grid item container direction={"column"} spacing={1}>
+            {/* message Grid */}
+            <Grid item lg={11} md={11} sm={9} xs={8}>
+              {chatName}
+              <Box border={`1px solid black`} height={`100%`}>
+                <MessageBox message={"안녕"} user={"kim"} />
+              </Box>
+            </Grid>
+            {/* input grid */}
+            <Grid item lg={1} md={1} sm={1} xs={1}>
+              <MessageInput
+                message={message}
+                handleMessage={handleMessage}
+                handleSend={() => {}}
+                handleDelete={handleDelete}
+              />
+            </Grid>
           </Grid>
-          {/* input grid */}
-          <Grid item lg={1} md={1} sm={1} xs={1}>
-            <MessageInput
-              message={message}
-              handleMessage={handleMessage}
-              handleSend={() => {}}
-              handleDelete={handleDelete}
-            />
-          </Grid>
-        </Grid>
+        ) : (
+          <></>
+        )}
       </Grid>
+      <CreateRoomDialog
+        roomName={roomName}
+        open={open}
+        handleRoomName={handleRoomName}
+        handleClose={handleClose}
+        createRoomHandler={
+          // createRoomHandler
+          () => {
+            setMockRoomList([
+              ...mockRoomList,
+              { roomName: "1번방", roomId: 1, img: face, user: "kim" },
+            ]);
+          }
+        }
+      />
     </Grid>
   );
 };

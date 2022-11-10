@@ -38,7 +38,7 @@ export const MessageInput = ({
           <CloseIcon />
         </IconButton>
       </Paper>
-      <IconButton onClick={handleSend}>
+      <IconButton onClick={handleSend} size={"large"}>
         <SendIcon />
       </IconButton>
     </Box>
