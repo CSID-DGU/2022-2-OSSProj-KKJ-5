@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Builder
@@ -30,6 +31,9 @@ public class Member extends BaseTimeEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;
+
+    @OneToMany(mappedBy = "url")
+    private List<Url> urls;
 
     public String getRoleKey(){
         return this.role.getKey();
