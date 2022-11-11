@@ -5,6 +5,7 @@ import com.url.OSSProj.utils.CookieUtils;
 import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.Cookie;
@@ -21,11 +22,12 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        Cookie accessCookie = cookieUtils.getCookie(request, AuthConstants.AUTH_HEADER);
-        String accessToken = accessCookie.getValue();
-
-        if(accessToken != null && tokenUtils.isValidToken(accessToken)){
-            return true;
+        String header = request.getHeader(AuthConstants.AUTHORIZATION_HEADER);
+        log.info("request get AUTHORIZATION : " + header);
+        if(StringUtils.hasText(header) && header.startsWith(AuthConstants.TOKEN_TYPE)){
+            String bearerToken = header.substring(7, header.length());
+            log.info("BEARER TOKEN : " + bearerToken);
+            if(tokenUtils.isValidToken(bearerToken)) return true;
         }
 
         Cookie refreshCookie = cookieUtils.getCookie(request, AuthConstants.REFRESH_HEADER);
