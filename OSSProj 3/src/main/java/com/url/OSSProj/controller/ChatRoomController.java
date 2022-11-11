@@ -2,7 +2,6 @@ package com.url.OSSProj.controller;
 
 import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.dto.NewChatRoomDto;
-import com.url.OSSProj.domain.entity.ChatRoom;
 import com.url.OSSProj.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,18 +29,14 @@ public class ChatRoomController {
 
     @GetMapping("/rooms")
     @ResponseBody
-    public List<ChatRoom> room(){
+    public List<ChatRoomDto> room(){
         return chatRoomRepository.findAllRoom();
     }
 
     @PostMapping("/room")
     @ResponseBody
     public ChatRoomDto createRoom(@RequestBody NewChatRoomDto newChatRoomDto){
-        ChatRoom chatRoom = chatRoomRepository.createChatRoom(newChatRoomDto.getRoomName());
-        return ChatRoomDto.builder()
-                .roomId(chatRoom.getRoomId())
-                .name(chatRoom.getName())
-                .build();
+        return chatRoomRepository.createChatRoom(newChatRoomDto.getRoomName());
     }
 
     @GetMapping("/room/enter/{roomId}")
@@ -54,7 +49,7 @@ public class ChatRoomController {
 
     @GetMapping("/room/{roomId}")
     @ResponseBody
-    public ChatRoom roomInfo(@PathVariable String roomId){
+    public ChatRoomDto roomInfo(@PathVariable String roomId){
         return chatRoomRepository.findRoomById(roomId);
     }
 }

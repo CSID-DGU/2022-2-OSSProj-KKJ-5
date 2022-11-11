@@ -15,11 +15,11 @@ public class ChatRoomList extends BaseTimeEntity {
     @Column(name = "CHATROOMS_ID")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
-    private Member member;
-
-    @ManyToOne
-    @JoinColumn(name = "CHATROOM_ID")
-    private ChatRoom chatRoom;
+//    @ManyToOne
+//    @JoinColumn(name = "MEMBER_ID")
+//    private Member member;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "CHATROOM_ID")
+//    private ChatRoom chatRoom;
 }

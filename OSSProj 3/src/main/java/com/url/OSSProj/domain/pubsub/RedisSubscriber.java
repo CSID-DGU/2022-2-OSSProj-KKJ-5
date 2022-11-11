@@ -13,20 +13,17 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @RequiredArgsConstructor
 @Service
-public class RedisSubscriber implements MessageListener {
+public class RedisSubscriber{
 
     private final ObjectMapper objectMapper;
-    private final RedisTemplate redisTemplate;
     private final SimpMessageSendingOperations messagingTemplate;
 
-    @Override
-    public void onMessage(Message message, byte[] pattern) {
-        try{
-            String publishMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
-            ChatMessage roomMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
-            messagingTemplate.convertAndSend("/sub/chat/" + roomMessage.getRoomId(), roomMessage);
-        } catch (Exception e){
-            log.error(e.getMessage());
-        }
-    }
+   public void sendMessage(String publishMessage){
+       try{
+           ChatMessage chatMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
+           messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
+       } catch (Exception e){
+           log.error("Exception {}", e);
+       }
+   }
 }
