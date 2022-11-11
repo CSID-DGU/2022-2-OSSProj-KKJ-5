@@ -16,7 +16,7 @@ public class Url {
     private String url;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name="MEMBER_ID")
     private Member member;
 
 }

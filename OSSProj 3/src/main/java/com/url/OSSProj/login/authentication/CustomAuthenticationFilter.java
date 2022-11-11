@@ -1,4 +1,4 @@
-package com.url.OSSProj.domain.enums.authentication;
+package com.url.OSSProj.login.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.url.OSSProj.domain.dto.LoginMemberDto;

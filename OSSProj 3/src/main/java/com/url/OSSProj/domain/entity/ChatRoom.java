@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -13,6 +15,7 @@ import java.util.UUID;
 public class ChatRoom implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CHATROOM_ID")
     private Long id;
 
     private static final long serialVersionUid = 6494678977089006639L;
@@ -22,6 +25,9 @@ public class ChatRoom implements Serializable {
 
     @Column(nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "chatroom")
+    private List<ChatRoomList> chatRooms = new ArrayList<ChatRoomList>();
 
 
     public static ChatRoom create(String name){

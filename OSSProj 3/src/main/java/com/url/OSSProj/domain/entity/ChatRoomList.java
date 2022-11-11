@@ -12,13 +12,14 @@ import javax.persistence.*;
 public class ChatRoomList extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CHATROOMS_ID")
     private Long id;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "CHATROOM_ID")
     private ChatRoom chatRoom;
 }

@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,7 @@ import java.util.List;
 public class Member extends BaseTimeEntity implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MEMBER_ID")
     private Long id;
 
     @Column(nullable = false)
@@ -35,8 +37,12 @@ public class Member extends BaseTimeEntity implements Serializable {
     @OneToMany(mappedBy = "url")
     private List<Url> urls;
 
+    @OneToMany(mappedBy = "member")
+    private List<ChatRoomList> chatRooms = new ArrayList<ChatRoomList>();
+
     public String getRoleKey(){
         return this.role.getKey();
     }
+
 
 }
