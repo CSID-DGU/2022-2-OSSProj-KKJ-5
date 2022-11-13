@@ -2,13 +2,9 @@ package com.url.OSSProj.repository;
 
 import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.entity.ChatRoom;
-import com.url.OSSProj.domain.pubsub.RedisSubscriber;
-import com.url.OSSProj.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -34,8 +30,8 @@ public class ChatRoomRepository {
         return opsHashChatRoom.get(CHAT_ROOMS, id);
     }
 
-    public ChatRoomDto createChatRoom(String name){
-        ChatRoomDto chatRoom = ChatRoom.create(name);
+    public ChatRoomDto createChatRoom(String name, String picturePath){
+        ChatRoomDto chatRoom = ChatRoom.create(name, picturePath);
         opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
         return chatRoom;
     }

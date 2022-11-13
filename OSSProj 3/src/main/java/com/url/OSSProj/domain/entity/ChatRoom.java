@@ -31,12 +31,13 @@ public class ChatRoom implements Serializable {
     private List<ChatRoomInfo> chatRooms = new ArrayList<ChatRoomInfo>();
 
 
-    public static ChatRoomDto create(String name){
+    public static ChatRoomDto create(String name, String picturePath){
         ChatRoom chatRoom = getChatRoom(name);
 
         return ChatRoomDto.builder()
                 .name(chatRoom.getName())
                 .roomId(chatRoom.getRoomId())
+                .picturePath(picturePath)
                 .build();
     }
 

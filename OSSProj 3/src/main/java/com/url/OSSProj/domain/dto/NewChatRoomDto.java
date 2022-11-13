@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class NewChatRoomDto {
     private String roomName;
+    private String picturePath;
 }
