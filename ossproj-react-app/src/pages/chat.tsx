@@ -1,5 +1,5 @@
 import { Box, Grid } from "@mui/material";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { MessageInput } from "../components/chat/message-input";
 import { useCreateRoom } from "../hooks/use-create-room";
 import { CreateRoomDialog } from "../components/chat/create-room-dialog";
@@ -11,6 +11,8 @@ import { MessageBox } from "../components/chat/message-box";
 import { Stomp } from "@stomp/stompjs";
 import { ConstructionOutlined } from "@mui/icons-material";
 import { MessageSendButton } from "../components/chat/message-send-button";
+import { useFetchRooms } from "../hooks/use-fetch-rooms";
+import { IRoomProps } from "../interface/chat";
 
 const ROOM_SEQ = 1;
 
@@ -21,10 +23,12 @@ export const Chat = () => {
   const [chatName, setChatName] = useState("");
   const [message, setMessage] = useState("");
   const [open, setOpen] = useState(false);
-  const [mockRoomList, setMockRoomList] = useState([
-    { roomName: "1번방", roomId: 1, img: face, user: "kim" },
-    { roomName: "2번방", roomId: 2, img: face, user: "kim" },
-    { roomName: "3번방", roomId: 3, img: face, user: "kim" },
+  const [img, setImg] = useState("");
+
+  const [mockRoomList, setMockRoomList] = useState<IRoomProps[]>([
+    { name: "1번방", roomId: 1, image: "" },
+    { name: "2번방", roomId: 2, image: "" },
+    { name: "3번방", roomId: 3, image: "" },
   ]);
   const [isChat, setIsChat] = useState(false);
 
@@ -47,13 +51,21 @@ export const Chat = () => {
     setChatName(id);
     setIsChat(true);
   };
-  const { createRoomHandler, isLoading, isSuccess } = useCreateRoom({
-    roomName: roomName,
+  const handleImg = (e: ChangeEvent<HTMLInputElement>) => {
+    setImg(e.target.value);
+  };
+  const { createRoomHandler, data, isLoading, isSuccess } = useCreateRoom({
+    name: roomName,
+    image: img,
   });
 
-  // const client = Stomp.over(() => {
-  //   new WebSocket("ws://localhost:8080/ws-stomp");
-  // });
+  const { roomList, isLoadingRoom, updateRoomList } = useFetchRooms();
+  useEffect(() => {
+    if (roomList) setMockRoomList(roomList);
+  }, [isLoadingRoom]);
+  const client = Stomp.over(() => {
+    new WebSocket("ws://localhost:8080/ws-stomp");
+  });
   // console.log(client);
   // client.connect({}, () => {
   //   client.subscribe(`topic/${ROOM_SEQ}`, (response) => {
@@ -93,10 +105,10 @@ export const Chat = () => {
             return (
               <Grid item>
                 <RoomListBox
-                  roomName={room.roomName}
+                  roomName={room.name}
                   roomId={room.roomId}
-                  img={room.img}
-                  user={room.user}
+                  img={room.image}
+                  user={""}
                   handleIsChat={handleIsChat}
                   // todo sub, pub
                 />
@@ -153,6 +165,8 @@ export const Chat = () => {
           //   ]);
           // }
         }
+        img={img}
+        handleImg={handleImg}
       />
     </Grid>
   );

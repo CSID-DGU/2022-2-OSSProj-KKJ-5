@@ -1,7 +1,9 @@
 export interface ICreateRoomProps {
-  roomName: string;
+  name: string;
+  image: string;
 }
 export interface IRoomProps {
-  roomName: string;
+  name: string;
   roomId: number;
+  image: string;
 }

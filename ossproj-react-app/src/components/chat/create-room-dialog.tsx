@@ -4,15 +4,19 @@ import { ChangeEvent } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 interface ICraeteRoomDialog {
   roomName: string;
+  img: string;
   open: boolean;
   handleRoomName: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleImg: (e: ChangeEvent<HTMLInputElement>) => void;
   handleClose: () => void;
   createRoomHandler: () => void;
 }
 export const CreateRoomDialog = ({
   roomName,
+  img,
   open,
   handleRoomName,
+  handleImg,
   handleClose,
   createRoomHandler,
 }: ICraeteRoomDialog) => {
@@ -27,6 +31,17 @@ export const CreateRoomDialog = ({
         </DialogTitle>
         <DialogContent>
           <TextField value={roomName} onChange={handleRoomName} />
+          <Button variant="contained" component="label">
+            Upload
+            <input
+              hidden
+              accept="image/*"
+              type="file"
+              value={img}
+              onChange={handleImg}
+            />
+          </Button>
+          {img}
         </DialogContent>
         <DialogActions>
           <Button onClick={createRoomHandler}>{"create"}</Button>
