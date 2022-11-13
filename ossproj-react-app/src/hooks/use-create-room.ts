@@ -13,12 +13,10 @@ export const useCreateRoom = (props: ICreateRoomProps) => {
       console.log(data);
     },
     onError: (e) => {
-      console.log(props);
       console.log(e);
     },
   });
   const createRoomHandler = () => {
-    console.log(props);
     createroom(props);
   };
   return { createRoomHandler, data, isLoading, isSuccess };

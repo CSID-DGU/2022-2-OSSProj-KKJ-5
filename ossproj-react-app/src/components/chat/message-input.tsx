@@ -1,4 +1,4 @@
-import { Box, IconButton, InputBase, Paper } from "@mui/material";
+import { Box, Button, IconButton, InputBase, Paper } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import { ChangeEvent } from "react";
@@ -34,6 +34,7 @@ export const MessageInput = ({
           onChange={handleMessage}
           onKeyPress={(e) => e.key === "Enter" && handleSend()}
         />
+
         <IconButton onClick={handleDelete}>
           <CloseIcon />
         </IconButton>

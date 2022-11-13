@@ -8,6 +8,9 @@ import face from "../assets/face.png";
 import { RoomListBox } from "../components/chat/room-list-box";
 import { FloatingButton } from "../components/chat/floating-button";
 import { MessageBox } from "../components/chat/message-box";
+import { Stomp } from "@stomp/stompjs";
+import { ConstructionOutlined } from "@mui/icons-material";
+import { MessageSendButton } from "../components/chat/message-send-button";
 
 const ROOM_SEQ = 1;
 
@@ -48,10 +51,16 @@ export const Chat = () => {
     roomName: roomName,
   });
 
-  // const client = Stomp.over(function () {
-  //   return new WebSocket("ws://localhost:8080/ws-stomp");
+  // const client = Stomp.over(() => {
+  //   new WebSocket("ws://localhost:8080/ws-stomp");
   // });
-
+  // console.log(client);
+  // client.connect({}, () => {
+  //   client.subscribe(`topic/${ROOM_SEQ}`, (response) => {
+  //     console.log(response);
+  //     console.log(JSON.parse(response.body));
+  //   });
+  // });
   return (
     <Grid
       container
@@ -68,6 +77,7 @@ export const Chat = () => {
         <Box border={`1px solid black`} height={`100%`} width={`100%`}></Box>
       </Grid>
       {/* room list grid */}
+      {/* todo reverse list */}
       <Grid
         item
         container
@@ -99,14 +109,20 @@ export const Chat = () => {
         </Grid>
       </Grid>
       {/* chatting room grid */}
-      <Grid item lg={8} md={8} sm={9} xs={9} container>
+      <Grid item lg={8} md={8} sm={5} xs={5} container>
+        {/* todo sm xs */}
         {isChat ? (
           <Grid item container direction={"column"} spacing={1}>
             {/* message Grid */}
             <Grid item lg={11} md={11} sm={9} xs={8}>
               {chatName}
-              <Box border={`1px solid black`} height={`100%`}>
-                <MessageBox message={"안녕"} user={"kim"} />
+              <Box border={`1px solid black`} height={`95%`}>
+                <Grid item>
+                  <MessageBox message={"안녕"} user={"kim"} isUser={false} />
+                </Grid>
+                <Grid item display={"flex"} justifyContent={"flex-end"}>
+                  <MessageBox message={"안녕"} user={"kim"} isUser={true} />
+                </Grid>
               </Box>
             </Grid>
             {/* input grid */}
@@ -129,13 +145,13 @@ export const Chat = () => {
         handleRoomName={handleRoomName}
         handleClose={handleClose}
         createRoomHandler={
-          // createRoomHandler
-          () => {
-            setMockRoomList([
-              ...mockRoomList,
-              { roomName: "1번방", roomId: 1, img: face, user: "kim" },
-            ]);
-          }
+          createRoomHandler
+          // () => {
+          //   setMockRoomList([
+          //     ...mockRoomList,
+          //     { roomName: "1번방", roomId: 1, img: face, user: "kim" },
+          //   ]);
+          // }
         }
       />
     </Grid>

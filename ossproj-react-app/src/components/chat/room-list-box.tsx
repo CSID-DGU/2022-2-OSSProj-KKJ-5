@@ -16,10 +16,14 @@ export const RoomListBox = ({
 }: IRoomListBoxProps) => {
   return (
     <Card sx={{ display: "flex" }} onClick={() => handleIsChat(roomName)}>
-      <CardMedia component={"img"} image={img} sx={{ width: 50 }} />
+      <CardMedia
+        component={"img"}
+        image={img}
+        sx={{ width: 80, borderRadius: `50%` }}
+      />
       <CardContent>
-        <Typography>{roomName}</Typography>
-        <Typography>{user}</Typography>
+        <Typography variant={"h5"}>{roomName}</Typography>
+        <Typography variant={"body1"}>{user}</Typography>
       </CardContent>
     </Card>
   );
