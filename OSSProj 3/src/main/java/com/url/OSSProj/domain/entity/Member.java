@@ -34,12 +34,11 @@ public class Member extends BaseTimeEntity implements Serializable {
     @Column(nullable = false)
     private UserRole role;
 
-//    @OneToMany(mappedBy = "url")
-//    private List<Url> urls;
-//
-//    @OneToMany(mappedBy = "member")
-//    private List<ChatRoomList> chatRooms = new ArrayList<ChatRoomList>();
+    @OneToMany(mappedBy = "url")
+    private List<Url> urls;
 
+    @OneToMany(mappedBy = "member")
+    private List<ChatRoomInfo> memberChatRooms = new ArrayList<ChatRoomInfo>();
     public String getRoleKey(){
         return this.role.getKey();
     }
