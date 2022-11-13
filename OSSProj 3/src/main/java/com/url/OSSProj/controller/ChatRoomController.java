@@ -31,9 +31,9 @@ public class ChatRoomController {
     @PostMapping("/room")
     @ResponseBody
     public ChatRoomDto createRoom(@RequestBody NewChatRoomDto newChatRoomDto){
-        String roomName = newChatRoomDto.getRoomName();
-        log.info("#### RoomName : " + roomName);
-        return chatRoomRepository.createChatRoom(newChatRoomDto.getRoomName(), newChatRoomDto.getPicturePath());
+        log.info("ChatRoom Name : " + newChatRoomDto.getName());
+        log.info("ChatRoom PicturePath : " + newChatRoomDto.getImage());
+        return chatRoomRepository.createChatRoom(newChatRoomDto.getName(), newChatRoomDto.getImage());
     }
 
     @GetMapping("/room/enter/{roomId}")
