@@ -24,6 +24,7 @@ public class StompHandler implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+
         if(StompCommand.CONNECT == accessor.getCommand()){
             String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
             if(StringUtils.hasText(jwt) && jwt.startsWith(AuthConstants.TOKEN_TYPE)){
@@ -31,7 +32,10 @@ public class StompHandler implements ChannelInterceptor {
                 boolean validToken = tokenUtils.isValidToken(accessToken);
                 if(!validToken) return null;
             }
+        }else if(StompCommand.SUBSCRIBE == accessor.getCommand()){
+            log.info("sub");
         }
+        log.info("sex1");
         return message;
     }
 }
