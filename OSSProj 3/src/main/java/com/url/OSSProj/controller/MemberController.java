@@ -40,7 +40,7 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/test")
+    @GetMapping("/chat/test")
     public String hello(){
         return "Hello !";
     }

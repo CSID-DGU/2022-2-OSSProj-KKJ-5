@@ -1,6 +1,7 @@
 package com.url.OSSProj.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.url.OSSProj.domain.enums.UserRole;
 import com.url.OSSProj.login.authentication.CustomAuthenticationFilter;
 import com.url.OSSProj.login.authentication.CustomAuthenticationProvider;
 import com.url.OSSProj.login.handler.CustomFormLoginSuccessHandler;
@@ -51,16 +52,16 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()
-                .anyRequest().permitAll()
+                    .csrf().disable()
+                    .authorizeRequests()
+                    .anyRequest().permitAll()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin()
-                .disable()
-                .addFilterBefore(corsFilter, SecurityContextPersistenceFilter.class)
-                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                    .formLogin()
+                        .disable()
+                    .addFilterBefore(corsFilter, SecurityContextPersistenceFilter.class)
+                    .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();

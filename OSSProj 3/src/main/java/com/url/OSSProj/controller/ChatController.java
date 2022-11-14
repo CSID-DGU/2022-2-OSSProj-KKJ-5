@@ -30,6 +30,7 @@ public class ChatController {
         log.info("Sender Name : " + name);
         log.info("Meesage Content : " + message.getMessage());
         log.info("RoomId : " + message.getRoomId());
+        log.info("Channel Topic : " + channelTopic.getTopic());
         redisTemplate.convertAndSend(channelTopic.getTopic(), message);
     }
 }

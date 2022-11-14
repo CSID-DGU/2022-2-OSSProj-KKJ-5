@@ -27,12 +27,15 @@ public class ChatRoom implements Serializable {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = true)
+    private String picturePath;
+
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatRoomInfo> chatRooms = new ArrayList<ChatRoomInfo>();
 
 
     public static ChatRoomDto create(String name, String picturePath){
-        ChatRoom chatRoom = getChatRoom(name);
+        ChatRoom chatRoom = getChatRoom(name, picturePath);
 
         return ChatRoomDto.builder()
                 .name(chatRoom.getName())
@@ -41,10 +44,11 @@ public class ChatRoom implements Serializable {
                 .build();
     }
 
-    private static ChatRoom getChatRoom(String name) {
+    private static ChatRoom getChatRoom(String name, String picturePath) {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.roomId = UUID.randomUUID().toString();
         chatRoom.name = name;
+        chatRoom.picturePath = picturePath;
         return chatRoom;
     }
 }

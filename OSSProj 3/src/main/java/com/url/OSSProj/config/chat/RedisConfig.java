@@ -1,7 +1,8 @@
 package com.url.OSSProj.config.chat;
 
-import com.url.OSSProj.domain.pubsub.RedisSubscriber;
+import com.url.OSSProj.service.pubsub.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -12,6 +13,7 @@ import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+@Log4j2
 @RequiredArgsConstructor
 @Configuration
 public class RedisConfig {
@@ -21,7 +23,7 @@ public class RedisConfig {
         return new ChannelTopic("chatroom");
     }
 
-    @Bean
+    @Bean // 메세지 리스너 단일화
     public RedisMessageListenerContainer redisMessageListener(RedisConnectionFactory connectionFactory,
                                                               MessageListenerAdapter listenerAdapter,
                                                               ChannelTopic channelTopic){
@@ -31,7 +33,7 @@ public class RedisConfig {
         return container;
     }
 
-    @Bean
+    @Bean // 메세지를 구독자게에 보내는 역할
     public MessageListenerAdapter listenerAdapter(RedisSubscriber subscriber){
         return new MessageListenerAdapter(subscriber, "sendMessage");
     }

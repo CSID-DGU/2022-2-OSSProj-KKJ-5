@@ -1,4 +1,4 @@
-package com.url.OSSProj.domain.pubsub;
+package com.url.OSSProj.service.pubsub;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.url.OSSProj.domain.dto.ChatMessage;
@@ -20,8 +20,12 @@ public class RedisSubscriber{
 
    public void sendMessage(String publishMessage){
        try{
+           log.info("Sub에서 publishMessage 확인 " + publishMessage);
            ChatMessage chatMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
            messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
+           log.info("여기는 Sub : roomId = " + chatMessage.getRoomId());
+           log.info("여기는 Sub ; sender : " + chatMessage.getSender());
+           log.info("여기는 Sub ; message : " + chatMessage.getMessage());
        } catch (Exception e){
            log.error("Exception {}", e);
        }
