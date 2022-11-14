@@ -112,17 +112,28 @@ export const Chat = () => {
           "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDgwMSIsImlhdCI6MTU1MTY2NzA0NCwiZXhwIjoxNTUxNjY4ODQ0fQ.Ncqvem4RlCwITDgFvT3GPvTcQNsSeysR1SYkGi4PVSpqkxFHDQt4liJGfO0SYMLTOD90zHC0vX47wT0WROE6dQ",
         // axios.defaults.headers.common["Authorization"]
       },
-      () => {
-        client.subscribe(`sub/chat/room/1`, (response) => {
-          console.log(response);
-          console.log(JSON.parse(response.body));
-          console.log(client);
-        });
-      }
+      () => {}
+      // () => {
+      //   client.subscribe(`sub/chat/room/1`, (response) => {
+      //     console.log(response);
+      //     console.log("fasf");
+      //     console.log(JSON.parse(response.body));
+      //     console.log(client);
+      //   });
+      //   client.send(
+      //     "/pub/chat/message",
+      //     {},
+      //     JSON.stringify({
+      //       type: "ENTER",
+      //       roomId: "1",
+      //       sender: "김재한",
+      //       message: "fsda",
+      //     })
+      //   );
+      // }
     );
   };
-
-  const sendMessage = () => {
+  const sendEnter = () => {
     client.send(
       "/pub/chat/message",
       {},
@@ -133,6 +144,25 @@ export const Chat = () => {
         message: "fsda",
       })
     );
+  };
+
+  const sendMessage = () => {
+    client.send(
+      "/pub/chat/message",
+      {},
+      JSON.stringify({
+        type: "TALK",
+        roomId: "1",
+        sender: "김재한",
+        message: "fsda",
+      })
+    );
+  };
+  const getMessage = () => {
+    client.subscribe(`sub/chat/room/1`, (message) => {
+      setMessage(message.body);
+      console.log(message.body);
+    });
   };
   return (
     <Grid
@@ -164,7 +194,9 @@ export const Chat = () => {
             <AccountCircleIcon fontSize={"inherit"} />
           </MenuButton>
           <Button onClick={connect}>연결</Button>
-          <Button onClick={sendMessage}>보내기</Button>
+          <Button onClick={sendEnter}>들어가기</Button>
+          <Button onClick={getMessage}>받기</Button>
+          <Button onClick={sendMessage}>문자보내기</Button>
         </Box>
       </Grid>
       {/* room list grid */}
