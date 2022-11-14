@@ -1,9 +1,10 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Button, Grid, TextField } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { MessageInput } from "../components/chat/message-input";
 import { useCreateRoom } from "../hooks/use-create-room";
 import { CreateRoomDialog } from "../components/chat/create-room-dialog";
-
+import zang from "../assets/zang.png";
+import bobobo from "../assets/bobobo.png";
 import face from "../assets/face.png";
 import { RoomListBox } from "../components/chat/room-list-box";
 import { FloatingButton } from "../components/chat/floating-button";
@@ -12,7 +13,13 @@ import { Stomp } from "@stomp/stompjs";
 import { ConstructionOutlined } from "@mui/icons-material";
 import { MessageSendButton } from "../components/chat/message-send-button";
 import { useFetchRooms } from "../hooks/use-fetch-rooms";
+import defaultImg from "../assets/defaultImg.png";
+import HomeIcon from "@mui/icons-material/Home";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { IRoomProps } from "../interface/chat";
+import { MenuButton } from "../components/commons/menu-button";
+import SockJS from "sockjs-client";
+import axios from "axios";
 
 const ROOM_SEQ = 1;
 
@@ -23,14 +30,25 @@ export const Chat = () => {
   const [chatName, setChatName] = useState("");
   const [message, setMessage] = useState("");
   const [open, setOpen] = useState(false);
-  const [img, setImg] = useState("");
+  const [imgForm, setImgForm] = useState(new FormData());
 
   const [mockRoomList, setMockRoomList] = useState<IRoomProps[]>([
-    { name: "1번방", roomId: 1, image: "" },
-    { name: "2번방", roomId: 2, image: "" },
-    { name: "3번방", roomId: 3, image: "" },
+    { name: "1번방", roomId: 1, image: face },
+    { name: "2번방", roomId: 2, image: zang },
+    { name: "3번방", roomId: 3, image: bobobo },
   ]);
   const [isChat, setIsChat] = useState(false);
+
+  const [fileImage, setFileImage] = useState("");
+
+  const saveFileImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // @ts-ignore
+    setFileImage(URL.createObjectURL(event.target.files[0]));
+  };
+  const deleteFileImage = () => {
+    URL.revokeObjectURL(fileImage);
+    setFileImage("");
+  };
 
   const handleMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
@@ -51,28 +69,71 @@ export const Chat = () => {
     setChatName(id);
     setIsChat(true);
   };
-  const handleImg = (e: ChangeEvent<HTMLInputElement>) => {
-    setImg(e.target.value);
-  };
+
   const { createRoomHandler, data, isLoading, isSuccess } = useCreateRoom({
-    name: roomName,
-    image: img,
+    imgForm: imgForm,
   });
 
-  const { roomList, isLoadingRoom, updateRoomList } = useFetchRooms();
-  useEffect(() => {
-    if (roomList) setMockRoomList(roomList);
-  }, [isLoadingRoom]);
+  const onCreate = () => {
+    let formData = new FormData();
+
+    formData.append("file", fileImage);
+
+    let variables = [
+      {
+        title: roomName,
+      },
+    ];
+
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(variables)], { type: "application/json" })
+    );
+
+    setImgForm(formData);
+  };
+
+  // const { roomList, isLoadingRoom, updateRoomList } = useFetchRooms();
+  // useEffect(() => {
+  //   if (roomList) setMockRoomList(roomList);
+  // }, [isLoadingRoom]);
+
   const client = Stomp.over(() => {
-    new WebSocket("ws://localhost:8080/ws-stomp");
+    let sock = new SockJS("http://localhost:8080/ws-stomp");
+    sock.binaryType = "arraybuffer";
+    return sock;
   });
   // console.log(client);
-  // client.connect({}, () => {
-  //   client.subscribe(`topic/${ROOM_SEQ}`, (response) => {
-  //     console.log(response);
-  //     console.log(JSON.parse(response.body));
-  //   });
-  // });
+  console.log(axios.defaults.headers.common["Authorization"]);
+  const connect = () => {
+    client.connect(
+      {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDgwMSIsImlhdCI6MTU1MTY2NzA0NCwiZXhwIjoxNTUxNjY4ODQ0fQ.Ncqvem4RlCwITDgFvT3GPvTcQNsSeysR1SYkGi4PVSpqkxFHDQt4liJGfO0SYMLTOD90zHC0vX47wT0WROE6dQ",
+        // axios.defaults.headers.common["Authorization"]
+      },
+      () => {
+        client.subscribe(`sub/chat/room/1`, (response) => {
+          console.log(response);
+          console.log(JSON.parse(response.body));
+          console.log(client);
+        });
+      }
+    );
+  };
+
+  const sendMessage = () => {
+    client.send(
+      "/pub/chat/message",
+      {},
+      JSON.stringify({
+        type: "ENTER",
+        roomId: "1",
+        sender: "김재한",
+        message: "fsda",
+      })
+    );
+  };
   return (
     <Grid
       container
@@ -82,11 +143,29 @@ export const Chat = () => {
       paddingRight={`50px`}
       paddingBottom={`100px`}
       spacing={2}
+      bgcolor={"#e5e5e5"}
       direction={{ lg: "row", md: "row", sm: "column", xs: "column" }}
     >
       {/* 메뉴 grid */}
       <Grid item lg={1} md={1} sm={1} xs={1}>
-        <Box border={`1px solid black`} height={`100%`} width={`100%`}></Box>
+        <Box
+          border={`1px solid black`}
+          height={`100%`}
+          width={`100%`}
+          display={"flex"}
+          flexDirection={"column"}
+          justifyContent={"flex-end"}
+          alignItems={"center"}
+        >
+          <MenuButton onClick={() => {}}>
+            <HomeIcon fontSize={"inherit"} />
+          </MenuButton>
+          <MenuButton onClick={() => {}}>
+            <AccountCircleIcon fontSize={"inherit"} />
+          </MenuButton>
+          <Button onClick={connect}>연결</Button>
+          <Button onClick={sendMessage}>보내기</Button>
+        </Box>
       </Grid>
       {/* room list grid */}
       {/* todo reverse list */}
@@ -101,9 +180,16 @@ export const Chat = () => {
         xs={2}
       >
         <Grid item container direction={"column"} lg={10} spacing={2}>
+          <Grid item>
+            <TextField
+              sx={{ bgcolor: "white" }}
+              fullWidth
+              placeholder="채팅방 찾기"
+            />
+          </Grid>
           {mockRoomList.map((room) => {
             return (
-              <Grid item>
+              <Grid item key={room.roomId}>
                 <RoomListBox
                   roomName={room.name}
                   roomId={room.roomId}
@@ -128,12 +214,19 @@ export const Chat = () => {
             {/* message Grid */}
             <Grid item lg={11} md={11} sm={9} xs={8}>
               {chatName}
-              <Box border={`1px solid black`} height={`95%`}>
-                <Grid item>
-                  <MessageBox message={"안녕"} user={"kim"} isUser={false} />
+              <Box border={`1px solid black`} height={`95%`} bgcolor={"white"}>
+                <Grid item display={"flex"} justifyContent={"flex-start"}>
+                  <MessageBox message={"안녕"} user={"김재한"} isUser={false} />
                 </Grid>
                 <Grid item display={"flex"} justifyContent={"flex-end"}>
                   <MessageBox message={"안녕"} user={"kim"} isUser={true} />
+                </Grid>
+                <Grid item display={"flex"} justifyContent={"flex-end"}>
+                  <MessageBox
+                    message={"오픈소스 프로젝트 팀 방입니다"}
+                    user={"kim"}
+                    isUser={true}
+                  />
                 </Grid>
               </Box>
             </Grid>
@@ -165,8 +258,8 @@ export const Chat = () => {
           //   ]);
           // }
         }
-        img={img}
-        handleImg={handleImg}
+        img={fileImage === "" ? defaultImg : fileImage}
+        handleImg={saveFileImage}
       />
     </Grid>
   );

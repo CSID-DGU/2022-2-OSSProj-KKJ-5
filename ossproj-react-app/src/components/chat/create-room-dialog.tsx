@@ -1,5 +1,5 @@
 import { DialogContent, DialogTitle, TextField } from "@material-ui/core";
-import { Button, Dialog, DialogActions, IconButton } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, IconButton } from "@mui/material";
 import { ChangeEvent } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 interface ICraeteRoomDialog {
@@ -33,15 +33,23 @@ export const CreateRoomDialog = ({
           <TextField value={roomName} onChange={handleRoomName} />
           <Button variant="contained" component="label">
             Upload
-            <input
-              hidden
-              accept="image/*"
-              type="file"
-              value={img}
-              onChange={handleImg}
-            />
+            <input hidden accept="image/*" type="file" onChange={handleImg} />
           </Button>
-          {img}
+          <Box
+            borderRadius={`70%`}
+            width={"300px"}
+            height={`300px`}
+            overflow={"hidden"}
+          >
+            <img
+              width={`100%`}
+              height={`100%`}
+              object-fit={"cover"}
+              alt="sample"
+              src={img}
+              style={{ margin: "auto" }}
+            />
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={createRoomHandler}>{"create"}</Button>

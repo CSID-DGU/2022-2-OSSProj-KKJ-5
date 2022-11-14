@@ -5,6 +5,7 @@ import { Home } from "./pages/home";
 import { Chat } from "./pages/chat";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UserProvider } from "./context/user-context";
+import { createGlobalStyle } from 'styled-components';
 
 const queryClient = new QueryClient();
 

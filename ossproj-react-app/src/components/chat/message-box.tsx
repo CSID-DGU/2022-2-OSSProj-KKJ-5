@@ -7,10 +7,11 @@ interface IMessageBoxProps {
   isUser: boolean;
 }
 export const MessageBox = ({ user, message, isUser }: IMessageBoxProps) => {
+  const color = isUser ? "#87CEFA" : "#e5e5e5";
   return (
-    <Box width={`30%`} padding={`10px`}>
+    <Box padding={`10px`}>
       {!isUser && <Typography>{user}</Typography>}
-      <Card>
+      <Card sx={{ backgroundColor: color }}>
         <CardContent>
           <Typography>{message}</Typography>
         </CardContent>

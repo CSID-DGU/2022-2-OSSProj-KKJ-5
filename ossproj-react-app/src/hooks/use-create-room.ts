@@ -17,6 +17,7 @@ export const useCreateRoom = (props: ICreateRoomProps) => {
     },
   });
   const createRoomHandler = () => {
+    console.log(props);
     createroom(props);
   };
   return { createRoomHandler, data, isLoading, isSuccess };
