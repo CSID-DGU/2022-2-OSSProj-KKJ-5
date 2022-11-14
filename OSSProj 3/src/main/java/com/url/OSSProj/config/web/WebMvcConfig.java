@@ -23,7 +23,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtTokenInterceptor())
                 .excludePathPatterns("/member/signUp", "/member/signIn")
-                .addPathPatterns("/member/**");
+                .addPathPatterns("/member/**")
+                .addPathPatterns("/sub/chat/**")
+                .addPathPatterns("/pub/chat/**")
+                .addPathPatterns("/chat/**");
     }
 
     @Bean

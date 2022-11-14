@@ -30,24 +30,35 @@ export const CreateRoomDialog = ({
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <TextField value={roomName} onChange={handleRoomName} />
-          <Button variant="contained" component="label">
-            Upload
-            <input hidden accept="image/*" type="file" onChange={handleImg} />
-          </Button>
-          <Box
-            borderRadius={`70%`}
-            width={"300px"}
-            height={`300px`}
-            overflow={"hidden"}
-          >
-            <img
-              width={`100%`}
-              height={`100%`}
-              object-fit={"cover"}
-              alt="sample"
-              src={img}
-              style={{ margin: "auto" }}
+          <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
+            <Box
+              borderRadius={`70%`}
+              width={"200px"}
+              height={`200px`}
+              overflow={"hidden"}
+              margin={"10px"}
+            >
+              <img
+                width={`100%`}
+                height={`100%`}
+                object-fit={"cover"}
+                alt="sample"
+                src={img}
+                style={{ margin: "auto" }}
+              />
+            </Box>
+            <Button
+              sx={{ width: "30px", height: "30px" }}
+              variant="contained"
+              component="label"
+            >
+              Upload
+              <input hidden accept="image/*" type="file" onChange={handleImg} />
+            </Button>
+            <TextField
+              value={roomName}
+              placeholder={"방이름"}
+              onChange={handleRoomName}
             />
           </Box>
         </DialogContent>

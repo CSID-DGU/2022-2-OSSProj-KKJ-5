@@ -7,11 +7,12 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.*;
 
-@Log4j2
 @RequiredArgsConstructor
 @RestController
+@Log4j2
 public class ChatController {
 
     private final TokenUtils tokenUtils;
