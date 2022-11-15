@@ -43,8 +43,6 @@ public class StompHandler implements ChannelInterceptor {
                     return null;
                 }
             }
-        } else if(StompCommand.SEND == accessor.getCommand()) { // 채팅룸 구독요청
-            log.info("전송하래!");
         } else if(StompCommand.SUBSCRIBE == accessor.getCommand()){
             String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
             // 채팅방에 들어온 클라이언트 sessionId를 roomId와 맵핑해 놓는다.(나중에 특정 세션이 어떤 채팅방에 들어가 있는지 알기 위함)
@@ -56,7 +54,6 @@ public class StompHandler implements ChannelInterceptor {
             chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(name).build());
             log.info("SUBSCRIBED {}, {}", name, roomId);
         }
-        log.info("sex1");
         return message;
     }
 }
