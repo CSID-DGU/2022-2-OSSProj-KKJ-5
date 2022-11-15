@@ -39,7 +39,9 @@ public class StompHandler implements ChannelInterceptor {
                 String accessToken = jwt.substring(7, jwt.length());
                 log.info("StompHandler AccessToken : " + accessToken);
                 boolean validToken = tokenUtils.isValidToken(accessToken);
-                if(!validToken) return null;
+                if(!validToken) {
+                    return null;
+                }
             }
         } else if(StompCommand.SUBSCRIBE == accessor.getCommand()){
             String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));

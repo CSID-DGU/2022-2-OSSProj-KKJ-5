@@ -1,6 +1,7 @@
 package com.url.OSSProj.controller;
 
 import com.url.OSSProj.domain.dto.ChatMessage;
+import com.url.OSSProj.service.ChatService;
 import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,6 +19,7 @@ public class ChatController {
     private final TokenUtils tokenUtils;
     private final ChannelTopic channelTopic;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final ChatService chatService;
 
     @MessageMapping("/chat/message")
     public void message(ChatMessage message){
@@ -32,6 +34,6 @@ public class ChatController {
         log.info("Meesage Content : " + message.getMessage());
         log.info("RoomId : " + message.getRoomId());
         log.info("Channel Topic : " + channelTopic.getTopic());
-        redisTemplate.convertAndSend(channelTopic.getTopic(), message);
+        chatService.sendChatMessage(message);
     }
 }

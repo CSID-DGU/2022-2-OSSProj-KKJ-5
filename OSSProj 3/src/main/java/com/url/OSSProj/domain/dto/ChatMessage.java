@@ -17,7 +17,6 @@ public class ChatMessage {
         this.roomId = roomId;
         this.sender = sender;
         this.message = message;
-        this.userCount = userCount;
     }
 
     public enum MessageType{
@@ -27,5 +26,4 @@ public class ChatMessage {
     private String roomId;
     private String sender;
     private String message;
-    private long userCount;
 }
