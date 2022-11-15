@@ -5,7 +5,7 @@ import { Home } from "./pages/home";
 import { Chat } from "./pages/chat";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UserProvider } from "./context/user-context";
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +18,7 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/chat/room/enter/1" element={<Chat />} />
         </Routes>
       </QueryClientProvider>
     </UserProvider>

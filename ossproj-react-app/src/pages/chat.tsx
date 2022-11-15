@@ -1,5 +1,5 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { MessageInput } from "../components/chat/message-input";
 import { useCreateRoom } from "../hooks/use-create-room";
 import { CreateRoomDialog } from "../components/chat/create-room-dialog";
@@ -9,29 +9,47 @@ import face from "../assets/face.png";
 import { RoomListBox } from "../components/chat/room-list-box";
 import { FloatingButton } from "../components/chat/floating-button";
 import { MessageBox } from "../components/chat/message-box";
-import { Stomp } from "@stomp/stompjs";
+
 import { ConstructionOutlined } from "@mui/icons-material";
 import { MessageSendButton } from "../components/chat/message-send-button";
 import { useFetchRooms } from "../hooks/use-fetch-rooms";
 import defaultImg from "../assets/defaultImg.png";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { IRoomProps } from "../interface/chat";
+import { IChatDetail, IRoomProps } from "../interface/chat";
 import { MenuButton } from "../components/commons/menu-button";
 import SockJS from "sockjs-client";
 import axios from "axios";
+import { proxy, useSnapshot } from "valtio";
+import ChatEntity from "../entity/Chat";
+import { CompatClient, Stomp } from "@stomp/stompjs";
 
 const ROOM_SEQ = 1;
-
+const state = proxy<ChatEntity>(new ChatEntity());
 export const Chat = () => {
   // const client = useRef<StompJs.Client>();
-  const [chatMessages, setChatMessages] = useState<string[]>([]);
+  const snap = useSnapshot(state);
+
+  const [chatMessages, setChatMessages] = useState<IChatDetail[]>([
+    {
+      type: "ENTER",
+      roomId: "sdf",
+      sender: "scdf",
+      message: "kim 입장",
+    },
+  ]);
   const [roomName, setRoomName] = useState("");
   const [chatName, setChatName] = useState("");
   const [message, setMessage] = useState("");
   const [open, setOpen] = useState(false);
   const [imgForm, setImgForm] = useState(new FormData());
-
+  const [chatMessage, setChatMessage] = useState("");
+  // const [recv, setRecv] = useState<IChatDetail>({
+  //   type: "sdf",
+  //   roomId: "sdf",
+  //   sender: "scdf",
+  //   message: "",
+  // });
   const [mockRoomList, setMockRoomList] = useState<IRoomProps[]>([
     { name: "1번방", roomId: 1, image: face },
     { name: "2번방", roomId: 2, image: zang },
@@ -65,10 +83,6 @@ export const Chat = () => {
   const handleOpen = () => {
     setOpen(true);
   };
-  const handleIsChat = (id: string) => {
-    setChatName(id);
-    setIsChat(true);
-  };
 
   const { createRoomHandler, data, isLoading, isSuccess } = useCreateRoom({
     imgForm: imgForm,
@@ -76,15 +90,12 @@ export const Chat = () => {
 
   const onCreate = () => {
     let formData = new FormData();
-
     formData.append("file", fileImage);
-
     let variables = [
       {
         title: roomName,
       },
     ];
-
     formData.append(
       "data",
       new Blob([JSON.stringify(variables)], { type: "application/json" })
@@ -92,78 +103,52 @@ export const Chat = () => {
 
     setImgForm(formData);
   };
-
   // const { roomList, isLoadingRoom, updateRoomList } = useFetchRooms();
   // useEffect(() => {
   //   if (roomList) setMockRoomList(roomList);
   // }, [isLoadingRoom]);
+  const client = useRef<CompatClient>();
 
-  const client = Stomp.over(() => {
-    let sock = new SockJS("http://localhost:8080/ws-stomp");
-    sock.binaryType = "arraybuffer";
-    return sock;
-  });
-  // console.log(client);
-  console.log(axios.defaults.headers.common["Authorization"]);
-  const connect = () => {
-    client.connect(
+  useEffect(() => {
+    if (chatMessage) {
+      setChatMessages(chatMessages.concat(JSON.parse(chatMessage)));
+    }
+  }, [chatMessage]);
+
+  const connect = (id: string) => {
+    client.current = Stomp.over(() => {
+      let sock = new SockJS("http://localhost:8080/ws-stomp");
+      return sock;
+    });
+    client.current!.connect(
       {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDgwMSIsImlhdCI6MTU1MTY2NzA0NCwiZXhwIjoxNTUxNjY4ODQ0fQ.Ncqvem4RlCwITDgFvT3GPvTcQNsSeysR1SYkGi4PVSpqkxFHDQt4liJGfO0SYMLTOD90zHC0vX47wT0WROE6dQ",
-        // axios.defaults.headers.common["Authorization"]
+        Authorization: axios.defaults.headers.common["Authorization"],
       },
-      () => {}
-      // () => {
-      //   client.subscribe(`sub/chat/room/1`, (response) => {
-      //     console.log(response);
-      //     console.log("fasf");
-      //     console.log(JSON.parse(response.body));
-      //     console.log(client);
-      //   });
-      //   client.send(
-      //     "/pub/chat/message",
-      //     {},
-      //     JSON.stringify({
-      //       type: "ENTER",
-      //       roomId: "1",
-      //       sender: "김재한",
-      //       message: "fsda",
-      //     })
-      //   );
-      // }
+      () => {
+        client.current!.subscribe(`/sub/chat/room/1`, (message) => {
+          setChatMessage(message.body);
+        });
+      }
     );
-  };
-  const sendEnter = () => {
-    client.send(
-      "/pub/chat/message",
-      {},
-      JSON.stringify({
-        type: "ENTER",
-        roomId: "1",
-        sender: "김재한",
-        message: "fsda",
-      })
-    );
+
+    setChatName(id);
+    setIsChat(true);
   };
 
   const sendMessage = () => {
-    client.send(
+    client.current!.send(
       "/pub/chat/message",
       {},
       JSON.stringify({
         type: "TALK",
         roomId: "1",
         sender: "김재한",
-        message: "fsda",
+        message: message,
       })
     );
+    setMessage("");
   };
-  const getMessage = () => {
-    client.subscribe(`sub/chat/room/1`, (message) => {
-      setMessage(message.body);
-      console.log(message.body);
-    });
-  };
+
   return (
     <Grid
       container
@@ -177,6 +162,7 @@ export const Chat = () => {
       direction={{ lg: "row", md: "row", sm: "column", xs: "column" }}
     >
       {/* 메뉴 grid */}
+
       <Grid item lg={1} md={1} sm={1} xs={1}>
         <Box
           border={`1px solid black`}
@@ -193,10 +179,6 @@ export const Chat = () => {
           <MenuButton onClick={() => {}}>
             <AccountCircleIcon fontSize={"inherit"} />
           </MenuButton>
-          <Button onClick={connect}>연결</Button>
-          <Button onClick={sendEnter}>들어가기</Button>
-          <Button onClick={getMessage}>받기</Button>
-          <Button onClick={sendMessage}>문자보내기</Button>
         </Box>
       </Grid>
       {/* room list grid */}
@@ -227,7 +209,7 @@ export const Chat = () => {
                   roomId={room.roomId}
                   img={room.image}
                   user={""}
-                  handleIsChat={handleIsChat}
+                  handleIsChat={connect}
                   // todo sub, pub
                 />
               </Grid>
@@ -247,19 +229,32 @@ export const Chat = () => {
             <Grid item lg={11} md={11} sm={9} xs={8}>
               {chatName}
               <Box border={`1px solid black`} height={`95%`} bgcolor={"white"}>
-                <Grid item display={"flex"} justifyContent={"flex-start"}>
-                  <MessageBox message={"안녕"} user={"김재한"} isUser={false} />
-                </Grid>
-                <Grid item display={"flex"} justifyContent={"flex-end"}>
-                  <MessageBox message={"안녕"} user={"kim"} isUser={true} />
-                </Grid>
-                <Grid item display={"flex"} justifyContent={"flex-end"}>
-                  <MessageBox
-                    message={"오픈소스 프로젝트 팀 방입니다"}
-                    user={"kim"}
-                    isUser={true}
-                  />
-                </Grid>
+                {chatMessages.map((props) => {
+                  return props.type === "ENTER" ? (
+                    <Grid
+                      key={props.sender}
+                      item
+                      display={"flex"}
+                      justifyContent={"center"}
+                      margin={"20px"}
+                    >
+                      {props.message}
+                    </Grid>
+                  ) : (
+                    <Grid
+                      key={props.sender}
+                      item
+                      display={"flex"}
+                      justifyContent={"flex-start"}
+                    >
+                      <MessageBox
+                        message={props.message}
+                        user={"김재한"}
+                        isUser={false}
+                      />
+                    </Grid>
+                  );
+                })}
               </Box>
             </Grid>
             {/* input grid */}
@@ -267,7 +262,7 @@ export const Chat = () => {
               <MessageInput
                 message={message}
                 handleMessage={handleMessage}
-                handleSend={() => {}}
+                handleSend={sendMessage}
                 handleDelete={handleDelete}
               />
             </Grid>
