@@ -49,5 +49,6 @@ public class ChatService {
             chatMessage.setSender("[알림]");
         }
         redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
+        log.info("Service :  " + chatMessage.getType());
     }
 }

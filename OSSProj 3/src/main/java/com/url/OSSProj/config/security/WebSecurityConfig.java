@@ -53,6 +53,9 @@ public class WebSecurityConfig {
 
         http
                     .csrf().disable()
+                .headers()
+                .frameOptions().sameOrigin()
+                .and()
                     .authorizeRequests()
                     .anyRequest().permitAll()
                 .and()
