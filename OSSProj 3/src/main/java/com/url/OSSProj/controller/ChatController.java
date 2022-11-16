@@ -24,6 +24,7 @@ public class ChatController {
     @MessageMapping("/chat/message")
     public void message(ChatMessage message){
         String name = message.getSender();
+        log.info("ChatController userName : {}", name);
         message.setSender(name);
         if(ChatMessage.MessageType.ENTER.equals(message.getType())) {
             // message.setSender("[알림]");
@@ -34,6 +35,7 @@ public class ChatController {
         log.info("Meesage Content : " + message.getMessage());
         log.info("RoomId : " + message.getRoomId());
         log.info("Channel Topic : " + channelTopic.getTopic());
+
         chatService.sendChatMessage(message);
     }
 }
