@@ -26,7 +26,7 @@ public class ChatController {
         String name = message.getSender();
         message.setSender(name);
         if(ChatMessage.MessageType.ENTER.equals(message.getType())) {
-            message.setSender("[알림]");
+            // message.setSender("[알림]");
             message.setMessage(name + "님이 입장하셨습니다.");
         }
 

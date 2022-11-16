@@ -129,7 +129,9 @@ export const Chat = () => {
   const sendMessage = () => {
     client.current!.send(
       "/pub/chat/message",
-      {},
+      {
+        Authorization: axios.defaults.headers.common["Authorization"],
+      },
       JSON.stringify({
         type: "TALK",
         roomId: "1",
@@ -139,7 +141,6 @@ export const Chat = () => {
     );
     setMessage("");
   };
-
   return (
     <Grid
       container
