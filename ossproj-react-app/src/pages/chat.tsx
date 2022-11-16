@@ -27,9 +27,8 @@ import { CompatClient, Stomp } from "@stomp/stompjs";
 const ROOM_SEQ = 1;
 const state = proxy<ChatEntity>(new ChatEntity());
 export const Chat = () => {
-  // const client = useRef<StompJs.Client>();
   const snap = useSnapshot(state);
-
+  const client = useRef<CompatClient>();
   const [chatMessages, setChatMessages] = useState<IChatDetail[]>([
     {
       type: "ENTER",
@@ -44,19 +43,12 @@ export const Chat = () => {
   const [open, setOpen] = useState(false);
   const [imgForm, setImgForm] = useState(new FormData());
   const [chatMessage, setChatMessage] = useState("");
-  // const [recv, setRecv] = useState<IChatDetail>({
-  //   type: "sdf",
-  //   roomId: "sdf",
-  //   sender: "scdf",
-  //   message: "",
-  // });
   const [mockRoomList, setMockRoomList] = useState<IRoomProps[]>([
     { name: "1번방", roomId: 1, image: face },
     { name: "2번방", roomId: 2, image: zang },
     { name: "3번방", roomId: 3, image: bobobo },
   ]);
   const [isChat, setIsChat] = useState(false);
-
   const [fileImage, setFileImage] = useState("");
 
   const saveFileImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,7 +99,6 @@ export const Chat = () => {
   // useEffect(() => {
   //   if (roomList) setMockRoomList(roomList);
   // }, [isLoadingRoom]);
-  const client = useRef<CompatClient>();
 
   useEffect(() => {
     if (chatMessage) {
@@ -122,7 +113,10 @@ export const Chat = () => {
     });
     client.current!.connect(
       {
+<<<<<<< HEAD
 
+=======
+>>>>>>> d676399943e7b0447193b4d60d09a1bb59c00107
         Authorization: axios.defaults.headers.common["Authorization"],
       },
       () => {
@@ -130,7 +124,10 @@ export const Chat = () => {
           setChatMessage(message.body);
         });
       }
+<<<<<<< HEAD
 
+=======
+>>>>>>> d676399943e7b0447193b4d60d09a1bb59c00107
     );
 
     setChatName(id);
@@ -141,21 +138,31 @@ export const Chat = () => {
     client.current!.send(
       "/pub/chat/message",
       {
+<<<<<<< HEAD
         token:
           // "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDgwMSIsImlhdCI6MTU1MTY2NzA0NCwiZXhwIjoxNTUxNjY4ODQ0fQ.Ncqvem4RlCwITDgFvT3GPvTcQNsSeysR1SYkGi4PVSpqkxFHDQt4liJGfO0SYMLTOD90zHC0vX47wT0WROE6dQ",
         axios.defaults.headers.common["Authorization"]
+=======
+        Authorization: axios.defaults.headers.common["Authorization"],
+>>>>>>> d676399943e7b0447193b4d60d09a1bb59c00107
       },
       JSON.stringify({
         type: "TALK",
         roomId: "1",
         sender: "김재한",
         message: message,
+<<<<<<< HEAD
 
+=======
+>>>>>>> d676399943e7b0447193b4d60d09a1bb59c00107
       })
     );
     setMessage("");
   };
+<<<<<<< HEAD
 
+=======
+>>>>>>> d676399943e7b0447193b4d60d09a1bb59c00107
   return (
     <Grid
       container
@@ -228,12 +235,12 @@ export const Chat = () => {
         </Grid>
       </Grid>
       {/* chatting room grid */}
-      <Grid item lg={8} md={8} sm={5} xs={5} container>
+      <Grid item lg={8} md={7} sm={5} xs={5} container>
         {/* todo sm xs */}
         {isChat ? (
           <Grid item container direction={"column"} spacing={1}>
             {/* message Grid */}
-            <Grid item lg={11} md={11} sm={9} xs={8}>
+            <Grid item lg={11} md={11} sm={10} xs={10}>
               {chatName}
               <Box border={`1px solid black`} height={`95%`} bgcolor={"white"}>
                 {chatMessages.map((props) => {
