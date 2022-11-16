@@ -122,48 +122,7 @@ export const Chat = () => {
     });
     client.current!.connect(
       {
-<<<<<<< HEAD
-        token:
-          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDgwMSIsImlhdCI6MTU1MTY2NzA0NCwiZXhwIjoxNTUxNjY4ODQ0fQ.Ncqvem4RlCwITDgFvT3GPvTcQNsSeysR1SYkGi4PVSpqkxFHDQt4liJGfO0SYMLTOD90zHC0vX47wT0WROE6dQ",
-        // axios.defaults.headers.common["Authorization"]
-      },
 
-      () => {
-        client.subscribe(`/sub/chat/room/c5be0dd9-b1ec-4618-b601-413dae16c931`, (response) => {
-          console.log(response);
-          console.log("fasf");
-          console.log(JSON.parse(response.body));
-          console.log(client);
-        });
-        
-        // client.send(
-        //   "/pub/chat/message",
-        //   {},
-        //   JSON.stringify({
-        //     type: "ENTER",
-        //     roomId: "c5be0dd9-b1ec-4618-b601-413dae16c931",
-        //     sender: "김재한",
-        //     message: "fsda",
-        //   })
-        // );
-      },
-    );
-  };
-  const sendEnter = () => {
-    client.send(
-      "/pub/chat/message",
-      {
-        token:
-          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDgwMSIsImlhdCI6MTU1MTY2NzA0NCwiZXhwIjoxNTUxNjY4ODQ0fQ.Ncqvem4RlCwITDgFvT3GPvTcQNsSeysR1SYkGi4PVSpqkxFHDQt4liJGfO0SYMLTOD90zHC0vX47wT0WROE6dQ",
-        // axios.defaults.headers.common["Authorization"]
-      },
-      JSON.stringify({
-        type: "ENTER",
-        roomId: "c5be0dd9-b1ec-4618-b601-413dae16c931",
-        sender: "김재한",
-        message: "fsda",
-      })
-=======
         Authorization: axios.defaults.headers.common["Authorization"],
       },
       () => {
@@ -171,7 +130,7 @@ export const Chat = () => {
           setChatMessage(message.body);
         });
       }
->>>>>>> e641f068c27045924d89050196471fcf6ea9bad9
+
     );
 
     setChatName(id);
@@ -183,34 +142,20 @@ export const Chat = () => {
       "/pub/chat/message",
       {
         token:
-          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDgwMSIsImlhdCI6MTU1MTY2NzA0NCwiZXhwIjoxNTUxNjY4ODQ0fQ.Ncqvem4RlCwITDgFvT3GPvTcQNsSeysR1SYkGi4PVSpqkxFHDQt4liJGfO0SYMLTOD90zHC0vX47wT0WROE6dQ",
-        // axios.defaults.headers.common["Authorization"]
+          // "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDgwMSIsImlhdCI6MTU1MTY2NzA0NCwiZXhwIjoxNTUxNjY4ODQ0fQ.Ncqvem4RlCwITDgFvT3GPvTcQNsSeysR1SYkGi4PVSpqkxFHDQt4liJGfO0SYMLTOD90zHC0vX47wT0WROE6dQ",
+        axios.defaults.headers.common["Authorization"]
       },
       JSON.stringify({
         type: "TALK",
-<<<<<<< HEAD
-        roomId: "c5be0dd9-b1ec-4618-b601-413dae16c931",
-
-        message: "fsda",
-=======
         roomId: "1",
         sender: "김재한",
         message: message,
->>>>>>> e641f068c27045924d89050196471fcf6ea9bad9
+
       })
     );
     setMessage("");
   };
-<<<<<<< HEAD
-  const getMessage = () => {
-    client.subscribe(`sub/chat/room/c5be0dd9-b1ec-4618-b601-413dae16c931`, (message) => {
-      setMessage(JSON.parse(message.body));
-      console.log(message.body);
-    });
-  };
-=======
 
->>>>>>> e641f068c27045924d89050196471fcf6ea9bad9
   return (
     <Grid
       container
