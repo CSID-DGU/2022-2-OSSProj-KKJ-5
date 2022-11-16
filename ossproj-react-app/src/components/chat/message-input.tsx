@@ -1,4 +1,12 @@
-import { Box, Button, IconButton, InputBase, Paper } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Input,
+  InputBase,
+  Paper,
+  TextField,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import { ChangeEvent } from "react";
@@ -15,6 +23,11 @@ export const MessageInput = ({
   handleSend,
   handleDelete,
 }: IMessageInputProps) => {
+  const pressEnter = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key == "Enter") {
+      handleSend();
+    }
+  };
   return (
     <Box display={"flex"} height={`100%`}>
       <Paper
@@ -32,8 +45,10 @@ export const MessageInput = ({
           inputProps={{ "aria-label": "search google maps" }}
           value={message}
           onChange={handleMessage}
-          onKeyPress={(e) => e.key === "Enter" && handleSend()}
+          onKeyPress={pressEnter}
         />
+
+        <InputBase disabled={true} />
 
         <IconButton onClick={handleDelete}>
           <CloseIcon />

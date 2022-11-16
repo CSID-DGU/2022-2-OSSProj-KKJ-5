@@ -27,9 +27,8 @@ import { CompatClient, Stomp } from "@stomp/stompjs";
 const ROOM_SEQ = 1;
 const state = proxy<ChatEntity>(new ChatEntity());
 export const Chat = () => {
-  // const client = useRef<StompJs.Client>();
   const snap = useSnapshot(state);
-
+  const client = useRef<CompatClient>();
   const [chatMessages, setChatMessages] = useState<IChatDetail[]>([
     {
       type: "ENTER",
@@ -44,19 +43,12 @@ export const Chat = () => {
   const [open, setOpen] = useState(false);
   const [imgForm, setImgForm] = useState(new FormData());
   const [chatMessage, setChatMessage] = useState("");
-  // const [recv, setRecv] = useState<IChatDetail>({
-  //   type: "sdf",
-  //   roomId: "sdf",
-  //   sender: "scdf",
-  //   message: "",
-  // });
   const [mockRoomList, setMockRoomList] = useState<IRoomProps[]>([
     { name: "1번방", roomId: 1, image: face },
     { name: "2번방", roomId: 2, image: zang },
     { name: "3번방", roomId: 3, image: bobobo },
   ]);
   const [isChat, setIsChat] = useState(false);
-
   const [fileImage, setFileImage] = useState("");
 
   const saveFileImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,7 +99,6 @@ export const Chat = () => {
   // useEffect(() => {
   //   if (roomList) setMockRoomList(roomList);
   // }, [isLoadingRoom]);
-  const client = useRef<CompatClient>();
 
   useEffect(() => {
     if (chatMessage) {
