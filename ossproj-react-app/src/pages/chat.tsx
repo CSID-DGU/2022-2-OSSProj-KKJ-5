@@ -213,12 +213,12 @@ export const Chat = () => {
         </Grid>
       </Grid>
       {/* chatting room grid */}
-      <Grid item lg={8} md={8} sm={5} xs={5} container>
+      <Grid item lg={8} md={7} sm={5} xs={5} container>
         {/* todo sm xs */}
         {isChat ? (
           <Grid item container direction={"column"} spacing={1}>
             {/* message Grid */}
-            <Grid item lg={11} md={11} sm={9} xs={8}>
+            <Grid item lg={11} md={11} sm={10} xs={10}>
               {chatName}
               <Box border={`1px solid black`} height={`95%`} bgcolor={"white"}>
                 {chatMessages.map((props) => {
