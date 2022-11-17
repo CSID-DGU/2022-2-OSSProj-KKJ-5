@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -33,10 +34,13 @@ public class TokenController {
         throw new RuntimeException();
     }
 
+    @ResponseBody
     @PostMapping("/token/refresh")
-    public String refreshAuth(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public SuccessLoginMemberDto refreshAuth(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Cookie refreshCookie = cookieUtils.getCookie(request, AuthConstants.REFRESH_HEADER);
         String refreshToken = refreshCookie.getValue();
+
+        System.out.println("/token/refresh : " + refreshToken);
 
         if(refreshToken != null && tokenUtils.isValidToken(refreshToken)) {
             String email = tokenUtils.getUid(refreshToken);
@@ -49,12 +53,10 @@ public class TokenController {
 
             Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("no such data"));
 
-            final SuccessLoginMemberDto successLoginMemberDto = getSuccessLoginMemberDto(newToken, member);
+            return getSuccessLoginMemberDto(newToken, member);
 
-            String loginMemberJsonResponse = objectMapper.writeValueAsString(successLoginMemberDto);
-            response.getWriter().write(loginMemberJsonResponse);
-
-            return "Success New Token";
+//            String loginMemberJsonResponse = objectMapper.writeValueAsString(successLoginMemberDto);
+//            response.getWriter().write(loginMemberJsonResponse);
         }
         throw new RuntimeException();
     }
