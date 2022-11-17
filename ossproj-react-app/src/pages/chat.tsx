@@ -122,10 +122,6 @@ export const Chat = () => {
     });
     client.current!.connect(
       {
-<<<<<<< HEAD
-
-=======
->>>>>>> d676399943e7b0447193b4d60d09a1bb59c00107
         Authorization: axios.defaults.headers.common["Authorization"],
       },
       () => {
@@ -137,10 +133,6 @@ export const Chat = () => {
           }
         );
       }
-<<<<<<< HEAD
-
-=======
->>>>>>> d676399943e7b0447193b4d60d09a1bb59c00107
     );
 
     setChatName(id);
@@ -151,31 +143,17 @@ export const Chat = () => {
     client.current!.send(
       "/pub/chat/message",
       {
-<<<<<<< HEAD
-        token:
-          // "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDgwMSIsImlhdCI6MTU1MTY2NzA0NCwiZXhwIjoxNTUxNjY4ODQ0fQ.Ncqvem4RlCwITDgFvT3GPvTcQNsSeysR1SYkGi4PVSpqkxFHDQt4liJGfO0SYMLTOD90zHC0vX47wT0WROE6dQ",
-        axios.defaults.headers.common["Authorization"]
-=======
         Authorization: axios.defaults.headers.common["Authorization"],
->>>>>>> d676399943e7b0447193b4d60d09a1bb59c00107
       },
       JSON.stringify({
         type: "TALK",
         roomId: "1",
         sender: "김재한",
         message: message,
-<<<<<<< HEAD
-
-=======
->>>>>>> d676399943e7b0447193b4d60d09a1bb59c00107
       })
     );
     setMessage("");
   };
-<<<<<<< HEAD
-
-=======
->>>>>>> d676399943e7b0447193b4d60d09a1bb59c00107
   return (
     <Grid
       container
