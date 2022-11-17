@@ -14,10 +14,17 @@ export const UrlInput = ({ url, handleUrl, handleDelete }: IUrlInputProps) => {
     <>
       <Paper
         component="form"
-        sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: 400 }}
+        sx={{
+          p: "2px 4px",
+          display: "flex",
+          alignItems: "center",
+          width: "70%",
+          height: "40%",
+          borderRadius: "50px",
+        }}
       >
         <InputBase
-          sx={{ ml: 1, flex: 1 }}
+          sx={{ ml: 1, flex: 1, fontFamily: "bitbit", height: "100%" }}
           placeholder={"url"}
           inputProps={{ "aria-label": "search google maps" }}
           value={url}

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { GenericResponse, ResponseEntity } from "../interface/api";
 import {
+  IRefreshResponse,
   IResponseAuth,
   ISignInProps,
   ISignInResponse,
@@ -17,6 +18,13 @@ export const signUp = ({ email, password, name }: ISignUpProps) => {
 export const signIn = ({ email, password }: ISignInProps) => {
   const url = `/member/signIn`;
   return axios.post<ISignInResponse>(url, { email, password }).then((res) => {
+    return res.data;
+  });
+};
+
+export const refresh = () => {
+  const url = "/token/refresh";
+  return axios.post<IRefreshResponse>(url).then((res) => {
     return res.data;
   });
 };

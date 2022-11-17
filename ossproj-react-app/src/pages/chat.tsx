@@ -23,12 +23,16 @@ import axios from "axios";
 import { proxy, useSnapshot } from "valtio";
 import ChatEntity from "../entity/Chat";
 import { CompatClient, Stomp } from "@stomp/stompjs";
+import { useRefresh } from "../hooks/use-refresing";
+import { useNavigate } from "react-router-dom";
+import path from "path";
 
 const ROOM_SEQ = 1;
 const state = proxy<ChatEntity>(new ChatEntity());
 export const Chat = () => {
   const snap = useSnapshot(state);
   const client = useRef<CompatClient>();
+  const navigate = useNavigate();
   const [chatMessages, setChatMessages] = useState<IChatDetail[]>([
     {
       type: "ENTER",
@@ -79,7 +83,7 @@ export const Chat = () => {
   const { createRoomHandler, data, isLoading, isSuccess } = useCreateRoom({
     imgForm: imgForm,
   });
-
+  const { refreshHandler } = useRefresh();
   const onCreate = () => {
     let formData = new FormData();
     formData.append("file", fileImage);
@@ -106,6 +110,9 @@ export const Chat = () => {
     }
   }, [chatMessage]);
 
+  useEffect(() => {
+    refreshHandler();
+  }, []);
   const connect = (id: string) => {
     client.current = Stomp.over(() => {
       let sock = new SockJS("http://localhost:8080/ws-stomp");
@@ -113,6 +120,7 @@ export const Chat = () => {
     });
     client.current!.connect(
       {
+<<<<<<< HEAD
 
         Authorization: axios.defaults.headers.common["Authorization"],
       },
@@ -120,6 +128,18 @@ export const Chat = () => {
         client.current!.subscribe(`/sub/chat/room/1`, (message) => {
           setChatMessage(message.body);
         });
+=======
+        Authorization: axios.defaults.headers.common["Authorization"],
+      },
+      () => {
+        client.current!.subscribe(
+          `/sub/chat/room/1`,
+
+          (message) => {
+            setChatMessage(message.body);
+          }
+        );
+>>>>>>> c0377a0c763054ad6483c5879238ff2564dac869
       }
     );
 
@@ -131,19 +151,26 @@ export const Chat = () => {
     client.current!.send(
       "/pub/chat/message",
       {
+<<<<<<< HEAD
 
         Authorization: axios.defaults.headers.common["Authorization"],
 
+=======
+        Authorization: axios.defaults.headers.common["Authorization"],
+>>>>>>> c0377a0c763054ad6483c5879238ff2564dac869
       },
       JSON.stringify({
         type: "TALK",
         roomId: "1",
         sender: "김재한",
         message: message,
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> c0377a0c763054ad6483c5879238ff2564dac869
       })
     );
     setMessage("");
@@ -172,10 +199,18 @@ export const Chat = () => {
           justifyContent={"flex-end"}
           alignItems={"center"}
         >
-          <MenuButton onClick={() => {}}>
+          <MenuButton
+            onClick={() => {
+              navigate("/");
+            }}
+          >
             <HomeIcon fontSize={"inherit"} />
           </MenuButton>
-          <MenuButton onClick={() => {}}>
+          <MenuButton
+            onClick={() => {
+              navigate("/mypage");
+            }}
+          >
             <AccountCircleIcon fontSize={"inherit"} />
           </MenuButton>
         </Box>
