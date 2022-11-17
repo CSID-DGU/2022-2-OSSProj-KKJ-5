@@ -8,15 +8,15 @@ export const useRefresh = () => {
   const dispatch = useUserDispatch();
   const { mutate: refreshToken, data } = useMutation("refresh", refresh, {
     onSuccess: (res) => {
-      //   if (res) {
-      //     if (res.accessToken) {
-      //       console.log(res);
-      //       axios.defaults.headers.common[
-      //         "Authorization"
-      //       ] = `Bearer ${res.accessToken}`;
-      //     }
-      //     dispatch({ type: "SET_NAME", name: res.name });
-      //   }
+      if (res) {
+        if (res.accessToken) {
+          console.log(res);
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${res.accessToken}`;
+        }
+        dispatch({ type: "SET_NAME", name: res.name });
+      }
     },
     onError: (error) => {
       console.log(`Use Signin Error: `, error);

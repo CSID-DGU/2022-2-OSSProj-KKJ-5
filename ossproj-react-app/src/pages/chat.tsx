@@ -24,6 +24,7 @@ import { useHandleInputMessage } from "../hooks/use-handle-message";
 import { useHandleChat } from "../hooks/use-handle-chat";
 import { connect } from "http2";
 import { useHandleImage } from "../hooks/use-handle-image";
+import axios from "axios";
 
 const ROOM_SEQ = 1;
 export const Chat = () => {
@@ -67,7 +68,7 @@ export const Chat = () => {
   const handleOpen = () => {
     setOpen(true);
   };
-
+  console.log(axios.defaults.headers.common["Authorization"]);
   const { createRoomHandler, data, isLoading, isSuccess } = useCreateRoom({
     imgForm: imgForm,
   });
