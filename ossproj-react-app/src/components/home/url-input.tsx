@@ -1,4 +1,4 @@
-import { IconButton, InputBase, Paper } from "@mui/material";
+import { Button, IconButton, InputBase, Paper } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { ChangeEvent } from "react";
@@ -24,7 +24,13 @@ export const UrlInput = ({ url, handleUrl, handleDelete }: IUrlInputProps) => {
         }}
       >
         <InputBase
-          sx={{ ml: 1, flex: 1, fontFamily: "bitbit", height: "100%" }}
+          sx={{
+            ml: 1,
+            flex: 1,
+            fontFamily: "bitbit",
+            height: "100%",
+            fontSize: "30px",
+          }}
           placeholder={"url"}
           inputProps={{ "aria-label": "search google maps" }}
           value={url}
@@ -34,9 +40,16 @@ export const UrlInput = ({ url, handleUrl, handleDelete }: IUrlInputProps) => {
           <CloseIcon />
         </IconButton>
       </Paper>
-      <IconButton>
-        <SearchIcon />
-      </IconButton>
+      <Button
+        sx={{
+          fontFamily: "bitbit",
+          width: "200px",
+          fontSize: "30px",
+          color: "black",
+        }}
+      >
+        {"Start!"}
+      </Button>
     </>
   );
 };
