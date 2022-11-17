@@ -13,18 +13,13 @@ import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { IChatDetail, IRoomProps } from "../interface/chat";
 import { MenuButton } from "../components/commons/menu-button";
-import ChatEntity from "../entity/Chat";
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import { useRefresh } from "../hooks/use-refresing";
 import { useNavigate } from "react-router-dom";
-import { useConnectChat } from "../hooks/use-connect-chat";
-import { useSendMessage } from "../hooks/use-send-message";
 import { ChatMessageList } from "../components/chat/chat-message-list";
 import { useHandleInputMessage } from "../hooks/use-handle-message";
 import { useHandleChat } from "../hooks/use-handle-chat";
-import { connect } from "http2";
 import { useHandleImage } from "../hooks/use-handle-image";
-import axios from "axios";
 import { useUserState } from "../context/user-context";
 
 const ROOM_SEQ = 1;
@@ -97,49 +92,6 @@ export const Chat = () => {
   useEffect(() => {
     refreshHandler();
   }, []);
-<<<<<<< HEAD
-  const connect = (id: string) => {
-    client.current = Stomp.over(() => {
-      let sock = new SockJS("http://localhost:8080/ws-stomp");
-      return sock;
-    });
-    client.current!.connect(
-      {
-        Authorization: axios.defaults.headers.common["Authorization"],
-      },
-      () => {
-        client.current!.subscribe(
-          `/sub/chat/room/1`,
-
-          (message) => {
-            setChatMessage(message.body);
-          }
-        );
-      }
-    );
-
-    setChatName(id);
-    setIsChat(true);
-  };
-
-  const sendMessage = () => {
-    client.current!.send(
-      "/pub/chat/message",
-      {
-        Authorization: axios.defaults.headers.common["Authorization"],
-      },
-      JSON.stringify({
-        type: "TALK",
-        roomId: "1",
-        sender: "김재한",
-        message: message,
-      })
-    );
-    setMessage("");
-  };
-=======
-
->>>>>>> ea92582b94876202a0375e61a1a0b78aa7123d97
   return (
     <Grid
       container
