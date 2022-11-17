@@ -1,14 +1,15 @@
 import React, { useReducer, useContext, createContext, Dispatch } from "react";
+import { IRoomProps } from "../interface/chat";
 
 type State = {
   name: string;
-  rooms: number[];
+  rooms: IRoomProps[];
   urls: string[];
 };
 
 type Action =
   | { type: "SET_NAME"; name: string }
-  | { type: "SET_ROOMS"; rooms: number[] }
+  | { type: "SET_ROOMS"; rooms: IRoomProps[] }
   | { type: "SET_URLS"; urls: string[] };
 
 type UserDispatch = Dispatch<Action>;
@@ -40,7 +41,7 @@ function reducer(state: State, action: Action): State {
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(reducer, {
-    name: "kim",
+    name: "",
     rooms: [],
     urls: [],
   });

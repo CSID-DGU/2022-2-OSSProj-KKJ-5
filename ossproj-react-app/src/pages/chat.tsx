@@ -25,12 +25,14 @@ import { useHandleChat } from "../hooks/use-handle-chat";
 import { connect } from "http2";
 import { useHandleImage } from "../hooks/use-handle-image";
 import axios from "axios";
+import { useUserState } from "../context/user-context";
 
 const ROOM_SEQ = 1;
 export const Chat = () => {
   const client = useRef<CompatClient>();
+  const user = useUserState();
   const navigate = useNavigate();
-  const [chatMessages, setChatMessages] = useState<IChatDetail[]>([
+  const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([
     {
       type: "ENTER",
       roomId: "sdf",
@@ -39,26 +41,20 @@ export const Chat = () => {
     },
   ]);
   const [roomName, setRoomName] = useState("");
+  const [roomId, setRoomId] = useState("");
   const [chatName, setChatName] = useState("");
   const [open, setOpen] = useState(false);
   const [chatMessage, setChatMessage] = useState("");
   const [mockRoomList, setMockRoomList] = useState<IRoomProps[]>([
-    { name: "1번방", roomId: 1, image: face },
-    { name: "2번방", roomId: 2, image: zang },
-    { name: "3번방", roomId: 3, image: bobobo },
+    { name: "1번방", roomId: "1", picturePath: face },
+    { name: "2번방", roomId: "2", picturePath: zang },
+    { name: "3번방", roomId: "3", picturePath: bobobo },
   ]);
   const [isChat, setIsChat] = useState(false);
-  const {
-    imgForm,
-    fileImage,
-    saveFileImage,
-    deleteFileImage,
-    createImageForm,
-  } = useHandleImage();
 
-  const { inputMessage, handleInputMessage, handleDeleteInputMessage } =
-    useHandleInputMessage();
-
+  const handleDeleteRoomName = () => {
+    setRoomName("");
+  };
   const handleRoomName = (e: ChangeEvent<HTMLInputElement>) => {
     setRoomName(e.target.value);
   };
@@ -68,29 +64,35 @@ export const Chat = () => {
   const handleOpen = () => {
     setOpen(true);
   };
-  console.log(axios.defaults.headers.common["Authorization"]);
-  const { createRoomHandler, data, isLoading, isSuccess } = useCreateRoom({
-    imgForm: imgForm,
-  });
-  const { refreshHandler } = useRefresh();
 
+  const {
+    imgForm,
+    fileImage,
+    saveFileImage,
+    deleteFileImage,
+    createImageForm,
+  } = useHandleImage();
+  const { inputMessage, handleInputMessage, handleDeleteInputMessage } =
+    useHandleInputMessage();
+  const { createRoomHandler, data, isLoading, isSuccess } = useCreateRoom({
+    name: roomName,
+    image: "test image",
+  });
+
+  const { refreshHandler } = useRefresh();
   const { sendHandler, connectHandler } = useHandleChat({
     client: client.current!,
-    sender: "kim",
+    sender: user.name,
     name: "1번방",
     message: inputMessage,
-    roomId: "1",
-    setChatMessage: setChatMessage,
+    roomId: roomId,
+    chatMessages: chatMessageList,
+    setChatMessageList: setChatMessageList,
+    setRoomId: setRoomId,
     setChatName: setChatName,
     setIsChat: setIsChat,
     deleteMessage: handleDeleteInputMessage,
   });
-
-  useEffect(() => {
-    if (chatMessage) {
-      setChatMessages(chatMessages.concat(JSON.parse(chatMessage)));
-    }
-  }, [chatMessage]);
 
   useEffect(() => {
     refreshHandler();
@@ -156,13 +158,14 @@ export const Chat = () => {
               placeholder="채팅방 찾기"
             />
           </Grid>
-          {mockRoomList.map((room) => {
+          {user.rooms.map((room) => {
             return (
               <Grid item key={room.roomId}>
                 <RoomListBox
                   roomName={room.name}
                   roomId={room.roomId}
-                  img={room.image}
+                  selected={roomId}
+                  img={room.picturePath}
                   user={""}
                   handleIsChat={connectHandler}
                   // todo sub, pub
@@ -184,7 +187,7 @@ export const Chat = () => {
             <Grid item lg={11} md={11} sm={10} xs={10}>
               {chatName}
               <Box border={`1px solid black`} height={`95%`} bgcolor={"white"}>
-                <ChatMessageList chatMessages={chatMessages} />
+                <ChatMessageList chatMessages={chatMessageList} />
               </Box>
             </Grid>
             {/* input grid */}
@@ -207,6 +210,7 @@ export const Chat = () => {
         handleRoomName={handleRoomName}
         handleClose={handleClose}
         createRoomHandler={createRoomHandler}
+        handleDeleteRoomName={handleDeleteRoomName}
         img={fileImage === "" ? defaultImg : fileImage}
         handleImg={saveFileImage}
       />

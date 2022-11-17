@@ -8,6 +8,7 @@ interface ICraeteRoomDialog {
   open: boolean;
   handleRoomName: (e: ChangeEvent<HTMLInputElement>) => void;
   handleImg: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleDeleteRoomName: () => void;
   handleClose: () => void;
   createRoomHandler: () => void;
 }
@@ -17,6 +18,7 @@ export const CreateRoomDialog = ({
   open,
   handleRoomName,
   handleImg,
+  handleDeleteRoomName,
   handleClose,
   createRoomHandler,
 }: ICraeteRoomDialog) => {
@@ -63,7 +65,15 @@ export const CreateRoomDialog = ({
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={createRoomHandler}>{"create"}</Button>
+          <Button
+            onClick={() => {
+              createRoomHandler();
+              handleClose();
+              handleDeleteRoomName();
+            }}
+          >
+            {"create"}
+          </Button>
         </DialogActions>
       </Dialog>
     </>

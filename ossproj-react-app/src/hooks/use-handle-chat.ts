@@ -1,6 +1,9 @@
+import { AirlineSeatLegroomExtraOutlined } from "@mui/icons-material";
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import axios from "axios";
+import { useState } from "react";
 import SockJS from "sockjs-client";
+import { IChatDetail } from "../interface/chat";
 
 interface IHandleChatProps {
   client: CompatClient;
@@ -8,7 +11,9 @@ interface IHandleChatProps {
   name: string;
   message: string;
   roomId: string;
-  setChatMessage: (message: string) => void;
+  chatMessages: IChatDetail[];
+  setChatMessageList: (message: IChatDetail[]) => void;
+  setRoomId: (roomId: string) => void;
   setChatName: (name: string) => void;
   setIsChat: (isChat: boolean) => void;
   deleteMessage: () => void;
@@ -17,9 +22,11 @@ export const useHandleChat = ({
   client,
   sender,
   name,
+  chatMessages,
   message,
   roomId,
-  setChatMessage,
+  setChatMessageList,
+  setRoomId,
   setChatName,
   setIsChat,
   deleteMessage,
@@ -40,7 +47,7 @@ export const useHandleChat = ({
     deleteMessage();
   };
 
-  const connectHandler = () => {
+  const connectHandler = (mockId: string, mockName: string) => {
     client = Stomp.over(() => {
       const sock = new SockJS("http://localhost:8080/ws-stomp");
       return sock;
@@ -51,17 +58,17 @@ export const useHandleChat = ({
       },
       () => {
         client.subscribe(
-          `/sub/chat/room/1`,
-
+          `/sub/chat/room/${roomId}`,
           (message) => {
-            setChatMessage(message.body);
+            setChatMessageList(chatMessages.concat(JSON.parse(message.body)));
           },
           { sender: sender }
         );
       }
     );
 
-    setChatName(name);
+    setChatName(mockName);
+    setRoomId(mockId);
     setIsChat(true);
   };
 

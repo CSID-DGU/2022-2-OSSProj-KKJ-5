@@ -16,16 +16,18 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Typography } from "@material-ui/core";
 import { UrlBox } from "../components/home/url-box";
 import ChatIcon from "@mui/icons-material/Chat";
+import { useUserState } from "../context/user-context";
 
 export const Home = () => {
   const navigate = useNavigate();
   const [url, setUrl] = useState("");
-
+  const user = useUserState();
   const handleUrl = (e: ChangeEvent<HTMLInputElement>) =>
     setUrl(e.target.value);
   const handleDelete = () => {
     setUrl("");
   };
+
   return (
     <Grid
       container
