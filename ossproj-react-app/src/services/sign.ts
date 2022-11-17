@@ -20,3 +20,10 @@ export const signIn = ({ email, password }: ISignInProps) => {
     return res.data;
   });
 };
+
+export const refresh = () => {
+  const url = "token/refresh";
+  return axios.post<ISignInResponse>(url).then((res) => {
+    return res.data;
+  });
+};
