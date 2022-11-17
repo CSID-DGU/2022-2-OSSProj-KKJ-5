@@ -15,7 +15,10 @@ export const RoomListBox = ({
   handleIsChat,
 }: IRoomListBoxProps) => {
   return (
-    <Card sx={{ display: "flex" }} onClick={() => handleIsChat(roomName)}>
+    <Card
+      sx={{ display: "flex", padding: "10px" }}
+      onClick={() => handleIsChat(roomName)}
+    >
       <CardMedia
         component={"img"}
         image={img}

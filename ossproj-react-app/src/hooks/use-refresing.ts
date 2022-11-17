@@ -6,7 +6,7 @@ import { refresh } from "../services/sign";
 
 export const useRefresh = () => {
   const dispatch = useUserDispatch();
-  const { mutate: refreshToken } = useMutation("refresh", refresh, {
+  const { mutate: refreshToken, data } = useMutation("refresh", refresh, {
     onSuccess: (res) => {
       if (res) {
         if (res.accessToken) {
@@ -15,7 +15,6 @@ export const useRefresh = () => {
             "Authorization"
           ] = `Bearer ${res.accessToken}`;
         }
-
         dispatch({ type: "SET_NAME", name: res.name });
       }
     },
@@ -27,5 +26,5 @@ export const useRefresh = () => {
   const refreshHandler = () => {
     refreshToken();
   };
-  return { refreshHandler };
+  return { refreshHandler, data };
 };
