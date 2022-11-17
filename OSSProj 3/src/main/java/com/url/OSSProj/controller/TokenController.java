@@ -10,6 +10,7 @@ import com.url.OSSProj.repository.MemberRepository;
 import com.url.OSSProj.utils.CookieUtils;
 import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+@Log4j2
 
 @RequiredArgsConstructor
 @Controller
@@ -40,8 +43,6 @@ public class TokenController {
         Cookie refreshCookie = cookieUtils.getCookie(request, AuthConstants.REFRESH_HEADER);
         String refreshToken = refreshCookie.getValue();
 
-        System.out.println("/token/refresh : " + refreshToken);
-
         if(refreshToken != null && tokenUtils.isValidToken(refreshToken)) {
             String email = tokenUtils.getUid(refreshToken);
             Token newToken = tokenUtils.generateToken(email, UserRole.USER.getKey());
@@ -52,11 +53,12 @@ public class TokenController {
             response.setCharacterEncoding("UTF-8");
 
             Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("no such data"));
+            SuccessLoginMemberDto successLoginMemberDto = getSuccessLoginMemberDto(newToken, member);
 
-            return getSuccessLoginMemberDto(newToken, member);
+            log.info("Re Generate memberName : " + successLoginMemberDto.getName());
+            log.info("Re Generate accessToken : " + successLoginMemberDto.getAccessToken());
 
-//            String loginMemberJsonResponse = objectMapper.writeValueAsString(successLoginMemberDto);
-//            response.getWriter().write(loginMemberJsonResponse);
+            return successLoginMemberDto;
         }
         throw new RuntimeException();
     }
