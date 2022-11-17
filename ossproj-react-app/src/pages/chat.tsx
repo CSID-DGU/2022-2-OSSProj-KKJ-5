@@ -120,15 +120,6 @@ export const Chat = () => {
     });
     client.current!.connect(
       {
-<<<<<<< HEAD
-
-        Authorization: axios.defaults.headers.common["Authorization"],
-      },
-      () => {
-        client.current!.subscribe(`/sub/chat/room/1`, (message) => {
-          setChatMessage(message.body);
-        });
-=======
         Authorization: axios.defaults.headers.common["Authorization"],
       },
       () => {
@@ -139,7 +130,6 @@ export const Chat = () => {
             setChatMessage(message.body);
           }
         );
->>>>>>> c0377a0c763054ad6483c5879238ff2564dac869
       }
     );
 
@@ -151,26 +141,13 @@ export const Chat = () => {
     client.current!.send(
       "/pub/chat/message",
       {
-<<<<<<< HEAD
-
         Authorization: axios.defaults.headers.common["Authorization"],
-
-=======
-        Authorization: axios.defaults.headers.common["Authorization"],
->>>>>>> c0377a0c763054ad6483c5879238ff2564dac869
       },
       JSON.stringify({
         type: "TALK",
         roomId: "1",
         sender: "김재한",
         message: message,
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> c0377a0c763054ad6483c5879238ff2564dac869
       })
     );
     setMessage("");

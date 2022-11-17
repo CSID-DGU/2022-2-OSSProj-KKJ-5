@@ -12,18 +12,6 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-<<<<<<< HEAD
-    <UserProvider>
-      <QueryClientProvider client={queryClient}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/chat" element={<Chat />} />
-        </Routes>
-      </QueryClientProvider>
-    </UserProvider>
-=======
     <div className={"App"}>
       <StylesProvider injectFirst>
         <UserProvider>
@@ -38,7 +26,6 @@ function App() {
         </UserProvider>
       </StylesProvider>
     </div>
->>>>>>> c0377a0c763054ad6483c5879238ff2564dac869
   );
 }
 
