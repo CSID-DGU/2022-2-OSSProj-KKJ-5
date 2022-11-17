@@ -15,7 +15,7 @@ const CreateButton = styled.div`
   padding: 3px;
   background: #e5e5e5;
   &:hover {
-    background: #63e6be;
+    background: white;
   }
   color: #ffffff;
   box-sizing: border-box;

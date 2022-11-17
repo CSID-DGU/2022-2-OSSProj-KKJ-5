@@ -1,3 +1,5 @@
+import { IRoomProps } from "./chat";
+
 export interface IResponseAuth {
   statusCode: number;
   message: string;
@@ -17,8 +19,8 @@ export interface ISignInProps {
 
 export interface IUser {
   name: string;
-  rooms: [];
-  urls: [];
+  rooms: IRoomProps[];
+  urls: string[];
 }
 
 export interface ISignInResponse {

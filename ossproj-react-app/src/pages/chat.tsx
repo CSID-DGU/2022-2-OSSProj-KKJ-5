@@ -6,7 +6,7 @@ import { CreateRoomDialog } from "../components/chat/create-room-dialog";
 import zang from "../assets/zang.png";
 import bobobo from "../assets/bobobo.png";
 import face from "../assets/face.png";
-import { RoomListBox } from "../components/chat/room-list-box";
+import { RoomBox } from "../components/chat/room-box";
 import { FloatingButton } from "../components/chat/floating-button";
 import defaultImg from "../assets/defaultImg.png";
 import HomeIcon from "@mui/icons-material/Home";
@@ -21,6 +21,10 @@ import { useHandleInputMessage } from "../hooks/use-handle-message";
 import { useHandleChat } from "../hooks/use-handle-chat";
 import { useHandleImage } from "../hooks/use-handle-image";
 import { useUserState } from "../context/user-context";
+import { HomeButton } from "../components/commons/home-button";
+import { MyPageButton } from "../components/commons/mypage-button";
+import { RoomBoxList } from "../components/chat/room-box-list";
+import { connect } from "http2";
 
 const ROOM_SEQ = 1;
 export const Chat = () => {
@@ -39,12 +43,6 @@ export const Chat = () => {
   const [roomId, setRoomId] = useState("");
   const [chatName, setChatName] = useState("");
   const [open, setOpen] = useState(false);
-  const [chatMessage, setChatMessage] = useState("");
-  const [mockRoomList, setMockRoomList] = useState<IRoomProps[]>([
-    { name: "1번방", roomId: "1", picturePath: face },
-    { name: "2번방", roomId: "2", picturePath: zang },
-    { name: "3번방", roomId: "3", picturePath: bobobo },
-  ]);
   const [isChat, setIsChat] = useState(false);
 
   const handleDeleteRoomName = () => {
@@ -100,15 +98,21 @@ export const Chat = () => {
       paddingLeft={`100px`}
       paddingRight={`50px`}
       paddingBottom={`100px`}
-      spacing={2}
-      bgcolor={"#e5e5e5"}
+      bgcolor={"#e8e8e8"}
       direction={{ lg: "row", md: "row", sm: "column", xs: "column" }}
     >
       {/* 메뉴 grid */}
-
-      <Grid item lg={1} md={1} sm={1} xs={1}>
+      <Grid
+        item
+        lg={1}
+        md={1}
+        sm={1}
+        xs={1}
+        border={1}
+        borderRadius={"30px 0 0 30px"}
+        bgcolor={"#d3d3d3"}
+      >
         <Box
-          border={`1px solid black`}
           height={`100%`}
           width={`100%`}
           display={"flex"}
@@ -116,20 +120,8 @@ export const Chat = () => {
           justifyContent={"flex-end"}
           alignItems={"center"}
         >
-          <MenuButton
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            <HomeIcon fontSize={"inherit"} />
-          </MenuButton>
-          <MenuButton
-            onClick={() => {
-              navigate("/mypage");
-            }}
-          >
-            <AccountCircleIcon fontSize={"inherit"} />
-          </MenuButton>
+          <HomeButton />
+          <MyPageButton />
         </Box>
       </Grid>
       {/* room list grid */}
@@ -143,44 +135,55 @@ export const Chat = () => {
         md={3}
         sm={2}
         xs={2}
+        border={1}
       >
-        <Grid item container direction={"column"} lg={10} spacing={2}>
+        <Grid
+          item
+          container
+          direction={"column"}
+          lg={10}
+          spacing={2}
+          padding={"0 30px"}
+        >
           <Grid item>
+            <h1>{"Chat"}</h1>
+          </Grid>
+          <Grid item display={"flex"} justifyContent={"center"}>
             <TextField
               sx={{ bgcolor: "white" }}
               fullWidth
               placeholder="채팅방 찾기"
             />
           </Grid>
-          {user.rooms.map((room) => {
-            return (
-              <Grid item key={room.roomId}>
-                <RoomListBox
-                  roomName={room.name}
-                  roomId={room.roomId}
-                  selected={roomId}
-                  img={room.picturePath}
-                  user={""}
-                  handleIsChat={connectHandler}
-                  // todo sub, pub
-                />
-              </Grid>
-            );
-          })}
+          <RoomBoxList
+            user={user}
+            roomId={roomId}
+            connectHandler={connectHandler}
+          />
         </Grid>
         <Grid item lg={2}>
           <FloatingButton handleOpen={handleOpen} />
         </Grid>
       </Grid>
       {/* chatting room grid */}
-      <Grid item lg={8} md={7} sm={5} xs={5} container>
+      <Grid
+        item
+        lg={8}
+        md={7}
+        sm={5}
+        xs={5}
+        container
+        border={1}
+        borderRadius={"0 30px 30px 0"}
+        bgcolor={"white"}
+      >
         {/* todo sm xs */}
         {isChat ? (
           <Grid item container direction={"column"} spacing={1}>
             {/* message Grid */}
             <Grid item lg={11} md={11} sm={10} xs={10}>
               {chatName}
-              <Box border={`1px solid black`} height={`95%`} bgcolor={"white"}>
+              <Box border={`1px solid black`} height={`95%`}>
                 <ChatMessageList chatMessages={chatMessageList} />
               </Box>
             </Grid>
@@ -195,7 +198,9 @@ export const Chat = () => {
             </Grid>
           </Grid>
         ) : (
-          <></>
+          <Box width={"100%"} height={"100%"}>
+            {"chatting Room"}
+          </Box>
         )}
       </Grid>
       <CreateRoomDialog

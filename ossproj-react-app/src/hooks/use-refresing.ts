@@ -16,6 +16,7 @@ export const useRefresh = () => {
           ] = `Bearer ${res.accessToken}`;
         }
         dispatch({ type: "SET_NAME", name: res.name });
+        dispatch({ type: "SET_ROOMS", rooms: [] });
       }
     },
     onError: (error) => {

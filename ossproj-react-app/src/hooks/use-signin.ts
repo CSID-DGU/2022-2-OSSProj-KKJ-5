@@ -24,8 +24,9 @@ export const useSignIn = (props: ISignInProps) => {
         }
 
         dispatch({ type: "SET_NAME", name: res.name });
-        dispatch({ type: "SET_ROOMS", rooms: res.rooms });
-        dispatch({ type: "SET_URLS", urls: res.urls });
+        dispatch({ type: "SET_ROOMS", rooms: [] });
+        // dispatch({ type: "SET_ROOMS", rooms: res.rooms });
+        // dispatch({ type: "SET_URLS", urls: res.urls });
       }
     },
     onError: (error) => {

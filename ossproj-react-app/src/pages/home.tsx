@@ -17,6 +17,8 @@ import { Typography } from "@material-ui/core";
 import { UrlBox } from "../components/home/url-box";
 import ChatIcon from "@mui/icons-material/Chat";
 import { useUserState } from "../context/user-context";
+import { ChatButton } from "../components/commons/chat-button";
+import { MyPageButton } from "../components/commons/mypage-button";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -36,7 +38,6 @@ export const Home = () => {
       paddingLeft={`100px`}
       paddingRight={`50px`}
       paddingBottom={`100px`}
-      spacing={2}
       bgcolor={"#e5e5e5"}
       direction={{ lg: "row", md: "row", sm: "column", xs: "column" }}
     >
@@ -51,20 +52,9 @@ export const Home = () => {
           justifyContent={"flex-end"}
           alignItems={"center"}
         >
-          <MenuButton
-            onClick={() => {
-              navigate("/chat");
-            }}
-          >
-            <ChatIcon fontSize={"inherit"} />
-          </MenuButton>
-          <MenuButton
-            onClick={() => {
-              navigate("/mypage");
-            }}
-          >
-            <AccountCircleIcon fontSize={"inherit"} />
-          </MenuButton>
+          <ChatButton />
+
+          <MyPageButton />
         </Box>
       </Grid>
       {/* main grid */}

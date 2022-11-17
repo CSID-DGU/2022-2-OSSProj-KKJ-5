@@ -1,22 +1,22 @@
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { sleep } from "react-query/types/core/utils";
 
-interface IRoomListBoxProps {
+interface IRoomBoxProps {
   roomName: string;
   roomId: string;
   img: string;
   user: string;
   selected: string;
-  handleIsChat: (mockName: string, mockRoomId: string) => void;
+  connectHandler: (mockName: string, mockRoomId: string) => void;
 }
-export const RoomListBox = ({
+export const RoomBox = ({
   roomName,
   selected,
   roomId,
   img,
   user,
-  handleIsChat,
-}: IRoomListBoxProps) => {
+  connectHandler,
+}: IRoomBoxProps) => {
   const background = roomId === selected ? "grey" : "";
   return (
     <Card
@@ -25,7 +25,7 @@ export const RoomListBox = ({
         padding: "10px",
         backgroundColor: background,
       }}
-      onClick={() => handleIsChat(roomId, roomName)}
+      onClick={() => connectHandler(roomId, roomName)}
     >
       <CardMedia
         component={"img"}
