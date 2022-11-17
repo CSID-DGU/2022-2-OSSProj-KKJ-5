@@ -31,28 +31,50 @@ public class StompHandler implements ChannelInterceptor {
     @Override // websocket을 통해 들어온 요청이 처리 되기 전 실행된다.
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-
         if(StompCommand.CONNECT == accessor.getCommand()){
             String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
             log.info("StompHandler JWT : " + jwt);
             if(StringUtils.hasText(jwt) && jwt.startsWith(AuthConstants.TOKEN_TYPE)){
                 String accessToken = jwt.substring(7, jwt.length());
                 log.info("StompHandler AccessToken : " + accessToken);
+
                 boolean validToken = tokenUtils.isValidToken(accessToken);
+                log.info("ValidToken : " + validToken);
+
+                String uid = tokenUtils.getUid(accessToken);
                 if(!validToken) {
                     return null;
                 }
             }
-        } else if(StompCommand.SUBSCRIBE == accessor.getCommand()){
+        }
+        if(StompCommand.SUBSCRIBE == accessor.getCommand()){
             String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
             // 채팅방에 들어온 클라이언트 sessionId를 roomId와 맵핑해 놓는다.(나중에 특정 세션이 어떤 채팅방에 들어가 있는지 알기 위함)
             String sessionId = (String) message.getHeaders().get("simpSessionId");
             chatRoomRepository.setUserEnterInfo(sessionId, roomId);
-            // 채팅방의 인원수를 +1한다.
+
+            String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
+            String accessToken = jwt.substring(7, jwt.length());
+
+            log.info("SUBSCRIE : " + accessToken);
+            tokenUtils.getUid(accessToken);
             // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
             String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser")).map(Principal::getName).orElse("UnknownUser");
             chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(name).build());
+
             log.info("SUBSCRIBED {}, {}", name, roomId);
+//            log.error("###");
+//            String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
+//            log.info("RoomId : " + roomId);
+//            // 채팅방에 들어온 클라이언트 sessionId를 roomId와 맵핑해 놓는다.(나중에 특정 세션이 어떤 채팅방에 들어가 있는지 알기 위함)
+//            String sessionId = (String) message.getHeaders().get("simpSessionId");
+//            log.info("SeessionId : " + sessionId);
+//            chatRoomRepository.setUserEnterInfo(sessionId, roomId);
+//            // 채팅방의 인원수를 +1한다.
+//            // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
+//            String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser")).map(Principal::getName).orElse("UnknownUser");
+//            chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(name).build());
+//            log.info("SUBSCRIBED {}, {}", name, roomId);
         }
         return message;
     }
