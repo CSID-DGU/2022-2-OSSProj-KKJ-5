@@ -27,3 +27,8 @@ export interface ISignInResponse {
   rooms: [];
   urls: [];
 }
+
+export interface IRefreshResponse {
+  name: string;
+  accessToken: string;
+}

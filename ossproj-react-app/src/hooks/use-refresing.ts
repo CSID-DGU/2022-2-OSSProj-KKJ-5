@@ -6,7 +6,7 @@ import { refresh } from "../services/sign";
 
 export const useRefresh = () => {
   const dispatch = useUserDispatch();
-  const { mutate: signin } = useMutation("refresh", refresh, {
+  const { mutate: refreshToken } = useMutation("refresh", refresh, {
     onSuccess: (res) => {
       if (res) {
         if (res.accessToken) {
@@ -17,8 +17,6 @@ export const useRefresh = () => {
         }
 
         dispatch({ type: "SET_NAME", name: res.name });
-        dispatch({ type: "SET_ROOMS", rooms: res.rooms });
-        dispatch({ type: "SET_URLS", urls: res.urls });
       }
     },
     onError: (error) => {
@@ -27,7 +25,7 @@ export const useRefresh = () => {
   });
 
   const refreshHandler = () => {
-    refresh();
+    refreshToken();
   };
   return { refreshHandler };
 };

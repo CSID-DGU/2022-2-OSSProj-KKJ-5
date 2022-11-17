@@ -111,9 +111,7 @@ export const Chat = () => {
   }, [chatMessage]);
 
   useEffect(() => {
-    if (!axios.defaults.headers.common["Authorization"]) {
-      refreshHandler();
-    }
+    refreshHandler();
   }, []);
   const connect = (id: string) => {
     client.current = Stomp.over(() => {
