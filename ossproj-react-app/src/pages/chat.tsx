@@ -97,7 +97,49 @@ export const Chat = () => {
   useEffect(() => {
     refreshHandler();
   }, []);
+<<<<<<< HEAD
+  const connect = (id: string) => {
+    client.current = Stomp.over(() => {
+      let sock = new SockJS("http://localhost:8080/ws-stomp");
+      return sock;
+    });
+    client.current!.connect(
+      {
+        Authorization: axios.defaults.headers.common["Authorization"],
+      },
+      () => {
+        client.current!.subscribe(
+          `/sub/chat/room/1`,
 
+          (message) => {
+            setChatMessage(message.body);
+          }
+        );
+      }
+    );
+
+    setChatName(id);
+    setIsChat(true);
+  };
+
+  const sendMessage = () => {
+    client.current!.send(
+      "/pub/chat/message",
+      {
+        Authorization: axios.defaults.headers.common["Authorization"],
+      },
+      JSON.stringify({
+        type: "TALK",
+        roomId: "1",
+        sender: "김재한",
+        message: message,
+      })
+    );
+    setMessage("");
+  };
+=======
+
+>>>>>>> ea92582b94876202a0375e61a1a0b78aa7123d97
   return (
     <Grid
       container
