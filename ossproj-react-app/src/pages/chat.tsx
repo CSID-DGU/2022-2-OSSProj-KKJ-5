@@ -13,7 +13,6 @@ import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { IChatDetail, IRoomProps } from "../interface/chat";
 import { MenuButton } from "../components/commons/menu-button";
-import { proxy, useSnapshot } from "valtio";
 import ChatEntity from "../entity/Chat";
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import { useRefresh } from "../hooks/use-refresing";
@@ -27,9 +26,7 @@ import { connect } from "http2";
 import { useHandleImage } from "../hooks/use-handle-image";
 
 const ROOM_SEQ = 1;
-const state = proxy<ChatEntity>(new ChatEntity());
 export const Chat = () => {
-  const snap = useSnapshot(state);
   const client = useRef<CompatClient>();
   const navigate = useNavigate();
   const [chatMessages, setChatMessages] = useState<IChatDetail[]>([
@@ -97,72 +94,7 @@ export const Chat = () => {
   useEffect(() => {
     refreshHandler();
   }, []);
-<<<<<<< HEAD
 
-=======
-  const connect = (id: string) => {
-    client.current = Stomp.over(() => {
-      let sock = new SockJS("http://localhost:8080/ws-stomp");
-      return sock;
-    });
-    client.current!.connect(
-      {
-<<<<<<< HEAD
-
-        Authorization: axios.defaults.headers.common["Authorization"],
-      },
-      () => {
-        client.current!.subscribe(`/sub/chat/room/1`, (message) => {
-          setChatMessage(message.body);
-        });
-=======
-        Authorization: axios.defaults.headers.common["Authorization"],
-      },
-      () => {
-        client.current!.subscribe(
-          `/sub/chat/room/1`,
-
-          (message) => {
-            setChatMessage(message.body);
-          }
-        );
->>>>>>> c0377a0c763054ad6483c5879238ff2564dac869
-      }
-    );
-
-    setChatName(id);
-    setIsChat(true);
-  };
-
-  const sendMessage = () => {
-    client.current!.send(
-      "/pub/chat/message",
-      {
-<<<<<<< HEAD
-
-        Authorization: axios.defaults.headers.common["Authorization"],
-
-=======
-        Authorization: axios.defaults.headers.common["Authorization"],
->>>>>>> c0377a0c763054ad6483c5879238ff2564dac869
-      },
-      JSON.stringify({
-        type: "TALK",
-        roomId: "1",
-        sender: "김재한",
-        message: message,
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> c0377a0c763054ad6483c5879238ff2564dac869
-      })
-    );
-    setMessage("");
-  };
->>>>>>> 3efe7a88c86403896aad3c6eca74188685cad6cd
   return (
     <Grid
       container
