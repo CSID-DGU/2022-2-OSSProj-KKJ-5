@@ -18,27 +18,31 @@ public class ChatRoomRepository {
     public static final String ENTER_INFO = "ENTER_INFO"; // 채팅룸에 입장한 클라이언트의 sessionId와 채팅룸 id를 맵핑한 정보 저장
 
     @Resource(name = "redisTemplate")
-    private HashOperations<String, String, ChatRoomDto> hashOpsChatRoom;
+    private HashOperations<String, String, ChatRoom> hashOpsChatRoom;
     @Resource(name = "redisTemplate")
     private HashOperations<String, String, String> hashOpsEnterInfo;
     @Resource(name = "redisTemplate")
     private ValueOperations<String, String> valueOps;
 
     // 모든 채팅방 조회
-    public List<ChatRoomDto> findAllRoom() {
+    public List<ChatRoom> findAllRoom() {
         return hashOpsChatRoom.values(CHAT_ROOMS);
     }
 
     // 특정 채팅방 조회
-    public ChatRoomDto findRoomById(String id) {
+    public ChatRoom findRoomById(String id) {
         return hashOpsChatRoom.get(CHAT_ROOMS, id);
     }
 
     // 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
     public ChatRoomDto createChatRoom(String name, String picturePath) {
-        ChatRoomDto chatRoom = ChatRoom.create(name, picturePath);
+        ChatRoom chatRoom = ChatRoom.create(name, picturePath);
         hashOpsChatRoom.put(CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
-        return chatRoom;
+        return ChatRoomDto.builder()
+                .name(chatRoom.getName())
+                .roomId(chatRoom.getRoomId())
+                .picturePath(chatRoom.getPicturePath())
+                .build();
     }
 
     // 유저가 입장한 채팅방ID와 유저 세션ID 맵핑 정보 저장

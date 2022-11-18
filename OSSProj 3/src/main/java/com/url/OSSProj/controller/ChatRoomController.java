@@ -2,6 +2,7 @@ package com.url.OSSProj.controller;
 
 import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.dto.NewChatRoomDto;
+import com.url.OSSProj.domain.entity.ChatRoom;
 import com.url.OSSProj.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -25,7 +27,19 @@ public class ChatRoomController {
     @GetMapping("/rooms")
     @ResponseBody
     public List<ChatRoomDto> room(){
-        return chatRoomRepository.findAllRoom();
+        List<ChatRoom> allRoom = chatRoomRepository.findAllRoom();
+        List<ChatRoomDto> all = new ArrayList<>();
+        for (ChatRoom chatRoom : allRoom) {
+            ChatRoomDto chatRoomDto = ChatRoomDto.builder()
+                    .name(chatRoom.getName())
+                    .roomId(chatRoom.getRoomId())
+                    .picturePath(chatRoom.getPicturePath())
+                    .build();
+
+            all.add(chatRoomDto);
+        }
+
+        return all;
     }
 
     @PostMapping("/room")
@@ -47,6 +61,12 @@ public class ChatRoomController {
     @GetMapping("/room/{roomId}")
     @ResponseBody
     public ChatRoomDto roomInfo(@PathVariable String roomId){
-        return chatRoomRepository.findRoomById(roomId);
+        ChatRoom chatRoom = chatRoomRepository.findRoomById(roomId);
+
+        return ChatRoomDto.builder()
+                .name(chatRoom.getName())
+                .roomId(chatRoom.getRoomId())
+                .picturePath(chatRoom.getPicturePath())
+                .build();
     }
 }

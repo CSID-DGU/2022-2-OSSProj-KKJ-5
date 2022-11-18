@@ -34,14 +34,8 @@ public class ChatRoom implements Serializable {
     private List<ChatRoomInfo> chatRooms = new ArrayList<ChatRoomInfo>();
 
 
-    public static ChatRoomDto create(String name, String picturePath){
-        ChatRoom chatRoom = getChatRoom(name, picturePath);
-
-        return ChatRoomDto.builder()
-                .name(chatRoom.getName())
-                .roomId(chatRoom.getRoomId())
-                .picturePath(picturePath)
-                .build();
+    public static ChatRoom create(String name, String picturePath){
+       return getChatRoom(name, picturePath);
     }
 
     private static ChatRoom getChatRoom(String name, String picturePath) {
