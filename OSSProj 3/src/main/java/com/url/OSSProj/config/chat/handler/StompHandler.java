@@ -2,7 +2,12 @@ package com.url.OSSProj.config.chat.handler;
 
 import com.url.OSSProj.domain.constants.AuthConstants;
 import com.url.OSSProj.domain.dto.ChatMessage;
+import com.url.OSSProj.domain.dto.ChatRoomDto;
+import com.url.OSSProj.domain.entity.ChatRoom;
+import com.url.OSSProj.domain.entity.ChatRoomInfo;
+import com.url.OSSProj.domain.entity.Member;
 import com.url.OSSProj.repository.ChatRoomRepository;
+import com.url.OSSProj.repository.MemberRepository;
 import com.url.OSSProj.service.ChatService;
 import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +20,7 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
 import java.security.Principal;
 import java.util.Optional;
 
@@ -24,8 +30,10 @@ import java.util.Optional;
 @Component
 public class StompHandler implements ChannelInterceptor {
 
+    private final EntityManager em;
     private final TokenUtils tokenUtils;
     private final ChatRoomRepository chatRoomRepository;
+    private final MemberRepository memberRepository;
     private final ChatService chatService;
 
     @Override // websocket을 통해 들어온 요청이 처리 되기 전 실행된다.
@@ -48,21 +56,20 @@ public class StompHandler implements ChannelInterceptor {
             }
         }
         if(StompCommand.SUBSCRIBE == accessor.getCommand()){
-            String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
+            // 기존 아재 코드
             // 채팅방에 들어온 클라이언트 sessionId를 roomId와 맵핑해 놓는다.(나중에 특정 세션이 어떤 채팅방에 들어가 있는지 알기 위함)
-            String sessionId = (String) message.getHeaders().get("simpSessionId");
-            chatRoomRepository.setUserEnterInfo(sessionId, roomId);
-
+            String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
             String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
             String accessToken = jwt.substring(7, jwt.length());
+            String userEmail = tokenUtils.getUid(accessToken);
 
-            log.info("SUBSCRIE : " + accessToken);
-            tokenUtils.getUid(accessToken);
+            chatRoomRepository.setUserEnterInfo(userEmail, roomId);
+
+            Member member = connectMemberAndChatRoom(roomId, userEmail);
+
             // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
-            String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser")).map(Principal::getName).orElse("UnknownUser");
-            chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(name).build());
+            chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(member.getName()).build());
 
-            log.info("SUBSCRIBED {}, {}", name, roomId);
 //            log.error("###");
 //            String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
 //            log.info("RoomId : " + roomId);
@@ -75,7 +82,33 @@ public class StompHandler implements ChannelInterceptor {
 //            String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser")).map(Principal::getName).orElse("UnknownUser");
 //            chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(name).build());
 //            log.info("SUBSCRIBED {}, {}", name, roomId);
+        } else if (StompCommand.DISCONNECT == accessor.getCommand()) { // Websocket 연결 종료
+            // 연결이 종료된 클라이언트 sesssionId로 채팅방 id를 얻는다.
+            String sessionId = (String) message.getHeaders().get("simpSessionId");
+            String roomId = chatRoomRepository.getUserEnterRoomId(sessionId);
+            // 클라이언트 퇴장 메시지를 채팅방에 발송한다.(redis publish)
+            String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser")).map(Principal::getName).orElse("UnknownUser");
+            chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.QUIT).roomId(roomId).sender(name).build());
+            // 퇴장한 클라이언트의 roomId 맵핑 정보를 삭제한다.
+            chatRoomRepository.removeUserEnterInfo(sessionId);
+            log.info("DISCONNECTED {}, {}", sessionId, roomId);
         }
         return message;
+    }
+
+    private Member connectMemberAndChatRoom(String roomId, String userEmail) {
+        Member member = memberRepository.findByEmail(userEmail)
+                                .orElseThrow(() -> new IllegalArgumentException("No such User"));
+        ChatRoom chatRoom = chatRoomRepository.findRoomById(roomId);
+
+        ChatRoomInfo chatRoomInfo = new ChatRoomInfo();
+        chatRoomInfo.setMember(member);
+        chatRoomInfo.setChatRoom(chatRoom);
+        em.persist(chatRoomInfo);
+
+        member.getMemberChatRooms().add(chatRoomInfo);
+        chatRoom.getChatRooms().add(chatRoomInfo);
+
+        return member;
     }
 }

@@ -2,8 +2,12 @@ package com.url.OSSProj.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.url.OSSProj.domain.constants.AuthConstants;
+import com.url.OSSProj.domain.dto.ChatRoomDto;
+import com.url.OSSProj.domain.dto.ReissueInformationDto;
 import com.url.OSSProj.domain.dto.SuccessLoginMemberDto;
 import com.url.OSSProj.domain.dto.Token;
+import com.url.OSSProj.domain.entity.ChatRoom;
+import com.url.OSSProj.domain.entity.ChatRoomInfo;
 import com.url.OSSProj.domain.entity.Member;
 import com.url.OSSProj.domain.enums.UserRole;
 import com.url.OSSProj.repository.MemberRepository;
@@ -20,6 +24,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Log4j2
 
@@ -39,7 +45,7 @@ public class TokenController {
 
     @ResponseBody
     @PostMapping("/token/refresh")
-    public SuccessLoginMemberDto refreshAuth(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ReissueInformationDto refreshAuth(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Cookie refreshCookie = cookieUtils.getCookie(request, AuthConstants.REFRESH_HEADER);
         String refreshToken = refreshCookie.getValue();
 
@@ -52,22 +58,33 @@ public class TokenController {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
 
-            Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("no such data"));
-            SuccessLoginMemberDto successLoginMemberDto = getSuccessLoginMemberDto(newToken, member);
-
-            log.info("Re Generate memberName : " + successLoginMemberDto.getName());
-            log.info("Re Generate accessToken : " + successLoginMemberDto.getAccessToken());
-
-            return successLoginMemberDto;
+            return getReissueInformationDto(email, newToken);
         }
         throw new RuntimeException();
     }
 
-    private SuccessLoginMemberDto getSuccessLoginMemberDto(Token newToken, Member member) {
-        final SuccessLoginMemberDto successLoginMemberDto = new SuccessLoginMemberDto();
-        successLoginMemberDto.setName(member.getName());
-        successLoginMemberDto.setAccessToken(newToken.getAccessToken());
+    private ReissueInformationDto getReissueInformationDto(String email, Token newToken) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("no such data"));
+        ArrayList<ChatRoomDto> chatRoomDtos = getChatRoomDtos(member);
+        return ReissueInformationDto.builder()
+                .name(member.getName())
+                .accessToken(newToken.getAccessToken())
+                .rooms(chatRoomDtos)
+                .urls(new ArrayList<>())
+                .build();
+    }
 
-        return successLoginMemberDto;
+    private ArrayList<ChatRoomDto> getChatRoomDtos(Member member) {
+        List<ChatRoomInfo> memberChatRooms = member.getMemberChatRooms();
+        ArrayList<ChatRoomDto> chatRoomDtos = new ArrayList<>();
+        for (ChatRoomInfo memberChatRoom : memberChatRooms) {
+            ChatRoom chatRoom = memberChatRoom.getChatRoom();
+            chatRoomDtos.add(ChatRoomDto.builder()
+                    .name(chatRoom.getName())
+                    .roomId(chatRoom.getRoomId())
+                    .picturePath(chatRoom.getPicturePath())
+                    .build());
+        }
+        return chatRoomDtos;
     }
 }

@@ -22,4 +22,12 @@ public class ChatRoomInfo implements Serializable {
     @ManyToOne
     @JoinColumn(name = "CHATROOM_ID")
     private ChatRoom chatRoom;
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public void setChatRoom(ChatRoom chatRoom) {
+        this.chatRoom = chatRoom;
+    }
 }

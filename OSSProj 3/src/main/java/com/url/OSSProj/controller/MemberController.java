@@ -2,12 +2,10 @@ package com.url.OSSProj.controller;
 
 import com.url.OSSProj.domain.dto.MemberDto;
 import com.url.OSSProj.domain.dto.SignUpDto;
-import com.url.OSSProj.repository.MemberRepository;
 import com.url.OSSProj.service.MemberService;
+import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +20,7 @@ import java.io.IOException;
 public class MemberController {
 
     private final MemberService memberService;
+    private final TokenUtils tokenUtils;
 
     @PostMapping("/signUp")
     public ResponseEntity<MemberDto> signUp(@RequestBody SignUpDto signUpDto, HttpServletRequest request, HttpServletResponse response) throws IOException{
@@ -38,10 +37,5 @@ public class MemberController {
             ResponseEntity.status(200);
             return ResponseEntity.ok(memberDto);
         }
-    }
-
-    @GetMapping("/chat/test")
-    public String hello(){
-        return "Hello !";
     }
 }
