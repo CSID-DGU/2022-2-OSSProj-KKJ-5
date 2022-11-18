@@ -31,11 +31,13 @@ export const useHandleChat = ({
   setIsChat,
   deleteMessage,
 }: IHandleChatProps) => {
+  console.log(roomId);
+  const token = axios.defaults.headers.common["Authorization"]?.toString();
   const sendHandler = () => {
     client.send(
       "/pub/chat/message",
       {
-        Authorization: axios.defaults.headers.common["Authorization"],
+        Authorization: token,
       },
       JSON.stringify({
         type: "TALK",
@@ -54,7 +56,7 @@ export const useHandleChat = ({
     });
     client.connect(
       {
-        Authorization: axios.defaults.headers.common["Authorization"],
+        Authorization: token,
       },
       () => {
         client.subscribe(
@@ -62,7 +64,7 @@ export const useHandleChat = ({
           (message) => {
             setChatMessageList(chatMessages.concat(JSON.parse(message.body)));
           },
-          { sender: sender }
+          { Authorization: token ? token : "", simpDestination: roomId }
         );
       }
     );

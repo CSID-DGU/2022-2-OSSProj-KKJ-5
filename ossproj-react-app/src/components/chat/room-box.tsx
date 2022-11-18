@@ -23,6 +23,7 @@ export const RoomBox = ({
       sx={{
         display: "flex",
         padding: "10px",
+        margin: "10px",
         backgroundColor: background,
       }}
       onClick={() => connectHandler(roomId, roomName)}
