@@ -18,13 +18,14 @@ export const useConnectChat = ({
   setChatName,
   setIsChat,
 }: IConncetChat) => {
+  const token = axios.defaults.headers.common["Authorization"]?.toString();
   client = Stomp.over(() => {
     const sock = new SockJS("http://localhost:8080/ws-stomp");
     return sock;
   });
   client.connect(
     {
-      Authorization: axios.defaults.headers.common["Authorization"],
+      Authorization: token,
     },
     () => {
       client.subscribe(
@@ -33,7 +34,7 @@ export const useConnectChat = ({
         (message) => {
           setMessage(message.body);
         },
-        { sender: sender }
+        { Authorization: token ? token : "" }
       );
     }
   );

@@ -12,7 +12,6 @@ export const RoomBoxList = ({
   roomId,
   connectHandler,
 }: IRoomBoxListProps) => {
-  console.log(user);
   return (
     <div>
       {user &&

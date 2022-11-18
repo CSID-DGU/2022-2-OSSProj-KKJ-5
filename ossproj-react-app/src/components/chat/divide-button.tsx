@@ -1,13 +1,9 @@
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import styled from "styled-components";
-import AddIcon from "@mui/icons-material/Add";
-
-interface IFloatingButtonProps {
-  handleOpen: () => void;
-}
-export const FloatingButton = ({ handleOpen }: IFloatingButtonProps) => {
+export const DevideButton = () => {
   return (
-    <CreateButton onClick={handleOpen}>
-      <AddIcon fontSize={"inherit"} />
+    <CreateButton>
+      <MoreVertIcon fontSize={"inherit"} />
     </CreateButton>
   );
 };

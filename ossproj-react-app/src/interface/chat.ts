@@ -1,7 +1,6 @@
 export interface ICreateRoomProps {
   name: string;
-  image: string;
-  // imgForm: FormData;
+  imgForm: FormData;
 }
 export interface IFormProps {
   name: string;

@@ -25,6 +25,8 @@ import { HomeButton } from "../components/commons/home-button";
 import { MyPageButton } from "../components/commons/mypage-button";
 import { RoomBoxList } from "../components/chat/room-box-list";
 import { connect } from "http2";
+import { DevideButton } from "../components/chat/divide-button";
+import { SearchButton } from "../components/chat/search-button";
 
 const ROOM_SEQ = 1;
 export const Chat = () => {
@@ -69,7 +71,7 @@ export const Chat = () => {
     useHandleInputMessage();
   const { createRoomHandler, data, isLoading, isSuccess } = useCreateRoom({
     name: roomName,
-    image: "test image",
+    imgForm: imgForm,
   });
 
   const { refreshHandler } = useRefresh();
@@ -90,6 +92,11 @@ export const Chat = () => {
   useEffect(() => {
     refreshHandler();
   }, []);
+
+  useEffect(() => {
+    createImageForm();
+    console.log(imgForm);
+  }, [fileImage]);
   return (
     <Grid
       container
@@ -163,6 +170,8 @@ export const Chat = () => {
         </Grid>
         <Grid item lg={2}>
           <FloatingButton handleOpen={handleOpen} />
+          {/* <DevideButton /> */}
+          <SearchButton />
         </Grid>
       </Grid>
       {/* chatting room grid */}

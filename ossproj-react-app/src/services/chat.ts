@@ -2,9 +2,9 @@ import axios from "axios";
 import { ResponseEntity } from "../interface/api";
 import { ICreateRoomProps, IRoomProps } from "../interface/chat";
 
-export const createRoom = ({ name, image }: ICreateRoomProps) => {
+export const createRoom = ({ name, imgForm }: ICreateRoomProps) => {
   const url = `/chat/room`;
-  return axios.post<IRoomProps>(url, { name, image }).then((res) => {
+  return axios.post<IRoomProps>(url, { name, imgForm }).then((res) => {
     return res.data;
   });
 };
