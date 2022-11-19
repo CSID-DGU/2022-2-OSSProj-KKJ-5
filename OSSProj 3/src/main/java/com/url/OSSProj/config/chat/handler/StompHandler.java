@@ -62,7 +62,6 @@ public class StompHandler implements ChannelInterceptor {
             String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
             String accessToken = jwt.substring(7, jwt.length());
             String userEmail = tokenUtils.getUid(accessToken);
-
             chatRoomRepository.setUserEnterInfo(userEmail, roomId);
 
             Member member = connectMemberAndChatRoom(roomId, userEmail);
