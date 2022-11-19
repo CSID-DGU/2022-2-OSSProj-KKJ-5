@@ -9,6 +9,7 @@ import com.url.OSSProj.domain.entity.Member;
 import com.url.OSSProj.repository.ChatRoomRepository;
 import com.url.OSSProj.repository.MemberRepository;
 import com.url.OSSProj.service.ChatService;
+import com.url.OSSProj.service.MemberService;
 import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,6 +19,7 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
@@ -30,11 +32,11 @@ import java.util.Optional;
 @Component
 public class StompHandler implements ChannelInterceptor {
 
-    private final EntityManager em;
     private final TokenUtils tokenUtils;
     private final ChatRoomRepository chatRoomRepository;
     private final MemberRepository memberRepository;
     private final ChatService chatService;
+    private final MemberService memberService;
 
     @Override // websocket을 통해 들어온 요청이 처리 되기 전 실행된다.
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
@@ -59,16 +61,20 @@ public class StompHandler implements ChannelInterceptor {
             // 기존 아재 코드
             // 채팅방에 들어온 클라이언트 sessionId를 roomId와 맵핑해 놓는다.(나중에 특정 세션이 어떤 채팅방에 들어가 있는지 알기 위함)
             String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
+            log.info("roomId : " + roomId);
+
             String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
             String accessToken = jwt.substring(7, jwt.length());
             String userEmail = tokenUtils.getUid(accessToken);
 
+            log.info("userEmail : " + userEmail);
+
             chatRoomRepository.setUserEnterInfo(userEmail, roomId);
 
-            Member member = connectMemberAndChatRoom(roomId, userEmail);
+            // Member member = memberService.connectMemberAndChatRoom(roomId, userEmail);
 
             // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
-            chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(member.getName()).build());
+            chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(userEmail).build());
 
 //            log.error("###");
 //            String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
@@ -96,19 +102,4 @@ public class StompHandler implements ChannelInterceptor {
         return message;
     }
 
-    private Member connectMemberAndChatRoom(String roomId, String userEmail) {
-        Member member = memberRepository.findByEmail(userEmail)
-                                .orElseThrow(() -> new IllegalArgumentException("No such User"));
-        ChatRoom chatRoom = chatRoomRepository.findRoomById(roomId);
-
-        ChatRoomInfo chatRoomInfo = new ChatRoomInfo();
-        chatRoomInfo.setMember(member);
-        chatRoomInfo.setChatRoom(chatRoom);
-        em.persist(chatRoomInfo);
-
-        member.getMemberChatRooms().add(chatRoomInfo);
-        chatRoom.getChatRooms().add(chatRoomInfo);
-
-        return member;
-    }
 }
