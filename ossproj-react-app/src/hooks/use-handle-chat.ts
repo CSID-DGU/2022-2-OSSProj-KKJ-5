@@ -31,7 +31,6 @@ export const useHandleChat = ({
   setIsChat,
   deleteMessage,
 }: IHandleChatProps) => {
-  console.log(roomId);
   const token = axios.defaults.headers.common["Authorization"]?.toString();
   const sendHandler = () => {
     client.send(
@@ -50,6 +49,7 @@ export const useHandleChat = ({
   };
 
   const connectHandler = (mockId: string, mockName: string) => {
+    console.log(mockId);
     client = Stomp.over(() => {
       const sock = new SockJS("http://localhost:8080/ws-stomp");
       return sock;
@@ -60,11 +60,11 @@ export const useHandleChat = ({
       },
       () => {
         client.subscribe(
-          `/sub/chat/room/${roomId}`,
+          `/sub/chat/room/${mockId}`,
           (message) => {
             setChatMessageList(chatMessages.concat(JSON.parse(message.body)));
           },
-          { Authorization: token ? token : "", simpDestination: roomId }
+          { Authorization: token ? token : "", simpDestination: mockId }
         );
       }
     );
