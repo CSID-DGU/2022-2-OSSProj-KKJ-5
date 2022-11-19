@@ -2,9 +2,6 @@ package com.url.OSSProj.config.chat.handler;
 
 import com.url.OSSProj.domain.constants.AuthConstants;
 import com.url.OSSProj.domain.dto.ChatMessage;
-import com.url.OSSProj.domain.dto.ChatRoomDto;
-import com.url.OSSProj.domain.entity.ChatRoom;
-import com.url.OSSProj.domain.entity.ChatRoomInfo;
 import com.url.OSSProj.domain.entity.Member;
 import com.url.OSSProj.repository.ChatRoomRepository;
 import com.url.OSSProj.repository.MemberRepository;
@@ -19,10 +16,8 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.EntityManager;
 import java.security.Principal;
 import java.util.Optional;
 
@@ -71,23 +66,11 @@ public class StompHandler implements ChannelInterceptor {
 
             chatRoomRepository.setUserEnterInfo(userEmail, roomId);
 
-            // Member member = memberService.connectMemberAndChatRoom(roomId, userEmail);
+            Member member = memberService.connectMemberAndChatRoom(roomId, userEmail);
 
             // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
-            chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(userEmail).build());
+            chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(member.getName()).build());
 
-//            log.error("###");
-//            String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
-//            log.info("RoomId : " + roomId);
-//            // 채팅방에 들어온 클라이언트 sessionId를 roomId와 맵핑해 놓는다.(나중에 특정 세션이 어떤 채팅방에 들어가 있는지 알기 위함)
-//            String sessionId = (String) message.getHeaders().get("simpSessionId");
-//            log.info("SeessionId : " + sessionId);
-//            chatRoomRepository.setUserEnterInfo(sessionId, roomId);
-//            // 채팅방의 인원수를 +1한다.
-//            // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
-//            String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser")).map(Principal::getName).orElse("UnknownUser");
-//            chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.ENTER).roomId(roomId).sender(name).build());
-//            log.info("SUBSCRIBED {}, {}", name, roomId);
         } else if (StompCommand.DISCONNECT == accessor.getCommand()) { // Websocket 연결 종료
             // 연결이 종료된 클라이언트 sesssionId로 채팅방 id를 얻는다.
             String sessionId = (String) message.getHeaders().get("simpSessionId");

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.url.OSSProj.domain.dto.ChatMessage;
 import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.entity.ChatRoom;
+import com.url.OSSProj.repository.ChatRepository;
 import com.url.OSSProj.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,7 +25,7 @@ public class ChatService {
 
     private final ChannelTopic channelTopic;
     private final RedisTemplate redisTemplate;
-    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRepository chatRepository;
 
     /**
      * destination정보에서 roomId 추출
@@ -56,5 +57,9 @@ public class ChatService {
         }
         redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
         log.info("Service :  " + chatMessage.getType());
+    }
+
+    public void saveChatRoom(ChatRoom chatRoom) {
+        chatRepository.save(chatRoom);
     }
 }

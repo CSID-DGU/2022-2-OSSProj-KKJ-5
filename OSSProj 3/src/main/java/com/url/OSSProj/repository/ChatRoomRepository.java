@@ -2,6 +2,7 @@ package com.url.OSSProj.repository;
 
 import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.entity.ChatRoom;
+import com.url.OSSProj.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ValueOperations;
@@ -13,9 +14,11 @@ import java.util.*;
 @RequiredArgsConstructor
 @Repository
 public class ChatRoomRepository {
+
     private static final String CHAT_ROOMS = "CHAT_ROOM"; // 채팅룸 저장
     public static final String USER_COUNT = "USER_COUNT"; // 채팅룸에 입장한 클라이언트수 저장
     public static final String ENTER_INFO = "ENTER_INFO"; // 채팅룸에 입장한 클라이언트의 sessionId와 채팅룸 id를 맵핑한 정보 저장
+    private final ChatService chatService;
 
     @Resource(name = "redisTemplate")
     private HashOperations<String, String, ChatRoom> hashOpsChatRoom;
@@ -37,6 +40,7 @@ public class ChatRoomRepository {
     // 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
     public ChatRoomDto createChatRoom(String name, String picturePath) {
         ChatRoom chatRoom = ChatRoom.create(name, picturePath);
+        chatService.saveChatRoom(chatRoom);
         hashOpsChatRoom.put(CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
         return ChatRoomDto.builder()
                 .name(chatRoom.getName())
