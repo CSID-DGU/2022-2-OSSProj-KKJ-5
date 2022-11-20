@@ -15,11 +15,11 @@ public class ChatRoomInfo implements Serializable {
     @Column(name = "CHATROOMS_ID")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CHATROOM_ID")
     private ChatRoom chatRoom;
 
