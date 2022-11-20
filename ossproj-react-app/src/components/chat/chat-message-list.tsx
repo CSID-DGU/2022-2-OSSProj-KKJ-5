@@ -1,4 +1,7 @@
 import { Grid } from "@mui/material";
+import { useRef } from "react";
+import { Fade } from "react-awesome-reveal";
+import { useUserState } from "../../context/user-context";
 import { IChatDetail } from "../../interface/chat";
 import { MessageBox } from "./message-box";
 
@@ -6,32 +9,40 @@ interface IChatMessageListProps {
   chatMessages: IChatDetail[];
 }
 export const ChatMessageList = ({ chatMessages }: IChatMessageListProps) => {
+  const user = useUserState();
+
   return (
     <>
       {chatMessages.map((props) => {
         return props.type === "ENTER" ? (
-          <Grid
-            key={props.sender}
-            item
-            display={"flex"}
-            justifyContent={"center"}
-            margin={"20px"}
-          >
-            {props.message}
-          </Grid>
+          <Fade>
+            <Grid
+              key={props.roomId}
+              item
+              display={"flex"}
+              justifyContent={"center"}
+              margin={"20px"}
+            >
+              {props.message}
+            </Grid>
+          </Fade>
         ) : (
-          <Grid
-            key={props.sender}
-            item
-            display={"flex"}
-            justifyContent={"flex-start"}
-          >
-            <MessageBox
-              message={props.message}
-              user={"김재한"}
-              isUser={false}
-            />
-          </Grid>
+          <Fade>
+            <Grid
+              key={props.sender}
+              item
+              display={"flex"}
+              justifyContent={
+                props.sender === user.name ? "flex-end" : "flex-start"
+              }
+            >
+              <MessageBox
+                message={props.message}
+                user={props.sender}
+                isUser={false}
+              />
+            </Grid>
+          </Fade>
         );
       })}
     </>
