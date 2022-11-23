@@ -1,4 +1,4 @@
-import { Box, Grid, TextField } from "@mui/material";
+import { Box, Grid, TextField, Typography } from "@mui/material";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { MessageInput } from "../components/chat/message-input";
 import { useCreateRoom } from "../hooks/use-create-room";
@@ -83,16 +83,27 @@ export const Chat = () => {
   const { refreshHandler } = useRefresh();
 
   const messageEndRef = useRef<HTMLDivElement>(null);
-
   const scrollTomBottom = () => {
     if (window.innerWidth <= 375) {
       return;
     }
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+  const roomListEndRef = useRef<HTMLDivElement>(null);
+  const scrollToListmBottom = () => {
+    if (window.innerWidth <= 375) {
+      return;
+    }
+    roomListEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
     scrollTomBottom();
   }, [chatMessageList]);
+  useEffect(() => {
+    scrollToListmBottom();
+  }, [user]);
+
   const sendHandler = () => {
     console.log("room Id:" + roomId);
     client.current!.send(
@@ -184,21 +195,17 @@ export const Chat = () => {
           spacing={2}
           padding={"0 30px"}
         >
-          <Grid item>
-            <h1>{"Chat"}</h1>
-          </Grid>
-          <Grid item display={"flex"} justifyContent={"center"}>
-            <TextField
-              sx={{ bgcolor: "white" }}
-              fullWidth
-              placeholder="채팅방 찾기"
+          <Box height={"100%"}>
+            <Typography variant={"h3"} fontFamily={"bitbit"}>
+              {"Chat"}
+            </Typography>
+            <RoomBoxList
+              user={user}
+              roomId={roomId}
+              connectHandler={connectHandler}
+              ref={roomListEndRef}
             />
-          </Grid>
-          <RoomBoxList
-            user={user}
-            roomId={roomId}
-            connectHandler={connectHandler}
-          />
+          </Box>
         </Grid>
         <Grid item lg={2}>
           <FloatingButton handleOpen={handleOpen} />
@@ -215,7 +222,12 @@ export const Chat = () => {
         xs={5}
         container
         border={1}
-        borderRadius={"0 30px 30px 0"}
+        borderRadius={{
+          lg: "0 30px 30px 0",
+          md: "0 30px 30px 0",
+          sm: "0 0 30px 30px",
+          xs: "0 0 30px 30px",
+        }}
         bgcolor={"white"}
       >
         {/* todo sm xs */}

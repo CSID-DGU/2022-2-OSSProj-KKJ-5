@@ -1,4 +1,5 @@
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
+import { useRef } from "react";
 import { Fade } from "react-awesome-reveal";
 import { IUser } from "../../interface/user";
 import { RoomBox } from "./room-box";
@@ -7,31 +8,32 @@ interface IRoomBoxListProps {
   user: IUser | undefined;
   roomId: string;
   connectHandler: (mockName: string, mockRoomId: string) => void;
+  ref: React.RefObject<HTMLDivElement>;
 }
 export const RoomBoxList = ({
   user,
   roomId,
   connectHandler,
+  ref,
 }: IRoomBoxListProps) => {
   return (
-    <div>
+    <Box height={"80vh"} sx={{ overflowY: "scroll" }}>
       {user &&
         user.rooms.map((room) => {
           return (
-            <Grid item key={room.roomId}>
-              <Fade direction={"up"}>
-                <RoomBox
-                  roomName={room.name}
-                  roomId={room.roomId}
-                  selected={roomId}
-                  img={room.picturePath}
-                  user={""}
-                  connectHandler={connectHandler}
-                />
-              </Fade>
-            </Grid>
+            <Fade direction={"up"}>
+              <RoomBox
+                roomName={room.name}
+                roomId={room.roomId}
+                selected={roomId}
+                img={room.picturePath}
+                user={""}
+                connectHandler={connectHandler}
+              />
+            </Fade>
           );
         })}
-    </div>
+      <div ref={ref}></div>
+    </Box>
   );
 };
