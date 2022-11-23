@@ -1,2 +1,9 @@
-package com.url.OSSProj.domain.dto;public class UrlResponseDto {
+package com.url.OSSProj.domain.dto;
+
+import lombok.Data;
+
+@Data
+public class UrlResponseDto {
+    private String url;
+    private String content;
 }
