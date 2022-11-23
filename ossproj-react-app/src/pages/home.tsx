@@ -19,6 +19,8 @@ import ChatIcon from "@mui/icons-material/Chat";
 import { useUserState } from "../context/user-context";
 import { ChatButton } from "../components/commons/chat-button";
 import { MyPageButton } from "../components/commons/mypage-button";
+import { HomeButton } from "../components/commons/home-button";
+import { MenuBar } from "../components/commons/menu-bar";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -42,25 +44,21 @@ export const Home = () => {
       direction={{ lg: "row", md: "row", sm: "column", xs: "column" }}
     >
       {/* menu grid */}
-      <Grid item lg={1} md={1} sm={1} xs={1}>
-        <Box
-          border={`1px solid black`}
-          height={`100%`}
-          width={`100%`}
-          display={"flex"}
-          flexDirection={"column"}
-          justifyContent={"flex-end"}
-          alignItems={"center"}
-        >
-          <ChatButton />
-
-          <MyPageButton />
-        </Box>
-      </Grid>
+      <MenuBar />
       {/* main grid */}
-      <Grid item lg={11} md={11} sm={11} xs={11} container direction={"column"}>
+      <Grid
+        item
+        lg={11}
+        md={11}
+        sm={11}
+        xs={11}
+        container
+        direction={"column"}
+        border={"1px solid black"}
+        borderRadius={"0 30px 30px 0"}
+      >
         {/* title grid */}
-        <Grid lg={2} md={2} sm={3} xs={3} item textAlign={"center"}>
+        <Grid lg={3} md={3} sm={3} xs={3} item textAlign={"center"}>
           <Bounce>
             <h1 style={{ fontSize: "130px" }}>{"URL SUMMARY"}</h1>
           </Bounce>
@@ -86,11 +84,6 @@ export const Home = () => {
         <Grid item lg={5} md={5} sm={5} xs={5}>
           <Box sx={{ border: "1px solid black", height: "100%" }}>
             {"최근 내역"}
-            <UrlBox
-              name={"첫번째 url"}
-              text={"오픈소스프로젝트"}
-              url={"www.kkj.com"}
-            />
           </Box>
         </Grid>
       </Grid>

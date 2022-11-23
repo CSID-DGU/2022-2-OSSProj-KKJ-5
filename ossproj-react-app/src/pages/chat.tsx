@@ -27,10 +27,16 @@ import { RoomBoxList } from "../components/chat/room-box-list";
 import { connect } from "http2";
 import { DevideButton } from "../components/chat/divide-button";
 import { SearchButton } from "../components/chat/search-button";
+import { SignInButton } from "../components/commons/sign-in-button";
+import SockJS from "sockjs-client";
+import axios from "axios";
+import { ChatButton } from "../components/commons/chat-button";
+import { MenuBar } from "../components/commons/menu-bar";
 
 const ROOM_SEQ = 1;
 export const Chat = () => {
   const client = useRef<CompatClient>();
+  const token = axios.defaults.headers.common["Authorization"]?.toString();
   const user = useUserState();
   const navigate = useNavigate();
   const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([
@@ -38,7 +44,7 @@ export const Chat = () => {
       type: "ENTER",
       roomId: "sdf",
       sender: "scdf",
-      message: "kim 입장",
+      message: "",
     },
   ]);
   const [roomName, setRoomName] = useState("");
@@ -46,7 +52,7 @@ export const Chat = () => {
   const [chatName, setChatName] = useState("");
   const [open, setOpen] = useState(false);
   const [isChat, setIsChat] = useState(false);
-
+  const [chatMessage, setChatMessage] = useState<IChatDetail>();
   const handleDeleteRoomName = () => {
     setRoomName("");
   };
@@ -75,28 +81,75 @@ export const Chat = () => {
   });
 
   const { refreshHandler } = useRefresh();
-  const { sendHandler, connectHandler } = useHandleChat({
-    client: client.current!,
-    sender: user.name,
-    name: "1번방",
-    message: inputMessage,
-    roomId: roomId,
-    chatMessages: chatMessageList,
-    setChatMessageList: setChatMessageList,
-    setRoomId: setRoomId,
-    setChatName: setChatName,
-    setIsChat: setIsChat,
-    deleteMessage: handleDeleteInputMessage,
-  });
 
+  const messageEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollTomBottom = () => {
+    if (window.innerWidth <= 375) {
+      return;
+    }
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  useEffect(() => {
+    scrollTomBottom();
+  }, [chatMessageList]);
+  const sendHandler = () => {
+    console.log("room Id:" + roomId);
+    client.current!.send(
+      "/pub/chat/message",
+      {},
+      JSON.stringify({
+        type: "TALK",
+        roomId: 123,
+        sender: user.name,
+        message: inputMessage,
+      })
+    );
+    handleDeleteInputMessage();
+  };
+
+  const connectHandler = (mockId: string, mockName: string) => {
+    client.current = Stomp.over(() => {
+      const sock = new SockJS("http://localhost:8080/ws-stomp");
+      return sock;
+    });
+    console.log(client);
+    console.log(mockId);
+    console.log(chatMessageList);
+    client.current.connect(
+      {
+        Authorization: token,
+      },
+      () => {
+        client.current!.subscribe(
+          // `/sub/chat/room/${mockId}`,
+          `/sub/chat/room/123`,
+          (message) => {
+            setChatMessage(JSON.parse(message.body));
+            // setChatMessageList([...chatMessageList, JSON.parse(message.body)]);
+          },
+          { Authorization: token ? token : "", simpDestination: mockId }
+        );
+      }
+    );
+
+    setChatName(mockName);
+    setRoomId(mockId);
+    setIsChat(true);
+  };
+  useEffect(() => {
+    if (chatMessage) {
+      setChatMessageList([...chatMessageList, chatMessage]);
+    }
+  }, [chatMessage]);
   useEffect(() => {
     refreshHandler();
   }, []);
-
   useEffect(() => {
     createImageForm();
     console.log(imgForm);
   }, [fileImage]);
+
   return (
     <Grid
       container
@@ -109,28 +162,7 @@ export const Chat = () => {
       direction={{ lg: "row", md: "row", sm: "column", xs: "column" }}
     >
       {/* 메뉴 grid */}
-      <Grid
-        item
-        lg={1}
-        md={1}
-        sm={1}
-        xs={1}
-        border={1}
-        borderRadius={"30px 0 0 30px"}
-        bgcolor={"#d3d3d3"}
-      >
-        <Box
-          height={`100%`}
-          width={`100%`}
-          display={"flex"}
-          flexDirection={"column"}
-          justifyContent={"flex-end"}
-          alignItems={"center"}
-        >
-          <HomeButton />
-          <MyPageButton />
-        </Box>
-      </Grid>
+      <MenuBar />
       {/* room list grid */}
       {/* todo reverse list */}
       <Grid
@@ -192,8 +224,13 @@ export const Chat = () => {
             {/* message Grid */}
             <Grid item lg={11} md={11} sm={10} xs={10}>
               {chatName}
-              <Box border={`1px solid black`} height={`95%`}>
+              <Box
+                border={`1px solid black`}
+                height={`75vh`}
+                sx={{ overflowY: "scroll" }}
+              >
                 <ChatMessageList chatMessages={chatMessageList} />
+                <div ref={messageEndRef}></div>
               </Box>
             </Grid>
             {/* input grid */}
