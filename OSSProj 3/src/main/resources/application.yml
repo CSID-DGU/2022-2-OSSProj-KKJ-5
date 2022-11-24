@@ -23,3 +23,9 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+
+server:
+  port: 8084
+
+file:
+  dir: "/Users/kimjungwon/pictureStore/"

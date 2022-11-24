@@ -50,12 +50,18 @@ public class MemberService {
         return memberRepository.existsByEmail(email);
     }
 
+    public Member findByEmail(String email){
+        return memberRepository.findByEmail(email).orElse(null);
+    }
+
     @Transactional
     public Member connectMemberAndChatRoom(String roomId, String userEmail) {
         Member member = memberRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("No such User"));
         log.info("Member Name : " + member.getName());
-        ChatRoom chatRoom = chatRepository.findByRoomId(roomId).orElseThrow(() -> new IllegalArgumentException("No Exist ChatRoom"));
+
+        ChatRoom chatRoom = chatRepository.findByRoomId(roomId)
+                                                .orElseThrow(() -> new IllegalArgumentException("No Exist ChatRoom"));
         log.info("ChatRoom name : " + chatRoom.getName());
         log.info("ChatRoom Id : " + chatRoom.getRoomId());
 

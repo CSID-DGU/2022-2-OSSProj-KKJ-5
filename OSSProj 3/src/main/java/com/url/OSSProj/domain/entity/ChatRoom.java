@@ -1,6 +1,5 @@
 package com.url.OSSProj.domain.entity;
 
-import com.url.OSSProj.domain.dto.ChatRoomDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,22 +26,25 @@ public class ChatRoom implements Serializable {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = true)
-    private String picturePath;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "uploadfile_id")
+    private UploadFile uploadFile;
 
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatRoomInfo> chatRooms = new ArrayList<ChatRoomInfo>();
 
 
-    public static ChatRoom create(String name, String picturePath){
-       return getChatRoom(name, picturePath);
+
+    public static ChatRoom create(String name, UploadFile uploadFile){
+       return getChatRoom(name, uploadFile);
     }
 
-    private static ChatRoom getChatRoom(String name, String picturePath) {
+    private static ChatRoom getChatRoom(String name, UploadFile uploadFile) {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.roomId = UUID.randomUUID().toString();
         chatRoom.name = name;
-        chatRoom.picturePath = picturePath;
+        chatRoom.uploadFile = uploadFile;
+
         return chatRoom;
     }
 }

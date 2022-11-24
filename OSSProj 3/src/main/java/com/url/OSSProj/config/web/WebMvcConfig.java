@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -23,7 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtTokenInterceptor())
                 .excludePathPatterns("/member/signUp", "/member/signIn")
-                .addPathPatterns("/member/**", "/url/**");
+                .addPathPatterns("/member/**");
     }
 
     @Bean
@@ -32,6 +33,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registrationBean.setOrder(Integer.MIN_VALUE);
         registrationBean.addUrlPatterns("/*");
         return registrationBean;
+    }
+
+    @Bean
+    public RestTemplate getRestTemplate(){
+        return new RestTemplate();
     }
 
     @Override
