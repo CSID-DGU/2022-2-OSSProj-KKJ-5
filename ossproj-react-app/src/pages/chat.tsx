@@ -1,44 +1,29 @@
-import { Box, Grid, TextField } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { MessageInput } from "../components/chat/message-input";
 import { useCreateRoom } from "../hooks/use-create-room";
 import { CreateRoomDialog } from "../components/chat/create-room-dialog";
-import zang from "../assets/zang.png";
-import bobobo from "../assets/bobobo.png";
-import face from "../assets/face.png";
-import { RoomBox } from "../components/chat/room-box";
 import { FloatingButton } from "../components/chat/floating-button";
 import defaultImg from "../assets/defaultImg.png";
-import HomeIcon from "@mui/icons-material/Home";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { IChatDetail, IRoomProps } from "../interface/chat";
-import { MenuButton } from "../components/commons/menu-button";
+import { IChatDetail } from "../interface/chat";
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import { useRefresh } from "../hooks/use-refresing";
-import { useNavigate } from "react-router-dom";
 import { ChatMessageList } from "../components/chat/chat-message-list";
 import { useHandleInputMessage } from "../hooks/use-handle-message";
-import { useHandleChat } from "../hooks/use-handle-chat";
 import { useHandleImage } from "../hooks/use-handle-image";
 import { useUserState } from "../context/user-context";
-import { HomeButton } from "../components/commons/home-button";
-import { MyPageButton } from "../components/commons/mypage-button";
 import { RoomBoxList } from "../components/chat/room-box-list";
-import { connect } from "http2";
-import { DevideButton } from "../components/chat/divide-button";
 import { SearchButton } from "../components/chat/search-button";
-import { SignInButton } from "../components/commons/sign-in-button";
 import SockJS from "sockjs-client";
 import axios from "axios";
-import { ChatButton } from "../components/commons/chat-button";
 import { MenuBar } from "../components/commons/menu-bar";
+import { useScrollChat } from "../hooks/use-scroll-chat";
+import { useScrollList } from "../hooks/use-scroll-list";
 
-const ROOM_SEQ = 1;
 export const Chat = () => {
   const client = useRef<CompatClient>();
   const token = axios.defaults.headers.common["Authorization"]?.toString();
   const user = useUserState();
-  const navigate = useNavigate();
   const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([
     {
       type: "ENTER",
@@ -66,33 +51,35 @@ export const Chat = () => {
     setOpen(true);
   };
 
-  const {
-    imgForm,
-    fileImage,
-    saveFileImage,
-    deleteFileImage,
-    createImageForm,
-  } = useHandleImage();
+  const { imageUrl, fileImage, saveFileImage } = useHandleImage();
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } =
     useHandleInputMessage();
   const { createRoomHandler, data, isLoading, isSuccess } = useCreateRoom({
     name: roomName,
-    imgForm: imgForm,
+    image: fileImage!,
   });
 
   const { refreshHandler } = useRefresh();
+  const { chatRef, scrollToChatBottom } = useScrollChat();
+  const { listRef, scrollToListBottom } = useScrollList();
 
-  const messageEndRef = useRef<HTMLDivElement>(null);
-
-  const scrollTomBottom = () => {
-    if (window.innerWidth <= 375) {
-      return;
-    }
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
   useEffect(() => {
-    scrollTomBottom();
+    scrollToChatBottom();
   }, [chatMessageList]);
+  useEffect(() => {
+    scrollToListBottom();
+  }, [user]);
+
+  useEffect(() => {
+    if (chatMessage) {
+      setChatMessageList([...chatMessageList, chatMessage]);
+    }
+  }, [chatMessage]);
+
+  useEffect(() => {
+    refreshHandler();
+  }, []);
+
   const sendHandler = () => {
     console.log("room Id:" + roomId);
     client.current!.send(
@@ -137,18 +124,6 @@ export const Chat = () => {
     setRoomId(mockId);
     setIsChat(true);
   };
-  useEffect(() => {
-    if (chatMessage) {
-      setChatMessageList([...chatMessageList, chatMessage]);
-    }
-  }, [chatMessage]);
-  useEffect(() => {
-    refreshHandler();
-  }, []);
-  useEffect(() => {
-    createImageForm();
-    console.log(imgForm);
-  }, [fileImage]);
 
   return (
     <Grid
@@ -172,8 +147,8 @@ export const Chat = () => {
         position={"relative"}
         lg={3}
         md={3}
-        sm={2}
-        xs={2}
+        sm={3}
+        xs={3}
         border={1}
       >
         <Grid
@@ -184,21 +159,17 @@ export const Chat = () => {
           spacing={2}
           padding={"0 30px"}
         >
-          <Grid item>
-            <h1>{"Chat"}</h1>
-          </Grid>
-          <Grid item display={"flex"} justifyContent={"center"}>
-            <TextField
-              sx={{ bgcolor: "white" }}
-              fullWidth
-              placeholder="채팅방 찾기"
+          <Box height={"100%"}>
+            <Typography variant={"h3"} fontFamily={"bitbit"}>
+              {"Chat"}
+            </Typography>
+            <RoomBoxList
+              user={user}
+              roomId={roomId}
+              connectHandler={connectHandler}
+              ref={listRef}
             />
-          </Grid>
-          <RoomBoxList
-            user={user}
-            roomId={roomId}
-            connectHandler={connectHandler}
-          />
+          </Box>
         </Grid>
         <Grid item lg={2}>
           <FloatingButton handleOpen={handleOpen} />
@@ -211,11 +182,16 @@ export const Chat = () => {
         item
         lg={8}
         md={7}
-        sm={5}
-        xs={5}
+        sm={8}
+        xs={8}
         container
         border={1}
-        borderRadius={"0 30px 30px 0"}
+        borderRadius={{
+          lg: "0 30px 30px 0",
+          md: "0 30px 30px 0",
+          sm: "0 0 30px 30px",
+          xs: "0 0 30px 30px",
+        }}
         bgcolor={"white"}
       >
         {/* todo sm xs */}
@@ -230,7 +206,7 @@ export const Chat = () => {
                 sx={{ overflowY: "scroll" }}
               >
                 <ChatMessageList chatMessages={chatMessageList} />
-                <div ref={messageEndRef}></div>
+                <div ref={chatRef}></div>
               </Box>
             </Grid>
             {/* input grid */}
@@ -256,7 +232,7 @@ export const Chat = () => {
         handleClose={handleClose}
         createRoomHandler={createRoomHandler}
         handleDeleteRoomName={handleDeleteRoomName}
-        img={fileImage === "" ? defaultImg : fileImage}
+        img={!imageUrl ? defaultImg : imageUrl}
         handleImg={saveFileImage}
       />
     </Grid>

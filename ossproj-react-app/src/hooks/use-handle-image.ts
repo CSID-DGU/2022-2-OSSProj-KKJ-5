@@ -1,32 +1,29 @@
 import { useState } from "react";
 
 export const useHandleImage = () => {
-  const [imgForm, setImgForm] = useState(new FormData());
-  const [fileImage, setFileImage] = useState("");
+  const [fileImage, setFileImage] = useState<File>();
+  const [imageUrl, setImageUrl] = useState("");
 
   const saveFileImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     // @ts-ignore
-    setFileImage(URL.createObjectURL(event.target.files[0]));
+    setImageUrl(URL.createObjectURL(event.target.files[0]));
+    const target = event.currentTarget;
+    const files = (target.files as FileList)[0];
+    if (files === undefined) {
+      return;
+    }
+    setFileImage(files);
   };
 
   const deleteFileImage = () => {
-    URL.revokeObjectURL(fileImage);
-    setFileImage("");
-  };
-
-  const createImageForm = () => {
-    let formData = new FormData();
-    formData.append("file", fileImage);
-    formData.append("data", new Blob(["image"], { type: "application/json" }));
-
-    setImgForm(formData);
+    // URL.revokeObjectURL(fileImage);
+    // setFileImage(null);
   };
 
   return {
-    imgForm,
     fileImage,
+    imageUrl,
     saveFileImage,
     deleteFileImage,
-    createImageForm,
   };
 };

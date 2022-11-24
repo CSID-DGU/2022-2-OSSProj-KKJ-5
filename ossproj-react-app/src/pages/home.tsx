@@ -1,25 +1,9 @@
-import {
-  Box,
-  Grid,
-  IconButton,
-  InputBase,
-  Paper,
-  TextField,
-} from "@mui/material";
-import { type } from "os";
+import { Box, Grid, Typography } from "@mui/material";
 import { Fade, Bounce } from "react-awesome-reveal";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MenuButton } from "../components/commons/menu-button";
 import { UrlInput } from "../components/home/url-input";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { Typography } from "@material-ui/core";
-import { UrlBox } from "../components/home/url-box";
-import ChatIcon from "@mui/icons-material/Chat";
 import { useUserState } from "../context/user-context";
-import { ChatButton } from "../components/commons/chat-button";
-import { MyPageButton } from "../components/commons/mypage-button";
-import { HomeButton } from "../components/commons/home-button";
 import { MenuBar } from "../components/commons/menu-bar";
 
 export const Home = () => {
@@ -32,6 +16,12 @@ export const Home = () => {
     setUrl("");
   };
 
+  const handleSummary = () => {
+    navigate({
+      pathname: "/result",
+      search: `?url=${url}`,
+    });
+  };
   return (
     <Grid
       container
@@ -49,7 +39,7 @@ export const Home = () => {
       <Grid
         item
         lg={11}
-        md={11}
+        md={10}
         sm={11}
         xs={11}
         container
@@ -58,15 +48,31 @@ export const Home = () => {
         borderRadius={"0 30px 30px 0"}
       >
         {/* title grid */}
-        <Grid lg={3} md={3} sm={3} xs={3} item textAlign={"center"}>
+        <Grid
+          lg={4}
+          md={4}
+          sm={4}
+          xs={4}
+          item
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
           <Bounce>
-            <h1 style={{ fontSize: "130px" }}>{"URL SUMMARY"}</h1>
+            <Typography
+              fontFamily={"bitbit"}
+              fontSize={{ lg: "140px", md: "90px", sm: "65px", xs: "50px" }}
+              variant={"h1"}
+            >
+              {"URL SUMMARY"}
+            </Typography>
+            {/* <h1 style={{ fontSize: "130px" }}>{"URL SUMMARY"}</h1> */}
           </Bounce>
         </Grid>
         {/* input grid */}
         <Grid
-          lg={2}
-          md={2}
+          lg={3}
+          md={3}
           sm={3}
           xs={3}
           item
@@ -79,6 +85,7 @@ export const Home = () => {
             url={url}
             handleUrl={handleUrl}
             handleDelete={handleDelete}
+            onClick={handleSummary}
           />
         </Grid>
         <Grid item lg={5} md={5} sm={5} xs={5}>

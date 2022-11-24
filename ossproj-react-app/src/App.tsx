@@ -5,11 +5,11 @@ import { Home } from "./pages/home";
 import { Chat } from "./pages/chat";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UserProvider } from "./context/user-context";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { StylesProvider } from "@material-ui/core";
 import "./App.css";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { Result } from "./pages/result";
 const queryClient = new QueryClient();
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/chat" element={<Chat />} />
+                <Route path="/result" element={<Result />} />
               </Routes>
             </QueryClientProvider>
           </UserProvider>
