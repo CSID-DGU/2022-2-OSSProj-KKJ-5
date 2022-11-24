@@ -7,9 +7,15 @@ interface IUrlInputProps {
   url: string;
   handleUrl: (e: ChangeEvent<HTMLInputElement>) => void;
   handleDelete: () => void;
+  onClick: () => void;
 }
 
-export const UrlInput = ({ url, handleUrl, handleDelete }: IUrlInputProps) => {
+export const UrlInput = ({
+  url,
+  handleUrl,
+  handleDelete,
+  onClick,
+}: IUrlInputProps) => {
   return (
     <Box
       width={"100%"}
@@ -52,6 +58,7 @@ export const UrlInput = ({ url, handleUrl, handleDelete }: IUrlInputProps) => {
           fontSize: "30px",
           color: "black",
         }}
+        onClick={onClick}
       >
         {"Start!"}
       </Button>

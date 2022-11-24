@@ -17,7 +17,10 @@ export const RoomBoxList = ({
   ref,
 }: IRoomBoxListProps) => {
   return (
-    <Box height={"80vh"} sx={{ overflowY: "scroll" }}>
+    <Box
+      height={{ lg: "80vh", md: "80vh", sm: "10vh", xs: "10vh" }}
+      sx={{ overflowY: "scroll" }}
+    >
       {user &&
         user.rooms.map((room) => {
           return (

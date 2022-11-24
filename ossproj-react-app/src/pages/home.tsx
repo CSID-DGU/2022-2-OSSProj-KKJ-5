@@ -1,25 +1,9 @@
-import {
-  Box,
-  Grid,
-  IconButton,
-  InputBase,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { type } from "os";
+import { Box, Grid, Typography } from "@mui/material";
 import { Fade, Bounce } from "react-awesome-reveal";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MenuButton } from "../components/commons/menu-button";
 import { UrlInput } from "../components/home/url-input";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { UrlBox } from "../components/home/url-box";
-import ChatIcon from "@mui/icons-material/Chat";
 import { useUserState } from "../context/user-context";
-import { ChatButton } from "../components/commons/chat-button";
-import { MyPageButton } from "../components/commons/mypage-button";
-import { HomeButton } from "../components/commons/home-button";
 import { MenuBar } from "../components/commons/menu-bar";
 
 export const Home = () => {
@@ -32,6 +16,12 @@ export const Home = () => {
     setUrl("");
   };
 
+  const handleSummary = () => {
+    navigate({
+      pathname: "/result",
+      search: `?url=${url}`,
+    });
+  };
   return (
     <Grid
       container
@@ -95,6 +85,7 @@ export const Home = () => {
             url={url}
             handleUrl={handleUrl}
             handleDelete={handleDelete}
+            onClick={handleSummary}
           />
         </Grid>
         <Grid item lg={5} md={5} sm={5} xs={5}>
