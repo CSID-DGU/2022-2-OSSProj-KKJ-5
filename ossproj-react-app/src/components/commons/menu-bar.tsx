@@ -2,6 +2,7 @@ import { Box, Grid } from "@mui/material";
 import { ChatButton } from "./chat-button";
 import { HomeButton } from "./home-button";
 import { MyPageButton } from "./mypage-button";
+import { SigninButton } from "./signin-button";
 
 export const MenuBar = () => {
   return (
@@ -31,6 +32,7 @@ export const MenuBar = () => {
         <HomeButton />
         <ChatButton />
         <MyPageButton />
+        <SigninButton />
       </Box>
     </Grid>
   );
