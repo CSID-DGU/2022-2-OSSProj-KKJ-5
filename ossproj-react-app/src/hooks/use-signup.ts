@@ -18,8 +18,9 @@ export const useSignup = (props: ISignUpProps) => {
       //   pathname: '/signin',
       // });
     },
-    onError: () => {
-      console.log("error");
+    onError: (e) => {
+      console.log(e);
+      console.log(props);
     },
   });
   const signupHandler = () => {

@@ -6,7 +6,7 @@ import { createRoom } from "../services/chat";
 export const useCreateRoom = (props: ICreateRoomProps) => {
   const user = useUserState();
   const formData = new FormData();
-  formData.append("file", props.image);
+  formData.append("pictureFile", props.pictureFile);
   formData.append("name", props.name);
   const {
     mutate: createroom,

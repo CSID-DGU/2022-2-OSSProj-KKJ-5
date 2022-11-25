@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-export const API_URL = "http://localhost:8080";
+export const API_URL = "http://localhost:8084";
 
 axios.defaults.baseURL = API_URL;
 axios.defaults.withCredentials = true;

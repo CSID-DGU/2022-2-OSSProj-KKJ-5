@@ -56,7 +56,7 @@ export const Chat = () => {
     useHandleInputMessage();
   const { createRoomHandler, data, isLoading, isSuccess } = useCreateRoom({
     name: roomName,
-    image: fileImage!,
+    pictureFile: fileImage!,
   });
 
   const { refreshHandler } = useRefresh();

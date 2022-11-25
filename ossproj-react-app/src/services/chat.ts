@@ -3,9 +3,15 @@ import { ICreateRoomProps, IRoomProps } from "../interface/chat";
 
 export const createRoom = (formData: FormData) => {
   const url = `/chat/room`;
-  return axios.post<IRoomProps>(url, { formData }).then((res) => {
-    return res.data;
-  });
+  console.log(formData.get("name"));
+  console.log(formData.get("pictureFile"));
+  return axios
+    .post<IRoomProps>(url, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((res) => {
+      return res.data;
+    });
 };
 
 export const getRoomList = () => {
