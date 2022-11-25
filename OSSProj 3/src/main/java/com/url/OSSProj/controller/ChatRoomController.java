@@ -11,7 +11,9 @@ import com.url.OSSProj.service.FileStore;
 import com.url.OSSProj.service.MemberService;
 import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,17 +50,19 @@ public class ChatRoomController {
 //        return all;
 //    }
 
-    @PostMapping("/room")
+    @PostMapping(value="/room", consumes = {"multipart/form-data" })
     @ResponseBody
-    public ChatRoomDto createRoom(@ModelAttribute NewChatRoomDto newChatRoomDto, HttpServletRequest request) throws Exception {
-        log.info("ChatRoom Name : " + newChatRoomDto.getName());
+    public ChatRoomDto createRoom(@RequestPart(value="name", required=false) String chatRoomName,
+                                  @RequestPart(value="pictureFile", required=false) MultipartFile file
+            , HttpServletRequest request) throws Exception {
+//        log.info("ChatRoom Name : " + newChatRoomDto.getName());
         // Member member = getMemberThroughRequest(request);
 
-        String chatRoomName = newChatRoomDto.getName();
+//        String chatRoomName = newChatRoomDto.getName();
 
-        MultipartFile pictureFile = newChatRoomDto.getPictureFile();
-
-        UploadFile uploadFile = fileStore.storeFile(pictureFile);
+        log.info(chatRoomName);
+        log.info(file);
+        UploadFile uploadFile = fileStore.storeFile(file);
         String uploadFileName = uploadFile.getUploadFileName();
         String storeFileName = uploadFile.getStoreFileName();
 
