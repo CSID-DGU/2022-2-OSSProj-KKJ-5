@@ -1,4 +1,5 @@
 import { useState } from "react";
+import defaultImg from "../assets/defaultImg.png";
 
 export const useHandleImage = () => {
   const [fileImage, setFileImage] = useState<File>();
@@ -16,8 +17,8 @@ export const useHandleImage = () => {
   };
 
   const deleteFileImage = () => {
-    // URL.revokeObjectURL(fileImage);
-    // setFileImage(null);
+    setFileImage(undefined);
+    setImageUrl("");
   };
 
   return {

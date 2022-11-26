@@ -11,6 +11,7 @@ interface ICraeteRoomDialog {
   handleDeleteRoomName: () => void;
   handleClose: () => void;
   createRoomHandler: () => void;
+  deleteImg: () => void;
 }
 export const CreateRoomDialog = ({
   roomName,
@@ -21,6 +22,7 @@ export const CreateRoomDialog = ({
   handleDeleteRoomName,
   handleClose,
   createRoomHandler,
+  deleteImg,
 }: ICraeteRoomDialog) => {
   return (
     <>
@@ -70,6 +72,7 @@ export const CreateRoomDialog = ({
               createRoomHandler();
               handleClose();
               handleDeleteRoomName();
+              deleteImg();
             }}
           >
             {"create"}

@@ -46,6 +46,11 @@ export const UrlInput = ({
           inputProps={{ "aria-label": "search google maps" }}
           value={url}
           onChange={handleUrl}
+          onKeyPress={(e: React.KeyboardEvent<HTMLDivElement>) => {
+            if (e.key == "Enter") {
+              onClick();
+            }
+          }}
         />
         <IconButton onClick={handleDelete}>
           <CloseIcon />

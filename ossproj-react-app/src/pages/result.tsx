@@ -1,7 +1,18 @@
 import { Box, Grid } from "@mui/material";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { MenuBar } from "../components/commons/menu-bar";
+import { useSummaryContent } from "../hooks/use-summary-url";
 
 export const Result = () => {
+  const { search } = useLocation();
+  const query = search.split(/[=,&]/)[1];
+  const { summaryHandler, data } = useSummaryContent({ url: query });
+
+  useEffect(() => {
+    summaryHandler();
+  }, []);
+
   return (
     <Grid
       container
@@ -26,6 +37,9 @@ export const Result = () => {
         direction={"column"}
         border={"1px solid black"}
       >
+        <Grid item lg={1} md={1} sm={1} xs={1}>
+          {data?.url}
+        </Grid>
         {/* image grid */}
         <Grid item lg={8} md={8} sm={8} xs={8} border={"1px solid black"}>
           <Box
@@ -41,7 +55,9 @@ export const Result = () => {
               width={{ lg: "40%", md: "40%", sm: "90%", xs: "90%" }}
               height={"90%"}
               border={"1px solid black"}
-            ></Box>
+            >
+              {data?.image}
+            </Box>
             <Box
               width={{ lg: "40%", md: "40%", sm: "90%", xs: "90%" }}
               height={"90%"}
@@ -52,8 +68,8 @@ export const Result = () => {
         {/* text grid */}
         <Grid
           item
-          lg={4}
-          md={4}
+          lg={3}
+          md={3}
           sm={4}
           xs={4}
           display={"flex"}
@@ -61,9 +77,7 @@ export const Result = () => {
           alignItems={"center"}
         >
           <Box width={"90%"} height={"80%"} border={"1px solid black"}>
-            {
-              "asdfjklfasksadkdfsakla;jsfdkljfdsk;jflddfsakjfdsajkljafdlkfdkljafddjakl;"
-            }
+            {data?.content}
           </Box>
         </Grid>
       </Grid>

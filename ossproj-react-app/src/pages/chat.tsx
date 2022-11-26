@@ -51,7 +51,8 @@ export const Chat = () => {
     setOpen(true);
   };
 
-  const { imageUrl, fileImage, saveFileImage } = useHandleImage();
+  const { imageUrl, fileImage, saveFileImage, deleteFileImage } =
+    useHandleImage();
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } =
     useHandleInputMessage();
   const { createRoomHandler, data, isLoading, isSuccess } = useCreateRoom({
@@ -234,6 +235,7 @@ export const Chat = () => {
         handleDeleteRoomName={handleDeleteRoomName}
         img={!imageUrl ? defaultImg : imageUrl}
         handleImg={saveFileImage}
+        deleteImg={deleteFileImage}
       />
     </Grid>
   );
