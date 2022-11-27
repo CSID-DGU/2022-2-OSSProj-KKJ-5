@@ -26,6 +26,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController
@@ -49,12 +50,16 @@ public class UrlController {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("url", urlDto.getUrl());
 
-        return webClient.post()
+        UrlResponseDto urlResponseDto = webClient.post()
                 .uri("/url")
                 .bodyValue(urlDto)
                 .retrieve()
                 .bodyToMono(UrlResponseDto.class)
                 .block();
+
+        log.info("UrlResponseDto URL : " + Objects.requireNonNull(urlResponseDto).getUrl());
+        log.info("UrlResponseDto Content : " + urlResponseDto.getContent());
+        return urlResponseDto;
 //        String header = request.getHeader(AuthConstants.AUTHORIZATION_HEADER);
 //        String token = header.substring(7, header.length());
 //
