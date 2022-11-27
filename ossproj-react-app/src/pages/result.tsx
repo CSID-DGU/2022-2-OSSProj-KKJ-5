@@ -7,8 +7,9 @@ import wordcloud from "../assets/wordcloud.png";
 import network from "../assets/network.png";
 export const Result = () => {
   const { search } = useLocation();
-  const query = search.split(/[=,&]/)[1];
-  const { summaryHandler, data } = useSummaryContent({ url: query });
+  const query = search.split("url=");
+  const { summaryHandler, data } = useSummaryContent({ url: query[1] });
+  console.log(query[1]);
 
   useEffect(() => {
     summaryHandler();
