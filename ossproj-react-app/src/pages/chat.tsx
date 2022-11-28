@@ -88,7 +88,7 @@ export const Chat = () => {
       {},
       JSON.stringify({
         type: "TALK",
-        roomId: 123,
+        roomId: roomId,
         sender: user.name,
         message: inputMessage,
       })
@@ -98,7 +98,7 @@ export const Chat = () => {
 
   const connectHandler = (mockId: string, mockName: string) => {
     client.current = Stomp.over(() => {
-      const sock = new SockJS("http://localhost:8080/ws-stomp");
+      const sock = new SockJS("http://localhost:8084/ws-stomp");
       return sock;
     });
     console.log(client);
@@ -110,8 +110,7 @@ export const Chat = () => {
       },
       () => {
         client.current!.subscribe(
-          // `/sub/chat/room/${mockId}`,
-          `/sub/chat/room/123`,
+          `/sub/chat/room/${mockId}`,
           (message) => {
             setChatMessage(JSON.parse(message.body));
             // setChatMessageList([...chatMessageList, JSON.parse(message.body)]);
