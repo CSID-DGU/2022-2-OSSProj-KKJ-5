@@ -10,7 +10,7 @@ interface IChatMessageListProps {
 }
 export const ChatMessageList = ({ chatMessages }: IChatMessageListProps) => {
   const user = useUserState();
-
+  console.log(chatMessages);
   return (
     <>
       {chatMessages.map((props) => {
