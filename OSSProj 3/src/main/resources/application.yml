@@ -28,7 +28,7 @@ spring:
       FAIL_ON_EMPTY_BEANS: false
 
 server:
-  port: 8084
+  port: 8080
 
 file:
-  dir: "/Users/kimjungwon/pictureStore/"
+  dir: "/Users/kimjaehan/pictureStore/"
