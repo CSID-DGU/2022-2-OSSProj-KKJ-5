@@ -87,7 +87,7 @@ public class TokenController {
             chatRoomDtos.add(ChatRoomDto.builder()
                     .name(chatRoom.getName())
                     .roomId(chatRoom.getRoomId())
-                    .image((Resource) new UrlResource("file:"+fileStore.getFullPath(chatRoom.getUploadFile().getStoreFileName())))
+                    .image(chatRoom.getUploadFile())
                     .build());
         }
         return chatRoomDtos;

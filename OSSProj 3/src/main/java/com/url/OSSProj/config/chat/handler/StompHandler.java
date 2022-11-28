@@ -36,6 +36,7 @@ public class StompHandler implements ChannelInterceptor {
     @Override // websocket을 통해 들어온 요청이 처리 되기 전 실행된다.
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        log.info("StompHandler로 들어오기는 한다!!");
         if(StompCommand.CONNECT == accessor.getCommand()){
             String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
             log.info("StompHandler JWT : " + jwt);

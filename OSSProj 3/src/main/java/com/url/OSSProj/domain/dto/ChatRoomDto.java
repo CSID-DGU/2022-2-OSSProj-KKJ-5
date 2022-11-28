@@ -13,5 +13,5 @@ import java.io.Serializable;
 public class ChatRoomDto implements Serializable {
     private String roomId;
     private String name;
-    private Resource image;
+    private UploadFile image;
 }

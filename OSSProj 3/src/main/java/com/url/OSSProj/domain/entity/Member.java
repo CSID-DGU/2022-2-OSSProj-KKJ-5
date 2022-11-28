@@ -37,10 +37,6 @@ public class Member extends BaseTimeEntity implements Serializable {
     @OneToMany(mappedBy = "url")
     private List<Url> urls;
 
-    @OneToOne
-    @JoinColumn(name="UPLOADFILE_ID")
-    private UploadFile uploadFile;
-
     @OneToMany(mappedBy = "member")
     private List<ChatRoomInfo> memberChatRooms = new ArrayList<ChatRoomInfo>();
     public String getRoleKey(){

@@ -3,10 +3,13 @@ package com.url.OSSProj.controller;
 import com.url.OSSProj.domain.constants.AuthConstants;
 import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.dto.NewChatRoomDto;
+import com.url.OSSProj.domain.entity.ChatRoom;
 import com.url.OSSProj.domain.entity.UploadFile;
 import com.url.OSSProj.domain.entity.Member;
+import com.url.OSSProj.repository.ChatRepository;
 import com.url.OSSProj.repository.ChatRoomRepository;
 import com.url.OSSProj.repository.FileRepository;
+import com.url.OSSProj.service.ChatService;
 import com.url.OSSProj.service.FileStore;
 import com.url.OSSProj.service.MemberService;
 import com.url.OSSProj.utils.TokenUtils;
@@ -28,7 +31,9 @@ public class ChatRoomController {
 
     private final TokenUtils tokenUtils;
     private final FileRepository fileRepository;
+    private final ChatService chatService;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatRepository chatRepository;
     private final MemberService memberService;
     private final FileStore fileStore;
 
@@ -53,23 +58,23 @@ public class ChatRoomController {
     @PostMapping(value="/room", consumes = {"multipart/form-data" })
     @ResponseBody
     public ChatRoomDto createRoom(@RequestPart(value="name", required=false) String chatRoomName,
-                                  @RequestPart(value="pictureFile", required=false) MultipartFile file
-            , HttpServletRequest request) throws Exception {
-//        log.info("ChatRoom Name : " + newChatRoomDto.getName());
-        // Member member = getMemberThroughRequest(request);
-
-//        String chatRoomName = newChatRoomDto.getName();
-
+                                  @RequestPart(value="pictureFile", required=false) MultipartFile file, HttpServletRequest request) throws Exception {
+        Member member = getMemberThroughRequest(request);
 
         UploadFile uploadFile = fileStore.storeFile(file);
+
+        fileRepository.save(uploadFile);
+
         String uploadFileName = uploadFile.getUploadFileName();
         String storeFileName = uploadFile.getStoreFileName();
 
+        log.info("UploadFile Id : " + uploadFile.getId());
         log.info("uploadFileName = " + uploadFileName);
         log.info("storeFileName = " + storeFileName);
 
+
         ChatRoomDto chatRoomDto = chatRoomRepository.createChatRoom(chatRoomName, uploadFile);
-        // memberService.connectMemberAndChatRoom(chatRoomDto.getRoomId(), member.getEmail());
+        memberService.connectMemberAndChatRoom(chatRoomDto.getRoomId(), member.getEmail());
         return chatRoomDto;
     }
 
@@ -81,23 +86,4 @@ public class ChatRoomController {
         return memberService.findByEmail(email);
     }
 
-//    @GetMapping("/room/enter/{roomId}")
-//    public String roomDetail(HttpServletRequest request, HttpServletResponse response, @PathVariable String roomId) throws IOException {
-//        log.info("roomId : " + roomId);
-//        response.sendRedirect("/member/signUp");
-//
-//        return "hello";
-//    }
-
-//    @GetMapping("/room/{roomId}")
-//    @ResponseBody
-//    public ChatRoomDto roomInfo(@PathVariable String roomId){
-//        ChatRoom chatRoom = chatRoomRepository.findRoomById(roomId);
-//
-//        return ChatRoomDto.builder()
-//                .name(chatRoom.getName())
-//                .roomId(chatRoom.getRoomId())
-//                .picturePath(chatRoom.getPicturePath())
-//                .build();
-//    }
 }
