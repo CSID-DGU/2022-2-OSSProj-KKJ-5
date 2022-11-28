@@ -23,6 +23,9 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
 
 server:
   port: 8084
