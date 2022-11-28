@@ -98,7 +98,7 @@ export const Chat = () => {
 
   const connectHandler = (mockId: string, mockName: string) => {
     client.current = Stomp.over(() => {
-      const sock = new SockJS("http://localhost:8084/ws-stomp");
+      const sock = new SockJS("http://localhost:8080/ws-stomp");
       return sock;
     });
     console.log(client);
@@ -113,7 +113,6 @@ export const Chat = () => {
           `/sub/chat/room/${mockId}`,
           (message) => {
             setChatMessage(JSON.parse(message.body));
-            // setChatMessageList([...chatMessageList, JSON.parse(message.body)]);
           },
           { Authorization: token ? token : "", simpDestination: mockId }
         );
