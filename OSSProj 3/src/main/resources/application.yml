@@ -27,8 +27,5 @@ spring:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
 
-server:
-  port: 8084
-
 file:
   dir: "/Users/kimjungwon/pictureStore/"
