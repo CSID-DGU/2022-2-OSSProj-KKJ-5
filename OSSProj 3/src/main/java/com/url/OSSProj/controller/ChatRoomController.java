@@ -60,11 +60,13 @@ public class ChatRoomController {
 
 //        String chatRoomName = newChatRoomDto.getName();
 
-        log.info(chatRoomName);
-        log.info(file);
+
         UploadFile uploadFile = fileStore.storeFile(file);
         String uploadFileName = uploadFile.getUploadFileName();
         String storeFileName = uploadFile.getStoreFileName();
+
+        log.info("uploadFileName = " + uploadFileName);
+        log.info("storeFileName = " + storeFileName);
 
         ChatRoomDto chatRoomDto = chatRoomRepository.createChatRoom(chatRoomName, uploadFile);
         // memberService.connectMemberAndChatRoom(chatRoomDto.getRoomId(), member.getEmail());
