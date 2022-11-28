@@ -54,14 +54,17 @@ public class ChatRoomController {
     @ResponseBody
     public ChatRoomDto createRoom(@RequestPart(value="name", required=false) String chatRoomName,
                                   @RequestPart(value="pictureFile", required=false) MultipartFile file
-            , HttpServletRequest request) throws Exception {
-//        log.info("ChatRoom Name : " + newChatRoomDto.getName());
+                                 , HttpServletRequest request) throws Exception {
+        log.info(chatRoomName);
+        log.info(file);
+
+        // 여기까지 받아옴
+
+        //        log.info("ChatRoom Name : " + newChatRoomDto.getName());
         // Member member = getMemberThroughRequest(request);
 
 //        String chatRoomName = newChatRoomDto.getName();
 
-        log.info(chatRoomName);
-        log.info(file);
         UploadFile uploadFile = fileStore.storeFile(file);
         String uploadFileName = uploadFile.getUploadFileName();
         String storeFileName = uploadFile.getStoreFileName();
