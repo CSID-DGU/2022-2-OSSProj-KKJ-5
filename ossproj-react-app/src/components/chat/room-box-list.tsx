@@ -25,7 +25,7 @@ export const RoomBoxList = forwardRef<HTMLDivElement, IRoomBoxListProps>(
                   roomName={room.name}
                   roomId={room.roomId}
                   selected={roomId}
-                  img={room.image}
+                  img={room.imageUrl}
                   user={""}
                   connectHandler={connectHandler}
                 />

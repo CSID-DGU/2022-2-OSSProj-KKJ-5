@@ -10,7 +10,7 @@ export interface IFormProps {
 export interface IRoomProps {
   name: string;
   roomId: string;
-  image: string;
+  imageUrl: string;
 }
 
 export interface IChatDetail {
