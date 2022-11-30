@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class NewChatRoomDto {
-//    private String name;
-    private MultipartFile formData;
+
+    private String name;
+    private String imageUrl;
 }
