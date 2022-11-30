@@ -102,7 +102,7 @@ export const Result = () => {
             height={"80%"}
             //  border={"1px solid black"}
           >
-            <Typography variant="body1" fontSize={"35px"}>
+            <Typography variant="body1" fontSize={"26px"}>
               {data?.content}
             </Typography>
           </Box>
