@@ -20,6 +20,10 @@ public class Url {
     @Column(nullable = false, length = 1024)
     private String content;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "VISUALANAIYZE_ID")
+    private VisualAnalyze visualAnalyze;
+
     @ManyToOne
     @JoinColumn(name="MEMBER_ID")
     private Member member;

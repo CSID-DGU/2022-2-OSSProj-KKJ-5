@@ -6,4 +6,5 @@ import lombok.Data;
 public class UrlResponseDto {
     private String url;
     private String content;
+    private String wordCloudPath;
 }

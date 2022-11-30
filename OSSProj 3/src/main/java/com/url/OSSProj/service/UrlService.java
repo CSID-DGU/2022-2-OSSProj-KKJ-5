@@ -22,6 +22,7 @@ public class UrlService {
         Url url = Url.builder()
                 .url(urlResponseDto.getUrl())
                 .content(urlResponseDto.getContent())
+                // visualAnalyze 등록해줘야함
                 .build();
         url.setMember(member);
 

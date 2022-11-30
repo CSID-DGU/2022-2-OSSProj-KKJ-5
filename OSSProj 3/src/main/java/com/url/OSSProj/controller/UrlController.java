@@ -41,7 +41,7 @@ public class UrlController {
 
     @PostConstruct
     public void initWebClient(){
-        webClient = WebClient.create("http://localhost:5000");
+        webClient = WebClient.create("http://localhost:5050");
     }
 
     private final TokenUtils tokenUtils;
