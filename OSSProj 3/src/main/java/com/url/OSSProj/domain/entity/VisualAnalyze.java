@@ -3,12 +3,14 @@ package com.url.OSSProj.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@AllArgsConstructor
 @Getter @Setter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class VisualAnalyze {
+@AllArgsConstructor
+public class VisualAnalyze  {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "VISUALANAIYZE_ID")
@@ -20,8 +22,15 @@ public class VisualAnalyze {
     @Column(nullable = false, name = "NETWORK")
     private String network;
 
-    public VisualAnalyze(String wordCloud, String network){
-        this.wordCloud = wordCloud;
-        this.network = network;
+    public static VisualAnalyze createVisualAnalyze(String wordCloudPath, String networkGraphPath){
+        VisualAnalyze visualAnalyze = new VisualAnalyze();
+        visualAnalyze.setWordCloud(wordCloudPath);
+        visualAnalyze.setNetwork(networkGraphPath);
+
+        return visualAnalyze;
     }
+
 }
+
+
+

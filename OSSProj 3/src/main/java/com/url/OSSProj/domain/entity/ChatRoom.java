@@ -33,8 +33,6 @@ public class ChatRoom implements Serializable {
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatRoomInfo> chatRooms = new ArrayList<ChatRoomInfo>();
 
-
-
     public static ChatRoom create(String name, ImageUrl imageUrl){
        return getChatRoom(name, imageUrl);
     }

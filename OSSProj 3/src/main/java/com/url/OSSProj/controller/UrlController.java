@@ -62,10 +62,13 @@ public class UrlController {
                 .bodyToMono(UrlResponseDto.class)
                 .block();
 
-        urlService.connectMemberAndUrls(member, urlResponseDto);
 
         log.info("UrlResponseDto URL : " + Objects.requireNonNull(urlResponseDto).getUrl());
         log.info("UrlResponseDto Content : " + urlResponseDto.getContent());
+        log.info("WordCloud Path : " + urlResponseDto.getWordCloudPath());
+        log.info("NetworkGraph Path : " + urlResponseDto.getNetworkGraphPath());
+
+        urlService.connectMemberAndUrls(member, urlResponseDto);
 
         return urlResponseDto;
     }

@@ -24,7 +24,7 @@ public class Url {
     @JoinColumn(name = "VISUALANAIYZE_ID")
     private VisualAnalyze visualAnalyze;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="MEMBER_ID")
     private Member member;
 
