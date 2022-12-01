@@ -27,11 +27,8 @@ spring:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
 
-<<<<<<< HEAD
 server:
   port: 8080
 
-=======
->>>>>>> ee8f89ccd243ae1900bbc2842039a561163c869d
 file:
   dir: "/Users/kimjaehan/pictureStore/"
