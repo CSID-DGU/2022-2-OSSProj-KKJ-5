@@ -15,6 +15,7 @@ export const useCreateRoom = (props: ICreateRoomProps) => {
     isSuccess,
   } = useMutation("createRoom", createRoom, {
     onSuccess: (data) => {
+      console.log(data)
       if (data) {
         console.log(data);
         user.rooms = user.rooms.concat(data);

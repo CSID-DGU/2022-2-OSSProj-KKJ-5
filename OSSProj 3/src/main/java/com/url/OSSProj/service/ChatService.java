@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.url.OSSProj.domain.dto.ChatMessage;
 import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.entity.ChatRoom;
+import com.url.OSSProj.domain.entity.ImageUrl;
 import com.url.OSSProj.domain.entity.UploadFile;
 import com.url.OSSProj.repository.ChatRepository;
 import com.url.OSSProj.repository.ChatRoomRepository;
@@ -67,8 +68,8 @@ public class ChatService {
     }
 
     @Transactional
-    public void saveChatRoom(ChatRoom chatRoom, UploadFile uploadFile) {
-        chatRoom.setUploadFile(uploadFile);
+    public void saveChatRoom(ChatRoom chatRoom, ImageUrl imageUrl) {
+        chatRoom.setImageUrl(imageUrl);
         em.persist(chatRoom);
     }
 }

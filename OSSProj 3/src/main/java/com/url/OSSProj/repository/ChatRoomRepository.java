@@ -2,6 +2,7 @@ package com.url.OSSProj.repository;
 
 import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.entity.ChatRoom;
+import com.url.OSSProj.domain.entity.ImageUrl;
 import com.url.OSSProj.domain.entity.Member;
 import com.url.OSSProj.domain.entity.UploadFile;
 import com.url.OSSProj.service.ChatService;
@@ -48,16 +49,16 @@ public class ChatRoomRepository {
     }
 
     // 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
-    public ChatRoomDto createChatRoom(String name, UploadFile uploadFile) throws MalformedURLException {
-        ChatRoom chatRoom = ChatRoom.create(name, uploadFile);
+    public ChatRoomDto createChatRoom(String name, ImageUrl imageUrl) throws MalformedURLException {
+        ChatRoom chatRoom = ChatRoom.create(name, imageUrl);
 
-        chatService.saveChatRoom(chatRoom, uploadFile);
+        chatService.saveChatRoom(chatRoom, imageUrl);
 
         hashOpsChatRoom.put(CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
         return ChatRoomDto.builder()
                 .name(chatRoom.getName())
                 .roomId(chatRoom.getRoomId())
-                .image(uploadFile)
+                .imageUrl(imageUrl.getFilePath())
                 .build();
     }
 

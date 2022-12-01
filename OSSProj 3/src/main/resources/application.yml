@@ -31,4 +31,4 @@ server:
   port: 8080
 
 file:
-  dir: "/Users/kimjaehan/pictureStore/"
+  dir: "/Users/kimjungwon/pictureStore/"
