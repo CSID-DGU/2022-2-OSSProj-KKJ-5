@@ -2,7 +2,6 @@ import { useState } from "react";
 import defaultImg from "../assets/defaultImg.png";
 
 export const useHandleImage = () => {
-  const [fileImage, setFileImage] = useState<File>();
   const [imageUrl, setImageUrl] = useState("");
 
   const saveFileImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,16 +12,13 @@ export const useHandleImage = () => {
     if (files === undefined) {
       return;
     }
-    setFileImage(files);
   };
 
   const deleteFileImage = () => {
-    setFileImage(undefined);
     setImageUrl("");
   };
 
   return {
-    fileImage,
     imageUrl,
     saveFileImage,
     deleteFileImage,

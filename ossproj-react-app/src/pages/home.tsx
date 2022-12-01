@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { UrlInput } from "../components/home/url-input";
 import { useUserState } from "../context/user-context";
 import { MenuBar } from "../components/commons/menu-bar";
+import { MainTitle } from "../components/home/main-title";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -59,14 +60,7 @@ export const Home = () => {
           alignItems={"center"}
         >
           <Bounce>
-            <Typography
-              fontFamily={"bitbit"}
-              fontSize={{ lg: "140px", md: "90px", sm: "65px", xs: "50px" }}
-              variant={"h1"}
-            >
-              {"URL SUMMARY"}
-            </Typography>
-            {/* <h1 style={{ fontSize: "130px" }}>{"URL SUMMARY"}</h1> */}
+            <MainTitle text={"URL SUMMARY"} />
           </Bounce>
         </Grid>
         {/* input grid */}

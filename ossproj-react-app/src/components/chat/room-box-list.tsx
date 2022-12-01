@@ -11,7 +11,7 @@ interface IRoomBoxListProps {
   ref: React.RefObject<HTMLDivElement>;
 }
 export const RoomBoxList = forwardRef<HTMLDivElement, IRoomBoxListProps>(
-  ({ user, roomId, connectHandler }: IRoomBoxListProps, ref) => {
+  ({ user, roomId, connectHandler, ref }) => {
     return (
       <Box
         height={{ lg: "80vh", md: "80vh", sm: "10vh", xs: "10vh" }}

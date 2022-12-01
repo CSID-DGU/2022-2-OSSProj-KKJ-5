@@ -75,14 +75,14 @@ export const Result = () => {
               height={"90%"}
               // border={"1px solid black"}
             >
-              <img src={wordcloud} width={"100%"} height={"100%"} />
+              <img src={data?.image[0]} width={"100%"} height={"100%"} />
             </Box>
             <Box
               width={{ lg: "40%", md: "40%", sm: "90%", xs: "90%" }}
               height={"90%"}
               // border={"1px solid black"}
             >
-              <img src={network} width={"100%"} height={"100%"} />
+              <img src={data?.image[1]} width={"100%"} height={"100%"} />
             </Box>
           </Box>
         </Grid>
