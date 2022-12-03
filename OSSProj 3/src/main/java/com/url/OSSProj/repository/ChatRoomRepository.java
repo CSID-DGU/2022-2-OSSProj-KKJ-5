@@ -2,17 +2,22 @@ package com.url.OSSProj.repository;
 
 import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.entity.ChatRoom;
+import com.url.OSSProj.domain.entity.ImageUrl;
+import com.url.OSSProj.domain.entity.Member;
 import com.url.OSSProj.domain.entity.UploadFile;
 import com.url.OSSProj.service.ChatService;
 import com.url.OSSProj.service.FileStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.annotation.Persistent;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.net.MalformedURLException;
 import java.util.*;
 
@@ -44,14 +49,16 @@ public class ChatRoomRepository {
     }
 
     // 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
-    public ChatRoomDto createChatRoom(String name, UploadFile uploadFile) throws MalformedURLException {
-        ChatRoom chatRoom = ChatRoom.create(name, uploadFile);
-        chatService.saveChatRoom(chatRoom);
+    public ChatRoomDto createChatRoom(String name, ImageUrl imageUrl) throws MalformedURLException {
+        ChatRoom chatRoom = ChatRoom.create(name, imageUrl);
+
+        chatService.saveChatRoom(chatRoom, imageUrl);
+
         hashOpsChatRoom.put(CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
         return ChatRoomDto.builder()
                 .name(chatRoom.getName())
                 .roomId(chatRoom.getRoomId())
-                .image((Resource) new UrlResource("file:"+fileStore.getFullPath(chatRoom.getUploadFile().getStoreFileName())))
+                .imageUrl(imageUrl.getFilePath())
                 .build();
     }
 

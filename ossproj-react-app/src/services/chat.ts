@@ -1,17 +1,11 @@
 import axios from "axios";
 import { ICreateRoomProps, IRoomProps } from "../interface/chat";
 
-export const createRoom = (formData: FormData) => {
+export const createRoom = ({ name, imageUrl }: ICreateRoomProps) => {
   const url = `/chat/room`;
-  console.log(formData.get("name"));
-  console.log(formData.get("pictureFile"));
-  return axios
-    .post<IRoomProps>(url, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    })
-    .then((res) => {
-      return res.data;
-    });
+  return axios.post<IRoomProps>(url, { name, imageUrl }).then((res) => {
+    return res.data;
+  });
 };
 
 export const getRoomList = () => {

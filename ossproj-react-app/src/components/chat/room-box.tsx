@@ -25,6 +25,7 @@ export const RoomBox = ({
         padding: "10px",
         margin: "10px",
         backgroundColor: background,
+        width: { lg: "90%", md: "90%", sm: "150px", xs: "150px" },
       }}
       onClick={() => connectHandler(roomId, roomName)}
     >

@@ -1,6 +1,7 @@
 export interface ICreateRoomProps {
   name: string;
-  pictureFile: File;
+  imageUrl: string;
+  // pictureFile: File;
 }
 export interface IFormProps {
   name: string;
@@ -9,7 +10,7 @@ export interface IFormProps {
 export interface IRoomProps {
   name: string;
   roomId: string;
-  image: string;
+  imageUrl: string;
 }
 
 export interface IChatDetail {

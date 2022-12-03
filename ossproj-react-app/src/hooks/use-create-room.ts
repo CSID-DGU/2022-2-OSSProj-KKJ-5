@@ -5,9 +5,9 @@ import { createRoom } from "../services/chat";
 
 export const useCreateRoom = (props: ICreateRoomProps) => {
   const user = useUserState();
-  const formData = new FormData();
-  formData.append("pictureFile", props.pictureFile);
-  formData.append("name", props.name);
+  // const formData = new FormData();
+  // formData.append("pictureFile", props.pictureFile);
+  // formData.append("name", props.name);
   const {
     mutate: createroom,
     data,
@@ -15,6 +15,7 @@ export const useCreateRoom = (props: ICreateRoomProps) => {
     isSuccess,
   } = useMutation("createRoom", createRoom, {
     onSuccess: (data) => {
+      console.log(data)
       if (data) {
         console.log(data);
         user.rooms = user.rooms.concat(data);
@@ -25,7 +26,7 @@ export const useCreateRoom = (props: ICreateRoomProps) => {
     },
   });
   const createRoomHandler = () => {
-    createroom(formData);
+    createroom(props);
   };
   return { createRoomHandler, data, isLoading, isSuccess };
 };

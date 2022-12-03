@@ -27,23 +27,21 @@ public class ChatRoom implements Serializable {
     private String name;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "uploadfile_id")
-    private UploadFile uploadFile;
+    @JoinColumn(name = "IMAGEURL_ID")
+    private ImageUrl imageUrl;
 
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatRoomInfo> chatRooms = new ArrayList<ChatRoomInfo>();
 
-
-
-    public static ChatRoom create(String name, UploadFile uploadFile){
-       return getChatRoom(name, uploadFile);
+    public static ChatRoom create(String name, ImageUrl imageUrl){
+       return getChatRoom(name, imageUrl);
     }
 
-    private static ChatRoom getChatRoom(String name, UploadFile uploadFile) {
+    private static ChatRoom getChatRoom(String name, ImageUrl imageUrl) {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.roomId = UUID.randomUUID().toString();
         chatRoom.name = name;
-        chatRoom.uploadFile = uploadFile;
+        chatRoom.imageUrl = imageUrl;
 
         return chatRoom;
     }

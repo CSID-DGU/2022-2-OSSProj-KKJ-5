@@ -23,9 +23,12 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
 
 server:
-  port: 8084
+  port: 8080
 
 file:
   dir: "/Users/kimjungwon/pictureStore/"

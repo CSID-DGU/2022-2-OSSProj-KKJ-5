@@ -8,26 +8,29 @@ interface IRoomBoxListProps {
   user: IUser | undefined;
   roomId: string;
   connectHandler: (mockName: string, mockRoomId: string) => void;
-  ref: React.RefObject<HTMLDivElement>;
 }
 export const RoomBoxList = forwardRef<HTMLDivElement, IRoomBoxListProps>(
-  ({ user, roomId, connectHandler }: IRoomBoxListProps, ref) => {
+  (props, ref) => {
     return (
       <Box
         height={{ lg: "80vh", md: "80vh", sm: "10vh", xs: "10vh" }}
-        sx={{ overflowY: "scroll" }}
+        sx={{
+          overflowY: "scroll",
+          display: { lg: "block", md: "block", sm: "flex", xs: "flex" },
+        }}
+        width={{ lg: "95%", md: "90%", sm: "600px", xs: "300px" }}
       >
-        {user &&
-          user.rooms.map((room) => {
+        {props.user &&
+          props.user.rooms.map((room) => {
             return (
               <Fade direction={"up"}>
                 <RoomBox
                   roomName={room.name}
                   roomId={room.roomId}
-                  selected={roomId}
-                  img={room.image}
+                  selected={props.roomId}
+                  img={room.imageUrl}
                   user={""}
-                  connectHandler={connectHandler}
+                  connectHandler={props.connectHandler}
                 />
               </Fade>
             );

@@ -3,32 +3,56 @@ package com.url.OSSProj.controller;
 import com.url.OSSProj.domain.constants.AuthConstants;
 import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.dto.NewChatRoomDto;
+import com.url.OSSProj.domain.dto.ResponseChatRoomDto;
+import com.url.OSSProj.domain.entity.ChatRoom;
+import com.url.OSSProj.domain.entity.ImageUrl;
 import com.url.OSSProj.domain.entity.UploadFile;
 import com.url.OSSProj.domain.entity.Member;
+import com.url.OSSProj.repository.ChatRepository;
 import com.url.OSSProj.repository.ChatRoomRepository;
 import com.url.OSSProj.repository.FileRepository;
+import com.url.OSSProj.repository.ImageUrlRepository;
+import com.url.OSSProj.service.ChatService;
 import com.url.OSSProj.service.FileStore;
 import com.url.OSSProj.service.MemberService;
 import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.rowset.serial.SerialException;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.Optional;
 
 @Log4j2
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/chat")
-public class ChatRoomController {
+public class ChatRoomController{
 
     private final TokenUtils tokenUtils;
     private final FileRepository fileRepository;
+    private final ChatService chatService;
+    private final ServletContext servletContext;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatRepository chatRepository;
+    private final ImageUrlRepository imageUrlRepository;
     private final MemberService memberService;
     private final FileStore fileStore;
 
@@ -50,25 +74,68 @@ public class ChatRoomController {
 //        return all;
 //    }
 
-    @PostMapping(value="/room", consumes = {"multipart/form-data" })
+//    @ResponseBody
+//    @GetMapping("/roomImage/{id}")
+//    public UrlResource getImage(@PathVariable Long id) throws MalformedURLException {
+//        ChatRoom chatRoom = chatRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("No Such ChatRoom"));
+//
+//        log.info("### ChatRoom GET IMAGE ###");
+//        log.info("ChatRoom Name : " + chatRoom.getName());
+//        log.info("ChatRoom UploadFile Origin Name : " + chatRoom.getUploadFile().getUploadFileName());
+//        log.info("ChatRoom UploadFile Store Name : " + chatRoom.getUploadFile().getStoreFileName());
+//
+//        return new UrlResource("file:" + fileStore.getFullPath(chatRoom.getUploadFile().getStoreFileName()));
+//    }
+
+//    @PostMapping(value="/room", consumes = {"multipart/form-data" })
+//    @ResponseBody
+//    public ResponseChatRoomDto createRoom(@RequestPart(value="name", required=false) String chatRoomName,
+//                                                          @RequestPart(value="pictureFile", required=false) MultipartFile file,
+//                                                          HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        Member member = getMemberThroughRequest(request);
+//
+//        UploadFile uploadFile = fileStore.storeFile(file);
+//
+//        fileRepository.save(uploadFile);
+//
+//        String uploadFileName = uploadFile.getUploadFileName();
+//        String storeFileName = uploadFile.getStoreFileName();
+//
+//        log.info("UploadFile Id : " + uploadFile.getId());
+//        log.info("uploadFileName = " + uploadFileName);
+//        log.info("storeFileName = " + storeFileName);
+//
+//        ChatRoomDto chatRoomDto = chatRoomRepository.createChatRoom(chatRoomName, uploadFile);
+//        memberService.connectMemberAndChatRoom(chatRoomDto.getRoomId(), member.getEmail());
+//
+//        return ResponseChatRoomDto.builder()
+//                .roomId(chatRoomDto.getRoomId())
+//                .name(chatRoomDto.getName())
+//                .image(new UrlResource("file:"+fileStore.getFullPath(chatRoomDto.getImage().getStoreFileName())))
+//                .build();
+//    }
+
+    @PostMapping("/room")
     @ResponseBody
-    public ChatRoomDto createRoom(@RequestPart(value="name", required=false) String chatRoomName,
-                                  @RequestPart(value="pictureFile", required=false) MultipartFile file
-            , HttpServletRequest request) throws Exception {
-//        log.info("ChatRoom Name : " + newChatRoomDto.getName());
-        // Member member = getMemberThroughRequest(request);
+    public ChatRoomDto createRoom(@RequestBody NewChatRoomDto newChatRoomDto, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        log.info("채팅방 이름 : " + newChatRoomDto.getName());
+        log.info("채팅방 사진 경로 : " + newChatRoomDto.getImageUrl());
 
-//        String chatRoomName = newChatRoomDto.getName();
+        Member member = getMemberThroughRequest(request);
+        ImageUrl imageUrl = ImageUrl.builder()
+                .filePath(newChatRoomDto.getImageUrl())
+                .build();
+        imageUrlRepository.save(imageUrl);
 
-        log.info(chatRoomName);
-        log.info(file);
-        UploadFile uploadFile = fileStore.storeFile(file);
-        String uploadFileName = uploadFile.getUploadFileName();
-        String storeFileName = uploadFile.getStoreFileName();
+        ChatRoomDto chatRoomDto = chatRoomRepository.createChatRoom(newChatRoomDto.getName(), imageUrl);
+        memberService.connectMemberAndChatRoom(chatRoomDto.getRoomId(), member.getEmail());
 
-        ChatRoomDto chatRoomDto = chatRoomRepository.createChatRoom(chatRoomName, uploadFile);
-        // memberService.connectMemberAndChatRoom(chatRoomDto.getRoomId(), member.getEmail());
-        return chatRoomDto;
+        return ChatRoomDto.builder()
+                .name(chatRoomDto.getName())
+                .roomId(chatRoomDto.getRoomId())
+                .imageUrl(chatRoomDto.getImageUrl())
+                .build();
     }
 
     private Member getMemberThroughRequest(HttpServletRequest request) {
@@ -79,23 +146,4 @@ public class ChatRoomController {
         return memberService.findByEmail(email);
     }
 
-//    @GetMapping("/room/enter/{roomId}")
-//    public String roomDetail(HttpServletRequest request, HttpServletResponse response, @PathVariable String roomId) throws IOException {
-//        log.info("roomId : " + roomId);
-//        response.sendRedirect("/member/signUp");
-//
-//        return "hello";
-//    }
-
-//    @GetMapping("/room/{roomId}")
-//    @ResponseBody
-//    public ChatRoomDto roomInfo(@PathVariable String roomId){
-//        ChatRoom chatRoom = chatRoomRepository.findRoomById(roomId);
-//
-//        return ChatRoomDto.builder()
-//                .name(chatRoom.getName())
-//                .roomId(chatRoom.getRoomId())
-//                .picturePath(chatRoom.getPicturePath())
-//                .build();
-//    }
 }

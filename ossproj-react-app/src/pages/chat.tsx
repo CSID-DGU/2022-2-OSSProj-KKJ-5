@@ -19,19 +19,15 @@ import axios from "axios";
 import { MenuBar } from "../components/commons/menu-bar";
 import { useScrollChat } from "../hooks/use-scroll-chat";
 import { useScrollList } from "../hooks/use-scroll-list";
+import { SubTitle } from "../components/chat/sub-title";
+import { ChatArea } from "../components/chat/chat-area";
+import { DefaultChatArea } from "../components/chat/default-chat-area";
 
 export const Chat = () => {
   const client = useRef<CompatClient>();
   const token = axios.defaults.headers.common["Authorization"]?.toString();
   const user = useUserState();
-  const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([
-    {
-      type: "ENTER",
-      roomId: "sdf",
-      sender: "scdf",
-      message: "",
-    },
-  ]);
+  const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([]);
   const [roomName, setRoomName] = useState("");
   const [roomId, setRoomId] = useState("");
   const [chatName, setChatName] = useState("");
@@ -51,13 +47,13 @@ export const Chat = () => {
     setOpen(true);
   };
 
-  const { imageUrl, fileImage, saveFileImage, deleteFileImage } =
-    useHandleImage();
+  const { imageUrl, saveFileImage, deleteFileImage } = useHandleImage();
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } =
     useHandleInputMessage();
   const { createRoomHandler, data, isLoading, isSuccess } = useCreateRoom({
     name: roomName,
-    pictureFile: fileImage!,
+    imageUrl: imageUrl,
+    // pictureFile: fileImage!,
   });
 
   const { refreshHandler } = useRefresh();
@@ -88,7 +84,7 @@ export const Chat = () => {
       {},
       JSON.stringify({
         type: "TALK",
-        roomId: 123,
+        roomId: roomId,
         sender: user.name,
         message: inputMessage,
       })
@@ -101,20 +97,17 @@ export const Chat = () => {
       const sock = new SockJS("http://localhost:8080/ws-stomp");
       return sock;
     });
-    console.log(client);
-    console.log(mockId);
-    console.log(chatMessageList);
     client.current.connect(
       {
         Authorization: token,
       },
-      () => {
+      // () => {
+      (messageList: IChatDetail[]) => {
+        setChatMessageList(messageList);
         client.current!.subscribe(
-          // `/sub/chat/room/${mockId}`,
-          `/sub/chat/room/123`,
+          `/sub/chat/room/${mockId}`,
           (message) => {
             setChatMessage(JSON.parse(message.body));
-            // setChatMessageList([...chatMessageList, JSON.parse(message.body)]);
           },
           { Authorization: token ? token : "", simpDestination: mockId }
         );
@@ -140,7 +133,6 @@ export const Chat = () => {
       {/* 메뉴 grid */}
       <MenuBar />
       {/* room list grid */}
-      {/* todo reverse list */}
       <Grid
         item
         container
@@ -161,9 +153,7 @@ export const Chat = () => {
           padding={"0 30px"}
         >
           <Box height={"100%"}>
-            <Typography variant={"h3"} fontFamily={"bitbit"}>
-              {"Chat"}
-            </Typography>
+            <SubTitle text={"Chat"} />
             <RoomBoxList
               user={user}
               roomId={roomId}
@@ -174,7 +164,6 @@ export const Chat = () => {
         </Grid>
         <Grid item lg={2}>
           <FloatingButton handleOpen={handleOpen} />
-          {/* <DevideButton /> */}
           <SearchButton />
         </Grid>
       </Grid>
@@ -199,17 +188,11 @@ export const Chat = () => {
         {isChat ? (
           <Grid item container direction={"column"} spacing={1}>
             {/* message Grid */}
-            <Grid item lg={11} md={11} sm={10} xs={10}>
-              {chatName}
-              <Box
-                border={`1px solid black`}
-                height={`75vh`}
-                sx={{ overflowY: "scroll" }}
-              >
-                <ChatMessageList chatMessages={chatMessageList} />
-                <div ref={chatRef}></div>
-              </Box>
-            </Grid>
+            <ChatArea
+              chatName={chatName}
+              chatMessages={chatMessageList}
+              ref={chatRef}
+            />
             {/* input grid */}
             <Grid item lg={1} md={1} sm={1} xs={1}>
               <MessageInput
@@ -221,9 +204,7 @@ export const Chat = () => {
             </Grid>
           </Grid>
         ) : (
-          <Box width={"100%"} height={"100%"}>
-            {"chatting Room"}
-          </Box>
+          <DefaultChatArea />
         )}
       </Grid>
       <CreateRoomDialog
