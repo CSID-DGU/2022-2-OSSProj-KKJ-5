@@ -101,6 +101,7 @@ export const Chat = () => {
       {
         Authorization: token,
       },
+      // () => {
       (messageList: IChatDetail[]) => {
         setChatMessageList(messageList);
         client.current!.subscribe(
