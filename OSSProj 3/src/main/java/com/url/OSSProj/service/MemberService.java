@@ -1,5 +1,6 @@
 package com.url.OSSProj.service;
 
+import com.url.OSSProj.domain.constants.AuthConstants;
 import com.url.OSSProj.domain.dto.MemberDto;
 import com.url.OSSProj.domain.dto.SignUpDto;
 import com.url.OSSProj.domain.entity.ChatRoom;
@@ -9,6 +10,7 @@ import com.url.OSSProj.domain.enums.UserRole;
 import com.url.OSSProj.repository.ChatRepository;
 import com.url.OSSProj.repository.ChatRoomRepository;
 import com.url.OSSProj.repository.MemberRepository;
+import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -29,6 +32,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRepository chatRepository;
+    private final TokenUtils tokenUtils;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
@@ -74,6 +78,14 @@ public class MemberService {
         chatRoom.getChatRooms().add(chatRoomInfo);
 
         return member;
+    }
+
+    public Member getMemberThroughRequest(HttpServletRequest request) {
+        String author = request.getHeader(AuthConstants.AUTHORIZATION_HEADER);
+        String token = author.substring(7, author.length());
+        String email = tokenUtils.getUid(token);
+
+        return this.findByEmail(email);
     }
 
 }

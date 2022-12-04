@@ -1,7 +1,12 @@
 package com.url.OSSProj.controller;
 
+import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.dto.MemberDto;
 import com.url.OSSProj.domain.dto.SignUpDto;
+import com.url.OSSProj.domain.dto.UrlResponseDto;
+import com.url.OSSProj.domain.entity.ChatRoomInfo;
+import com.url.OSSProj.domain.entity.Member;
+import com.url.OSSProj.domain.entity.Url;
 import com.url.OSSProj.service.MemberService;
 import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -38,4 +45,43 @@ public class MemberController {
             return ResponseEntity.ok(memberDto);
         }
     }
+
+    @GetMapping("/chatrooms")
+    public List<ChatRoomDto> roomList(HttpServletRequest request, HttpServletResponse response){
+        Member member = memberService.getMemberThroughRequest(request);
+        ArrayList<ChatRoomDto> rooms = new ArrayList<>();
+        List<ChatRoomInfo> memberChatRooms = member.getMemberChatRooms();
+        for (ChatRoomInfo memberChatRoom : memberChatRooms) {
+            rooms.add(ChatRoomDto.builder()
+                    .roomId(memberChatRoom.getChatRoom().getRoomId())
+                    .name(memberChatRoom.getChatRoom().getName())
+                    .imageUrl(memberChatRoom.getChatRoom().getImageUrl().getFilePath())
+                    .build());
+        }
+        return rooms;
+    }
+
+    @GetMapping("/urls")
+    public List<UrlResponseDto> urlResult(HttpServletRequest request, HttpServletResponse response){
+        Member member = memberService.getMemberThroughRequest(request);
+        ArrayList<UrlResponseDto> urls = new ArrayList<>();
+
+        List<Url> memberUrls = member.getUrls();
+        log.info("여기까지는 온당!");
+        for (Url memberUrl : memberUrls) {
+            urls.add(getUrlResponseDto(memberUrl));
+            log.info("-----> " + memberUrl.getUrl());
+        }
+        return urls;
+    }
+
+    private UrlResponseDto getUrlResponseDto(Url url){
+        UrlResponseDto urlResponseDto = new UrlResponseDto();
+        urlResponseDto.setUrl(url.getUrl());
+        urlResponseDto.setContent(url.getContent());
+        urlResponseDto.setWordCloudPath(url.getVisualAnalyze().getWordCloud());
+        urlResponseDto.setNetworkGraphPath(url.getVisualAnalyze().getNetwork());
+        return urlResponseDto;
+    }
+
 }
