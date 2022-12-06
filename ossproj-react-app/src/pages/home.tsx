@@ -1,5 +1,5 @@
-import { Box, Grid, Typography } from "@mui/material";
-import { Fade, Bounce } from "react-awesome-reveal";
+import { Box, Grid } from "@mui/material";
+import { Bounce } from "react-awesome-reveal";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UrlInput } from "../components/home/url-input";
@@ -46,7 +46,6 @@ export const Home = () => {
         container
         direction={"column"}
         border={"1px solid black"}
-        borderRadius={"0 30px 30px 0"}
       >
         {/* title grid */}
         <Grid

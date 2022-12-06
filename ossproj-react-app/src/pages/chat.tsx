@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { MessageInput } from "../components/chat/message-input";
 import { useCreateRoom } from "../hooks/use-create-room";
@@ -8,7 +8,6 @@ import defaultImg from "../assets/defaultImg.png";
 import { IChatDetail } from "../interface/chat";
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import { useRefresh } from "../hooks/use-refresing";
-import { ChatMessageList } from "../components/chat/chat-message-list";
 import { useHandleInputMessage } from "../hooks/use-handle-message";
 import { useHandleImage } from "../hooks/use-handle-image";
 import { useUserState } from "../context/user-context";
@@ -101,9 +100,9 @@ export const Chat = () => {
       {
         Authorization: token,
       },
-      // () => {
-      (messageList: IChatDetail[]) => {
-        setChatMessageList(messageList);
+      () => {
+        // (messageList: IChatDetail[]) => {
+        // setChatMessageList(messageList);
         client.current!.subscribe(
           `/sub/chat/room/${mockId}`,
           (message) => {

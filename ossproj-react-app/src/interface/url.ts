@@ -1,7 +1,8 @@
 export interface IUrlResponse {
   url: string;
   content: string;
-  image: string[];
+  wordCloudPath: string;
+  networkGraphPath: string;
 }
 
 export interface IUrlProps {

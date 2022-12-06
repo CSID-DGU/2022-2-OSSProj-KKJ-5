@@ -3,7 +3,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
-// import { useSignup } from '../hooks/use-signup';
 import { SignUpInputGroup } from "../components/signup/signup-input-group";
 import { useNavigate } from "react-router-dom";
 import { checkEmailValid } from "../hooks/check-email-valid";

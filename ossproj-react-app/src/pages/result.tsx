@@ -3,8 +3,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { MenuBar } from "../components/commons/menu-bar";
 import { useSummaryContent } from "../hooks/use-summary-url";
-import wordcloud from "../assets/wordcloud.png";
-import network from "../assets/network.png";
+
 export const Result = () => {
   const { search } = useLocation();
   const query = search.split("url=");
@@ -86,10 +85,11 @@ export const Result = () => {
               <img
                 src={
                   // wordcloud
-                  data?.image[0]
+                  data?.wordCloudPath
                 }
                 width={"100%"}
                 height={"100%"}
+                alt={"src error"}
               />
             </Box>
             <Box
@@ -99,11 +99,12 @@ export const Result = () => {
             >
               <img
                 src={
-                  data?.image[1]
+                  data?.networkGraphPath
                   // network
                 }
                 width={"100%"}
                 height={"100%"}
+                alt={"src error"}
               />
             </Box>
           </Box>
