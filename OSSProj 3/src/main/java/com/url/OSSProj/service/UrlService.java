@@ -32,9 +32,9 @@ public class UrlService {
                 .url(urlResponseDto.getUrl())
                 .content(urlResponseDto.getContent())
                 .visualAnalyze(visualAnalyze)
+                .member(member)
                 .build();
 
-        url.setMember(member);
         urlRepository.save(url);
 
         member.getUrls().add(url);

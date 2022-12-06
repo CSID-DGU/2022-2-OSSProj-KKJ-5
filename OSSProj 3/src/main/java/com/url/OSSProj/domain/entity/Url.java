@@ -3,18 +3,20 @@ package com.url.OSSProj.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor
 @Getter @Setter
-public class Url {
+public class Url implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "URL_ID")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1024)
     private String url;
 
     @Column(nullable = false, length = 1024)
@@ -25,7 +27,7 @@ public class Url {
     private VisualAnalyze visualAnalyze;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="MEMBER_ID")
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
 }
