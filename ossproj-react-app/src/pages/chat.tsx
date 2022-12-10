@@ -10,7 +10,7 @@ import { CompatClient, Stomp } from "@stomp/stompjs";
 import { useRefresh } from "../hooks/use-refresing";
 import { useHandleInputMessage } from "../hooks/use-handle-message";
 import { useHandleImage } from "../hooks/use-handle-image";
-import { useUserState } from "../context/user-context";
+import { useUserDispatch, useUserState } from "../context/user-context";
 import { RoomBoxList } from "../components/chat/room-box-list";
 import { SearchButton } from "../components/chat/search-button";
 import SockJS from "sockjs-client";
@@ -34,6 +34,8 @@ export const Chat = () => {
   const [open, setOpen] = useState(false);
   const [isChat, setIsChat] = useState(false);
   const [chatMessage, setChatMessage] = useState<IChatDetail>();
+  const dispatch = useUserDispatch();
+
   const handleDeleteRoomName = () => {
     setRoomName("");
   };
@@ -46,25 +48,27 @@ export const Chat = () => {
   const handleOpen = () => {
     setOpen(true);
   };
-
   const { imageUrl, saveFileImage, deleteFileImage } = useHandleImage();
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } =
     useHandleInputMessage();
-  const { createRoomHandler, data, isLoading, isSuccess } = useCreateRoom({
+  const { createRoomHandler, data, isSuccess } = useCreateRoom({
     name: roomName,
     imageUrl: imageUrl,
     // pictureFile: fileImage!,
   });
 
-  const { roomList, updateRoomList } = useFetchRooms(); // roomlist
+  const { roomList, isLoadingRoom, updateRoomList, isFetch } = useFetchRooms(); // roomlist
   const { refreshHandler } = useRefresh();
   const { chatRef, scrollToChatBottom } = useScrollChat();
   const { listRef, scrollToListBottom } = useScrollList();
 
-  console.log(roomList);
   useEffect(() => {
-    updateRoomList();
-  }, []);
+    dispatch({
+      type: "SET_ROOMS",
+      rooms: roomList ? roomList : [],
+    });
+  }, [isLoadingRoom]);
+
   useEffect(() => {
     scrollToChatBottom();
   }, [chatMessageList]);
