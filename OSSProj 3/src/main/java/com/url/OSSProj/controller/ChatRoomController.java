@@ -38,6 +38,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Log4j2
@@ -56,23 +58,23 @@ public class ChatRoomController{
     private final MemberService memberService;
     private final FileStore fileStore;
 
-//    @GetMapping("/rooms")
-//    @ResponseBody
-//    public List<ChatRoomDto> room(){
-//        List<ChatRoom> allRoom = chatRoomRepository.findAllRoom();
-//        List<ChatRoomDto> all = new ArrayList<>();
-//        for (ChatRoom chatRoom : allRoom) {
-//            ChatRoomDto chatRoomDto = ChatRoomDto.builder()
-//                    .name(chatRoom.getName())
-//                    .roomId(chatRoom.getRoomId())
-//                    .picturePath(chatRoom.getPicturePath())
-//                    .build();
-//
-//            all.add(chatRoomDto);
-//        }
-//
-//        return all;
-//    }
+    @GetMapping("/rooms")
+    @ResponseBody
+    public List<ChatRoomDto> room(){
+        List<ChatRoom> allRoom = chatRoomRepository.findAllRoom();
+        List<ChatRoomDto> all = new ArrayList<>();
+        for (ChatRoom chatRoom : allRoom) {
+            ChatRoomDto chatRoomDto = ChatRoomDto.builder()
+                    .name(chatRoom.getName())
+                    .roomId(chatRoom.getRoomId())
+                    .imageUrl(chatRoom.getImageUrl().getFilePath())
+                    .build();
+
+            all.add(chatRoomDto);
+        }
+
+        return all;
+    }
 
 //    @ResponseBody
 //    @GetMapping("/roomImage/{id}")
