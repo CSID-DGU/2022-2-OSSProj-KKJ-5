@@ -13,7 +13,11 @@ export const useSummaryContent = (props: IUrlProps) => {
     isSuccess,
   } = useMutation("summary", summaryContent, {
     onSuccess: () => {
-      console.log(data);
+      
+      console.log(data?.content);
+      console.log(data?.url);
+      console.log(data?.wordCloudPath);
+      console.log(data?.networkGraphPath);
     },
     onError: (e) => {
       console.log(e);

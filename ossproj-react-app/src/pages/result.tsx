@@ -14,6 +14,7 @@ export const Result = () => {
     summaryHandler();
   }, []);
 
+  console.log(data?.wordCloudPath)
   return (
     <Grid
       container
@@ -83,10 +84,11 @@ export const Result = () => {
               // border={"1px solid black"}
             >
               <img
-                src={
+                src=
                   // wordcloud
-                  data?.wordCloudPath
-                }
+                  "/Users/kimjungwon/15c69664-784e-11ed-88ab-06c7fa0ca82e.png"
+                  // data?.wordCloudPath
+                
                 width={"100%"}
                 height={"100%"}
                 alt={"src error"}
