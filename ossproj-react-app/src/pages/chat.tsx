@@ -10,7 +10,7 @@ import { CompatClient, Stomp } from "@stomp/stompjs";
 import { useRefresh } from "../hooks/use-refresing";
 import { useHandleInputMessage } from "../hooks/use-handle-message";
 import { useHandleImage } from "../hooks/use-handle-image";
-import { useUserState } from "../context/user-context";
+import { useUserDispatch, useUserState } from "../context/user-context";
 import { RoomBoxList } from "../components/chat/room-box-list";
 import { SearchButton } from "../components/chat/search-button";
 import SockJS from "sockjs-client";
@@ -21,6 +21,7 @@ import { useScrollList } from "../hooks/use-scroll-list";
 import { SubTitle } from "../components/chat/sub-title";
 import { ChatArea } from "../components/chat/chat-area";
 import { DefaultChatArea } from "../components/chat/default-chat-area";
+import { useFetchRooms } from "../hooks/use-fetch-rooms";
 
 export const Chat = () => {
   const client = useRef<CompatClient>();
@@ -33,6 +34,8 @@ export const Chat = () => {
   const [open, setOpen] = useState(false);
   const [isChat, setIsChat] = useState(false);
   const [chatMessage, setChatMessage] = useState<IChatDetail>();
+  const dispatch = useUserDispatch();
+
   const handleDeleteRoomName = () => {
     setRoomName("");
   };
@@ -45,19 +48,26 @@ export const Chat = () => {
   const handleOpen = () => {
     setOpen(true);
   };
-
   const { imageUrl, saveFileImage, deleteFileImage } = useHandleImage();
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } =
     useHandleInputMessage();
-  const { createRoomHandler, data, isLoading, isSuccess } = useCreateRoom({
+  const { createRoomHandler, data, isSuccess } = useCreateRoom({
     name: roomName,
     imageUrl: imageUrl,
     // pictureFile: fileImage!,
   });
 
+  const { roomList, isLoadingRoom, updateRoomList, isFetch } = useFetchRooms(); // roomlist
   const { refreshHandler } = useRefresh();
   const { chatRef, scrollToChatBottom } = useScrollChat();
   const { listRef, scrollToListBottom } = useScrollList();
+
+  useEffect(() => {
+    dispatch({
+      type: "SET_ROOMS",
+      rooms: roomList ? roomList : [],
+    });
+  }, [isLoadingRoom]);
 
   useEffect(() => {
     scrollToChatBottom();
@@ -96,13 +106,14 @@ export const Chat = () => {
       const sock = new SockJS("http://localhost:8080/ws-stomp");
       return sock;
     });
+    setChatMessageList([]);
     client.current.connect(
       {
         Authorization: token,
       },
       () => {
         // (messageList: IChatDetail[]) => {
-        // setChatMessageList(messageList);
+
         client.current!.subscribe(
           `/sub/chat/room/${mockId}`,
           (message) => {

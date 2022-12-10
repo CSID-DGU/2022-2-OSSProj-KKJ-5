@@ -3,8 +3,6 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { MenuBar } from "../components/commons/menu-bar";
 import { useSummaryContent } from "../hooks/use-summary-url";
-import wordCloud from "../assets/wordcloud.png";
-import cors from "/Users/kimjaehan/cors.png";
 import { useRefresh } from "../hooks/use-refresing";
 export const Result = () => {
   const { search } = useLocation();
@@ -20,7 +18,7 @@ export const Result = () => {
   useEffect(() => {
     refreshHandler();
   }, []);
-console.log(data?.wordCloudPath)
+  console.log(data?.wordCloudPath);
 
   return (
     <Grid
@@ -91,9 +89,7 @@ console.log(data?.wordCloudPath)
               // border={"1px solid black"}
             >
               <img
-                // src={data?.wordCloudPath}
-                src={
-                  data?.wordCloudPath}
+                src={data?.wordCloudPath}
                 width={"100%"}
                 height={"100%"}
                 alt={"src error"}
@@ -106,7 +102,7 @@ console.log(data?.wordCloudPath)
             >
               <img
                 src={
-data?.networkGraphPath
+                  data?.networkGraphPath
                   // network
                 }
                 width={"100%"}

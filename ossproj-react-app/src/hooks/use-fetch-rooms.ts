@@ -1,13 +1,27 @@
 import { useQuery } from "react-query";
+import { useUserState } from "../context/user-context";
 import { getRoomList } from "../services/chat";
 
 export const useFetchRooms = () => {
-  const { data, isLoading, refetch } = useQuery(`rooms`, async () => {
-    const res = await getRoomList();
-    const roomList = res;
+  const user = useUserState();
+  const { data, isLoading, refetch, isSuccess } = useQuery(
+    `rooms`,
+    async () => {
+      const res = await getRoomList();
+      const roomList = res;
+      // user.rooms = user.rooms.concat(res ? res : []);
+      return roomList;
+    }
+  );
 
-    return roomList;
-  });
-
-  return { roomList: data, isLoadingRoom: isLoading, updateRoomList: refetch };
+  const handleConcatList = () => {
+    refetch();
+  };
+  return {
+    roomList: data,
+    isLoadingRoom: isLoading,
+    isFetch: isSuccess,
+    updateRoomList: refetch,
+    handleConcatList,
+  };
 };
