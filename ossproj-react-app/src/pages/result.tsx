@@ -84,7 +84,8 @@ export const Result = () => {
               // border={"1px solid black"}
             >
               <img
-                src={data?.wordCloudPath}
+                src={data?.wordCloudPath
+                }
                 width={"100%"}
                 height={"100%"}
                 alt={"src error"}

@@ -21,6 +21,7 @@ import { useScrollList } from "../hooks/use-scroll-list";
 import { SubTitle } from "../components/chat/sub-title";
 import { ChatArea } from "../components/chat/chat-area";
 import { DefaultChatArea } from "../components/chat/default-chat-area";
+import { useFetchRooms } from "../hooks/use-fetch-rooms";
 
 export const Chat = () => {
   const client = useRef<CompatClient>();
@@ -55,10 +56,15 @@ export const Chat = () => {
     // pictureFile: fileImage!,
   });
 
+  const { roomList, updateRoomList } = useFetchRooms(); // roomlist
   const { refreshHandler } = useRefresh();
   const { chatRef, scrollToChatBottom } = useScrollChat();
   const { listRef, scrollToListBottom } = useScrollList();
 
+  console.log(roomList);
+  useEffect(() => {
+    updateRoomList();
+  }, []);
   useEffect(() => {
     scrollToChatBottom();
   }, [chatMessageList]);
@@ -96,13 +102,14 @@ export const Chat = () => {
       const sock = new SockJS("http://localhost:8080/ws-stomp");
       return sock;
     });
+    setChatMessageList([]);
     client.current.connect(
       {
         Authorization: token,
       },
       () => {
         // (messageList: IChatDetail[]) => {
-        // setChatMessageList(messageList);
+
         client.current!.subscribe(
           `/sub/chat/room/${mockId}`,
           (message) => {
