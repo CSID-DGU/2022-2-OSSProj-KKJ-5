@@ -10,6 +10,7 @@ import "./App.css";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Result } from "./pages/result";
+import { Mypage } from "./pages/mypage";
 const queryClient = new QueryClient();
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/chat" element={<Chat />} />
                 <Route path="/result" element={<Result />} />
+                <Route path="/mypage" element={<Mypage />} />
               </Routes>
             </QueryClientProvider>
           </UserProvider>
