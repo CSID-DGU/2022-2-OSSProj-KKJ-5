@@ -1,11 +1,12 @@
 import { Box, Grid } from "@mui/material";
 import { Bounce } from "react-awesome-reveal";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UrlInput } from "../components/home/url-input";
 import { useUserState } from "../context/user-context";
 import { MenuBar } from "../components/commons/menu-bar";
 import { MainTitle } from "../components/home/main-title";
+import { useRefresh } from "../hooks/use-refresing";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -16,6 +17,11 @@ export const Home = () => {
   const handleDelete = () => {
     setUrl("");
   };
+  const { refreshHandler } = useRefresh();
+
+  useEffect(() => {
+    refreshHandler();
+  }, []);
 
   const handleSummary = () => {
     navigate({

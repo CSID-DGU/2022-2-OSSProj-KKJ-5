@@ -3,17 +3,22 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { MenuBar } from "../components/commons/menu-bar";
 import { useSummaryContent } from "../hooks/use-summary-url";
-import wordCloud from "../assets/wordcloud.png";
-import cors from "/Users/kimjaehan/cors.png";
+import { useRefresh } from "../hooks/use-refresing";
 export const Result = () => {
   const { search } = useLocation();
   const query = search.split("url=");
   const { summaryHandler, data } = useSummaryContent({ url: query[1] });
-  console.log(query[1]);
+
+  const { refreshHandler } = useRefresh();
 
   useEffect(() => {
     summaryHandler();
   }, []);
+
+  useEffect(() => {
+    refreshHandler();
+  }, []);
+  console.log(data?.wordCloudPath);
 
   return (
     <Grid
@@ -84,8 +89,7 @@ export const Result = () => {
               // border={"1px solid black"}
             >
               <img
-                src={data?.wordCloudPath
-                }
+                src={data?.wordCloudPath}
                 width={"100%"}
                 height={"100%"}
                 alt={"src error"}
