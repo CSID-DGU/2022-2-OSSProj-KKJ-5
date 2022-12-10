@@ -28,3 +28,10 @@ export const refresh = () => {
     return res.data;
   });
 };
+
+export const signOut = () => {
+  const url = `/member/signOut`;
+  return axios.post(url).then((res) => {
+    return res.data;
+  });
+};
