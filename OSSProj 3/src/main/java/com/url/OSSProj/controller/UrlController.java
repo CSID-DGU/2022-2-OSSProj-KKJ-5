@@ -32,6 +32,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -46,9 +48,18 @@ public class UrlController {
     private static final String NETWORK_GRAPH_GET_PATH_URL = "http://localhost:8080/image/network";
     private String wordCloudFilePath;
     private String networkGraphFilePath;
+    private Map<String, String> categories;
 
     @PostConstruct
     public void initWebClient(){
+        categories = new HashMap<>();
+        categories.put("1","정치");
+        categories.put("2","경제");
+        categories.put("3","사회");
+        categories.put("4","문화");
+        categories.put("5","세계");
+        categories.put("6","IT/과학");
+
         webClient = WebClient.create(FLASK_SERVER_URL);
     }
 
@@ -77,7 +88,7 @@ public class UrlController {
         urlResponseDto.setNetworkGraphPath(NETWORK_GRAPH_GET_PATH_URL);
 
 
-
+        log.info("Url Category is " + categories.get(urlResponseDto.getCategoryNumber()));
         log.info("UrlResponseDto URL : " + Objects.requireNonNull(urlResponseDto).getUrl());
         log.info("UrlResponseDto Content : " + urlResponseDto.getContent());
         log.info("WordCloud Path : " + urlResponseDto.getWordCloudPath());

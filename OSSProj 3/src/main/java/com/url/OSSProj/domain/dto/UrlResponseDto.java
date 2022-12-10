@@ -9,4 +9,5 @@ public class UrlResponseDto {
     private String content;
     private String wordCloudPath;
     private String networkGraphPath;
+    private String categoryNumber;
 }
