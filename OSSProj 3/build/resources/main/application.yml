@@ -1,0 +1,25 @@
+spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
+  h2:
+    console:
+      enabled: true
+  profiles:
+    active: local
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/ossp
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
