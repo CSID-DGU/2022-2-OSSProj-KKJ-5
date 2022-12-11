@@ -18,12 +18,45 @@ import { useFetchCategory } from "../hooks/use-fetch-category";
 import { CategoryList } from "../components/home/category-list";
 import { padding } from "@mui/system";
 import { UrlCategoryBoxList } from "../components/home/url-category-box-list";
+import { ICategoryUrlResponse } from "../interface/url";
 
 export const Home = () => {
   const navigate = useNavigate();
   const [url, setUrl] = useState("");
   const user = useUserState();
   const [category, setCategory] = useState("politics");
+  const mockCategory = [
+    {
+      url: "dsfafasfadsfadsfads",
+      content: "sadfasdfadsfsadf",
+      category: "정치",
+    },
+    {
+      url: "dsfafasfadsfadsfads",
+      content: "sadfasdfadsfsadf",
+      category: "정치",
+    },
+    {
+      url: "dsfafasfadsfadsfads",
+      content: "sadfasdfadsfsadf",
+      category: "정치",
+    },
+    {
+      url: "dsfafasfadsfadsfads",
+      content: "sadfasdfadsfsadf",
+      category: "정치",
+    },
+    {
+      url: "dsfafasfadsfadsfads",
+      content: "sadfasdfadsfsadf",
+      category: "정치",
+    },
+    {
+      url: "dsfafasfadsfadsfads",
+      content: "sadfasdfadsfsadf",
+      category: "정치",
+    },
+  ];
   const handleUrl = (e: ChangeEvent<HTMLInputElement>) =>
     setUrl(e.target.value);
   const handleDelete = () => {
@@ -133,10 +166,20 @@ export const Home = () => {
             xs={10}
             display={"flex"}
             alignItems={"center"}
-            sx={{ overflowX: "scroll", width: "72vw" }}
+            sx={{
+              overflowX: "scroll",
+              width: {
+                xl: "80vw",
+                lg: "75vw",
+                md: "70vw",
+                sm: "70vw",
+                xs: "70vw",
+              },
+            }}
           >
             <UrlCategoryBoxList
               urlCategoryList={categoryList ? categoryList : []}
+              // urlCategoryList={mockCategory}
             />
           </Grid>
         </Grid>
