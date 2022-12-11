@@ -9,19 +9,15 @@ export const useFetchRooms = () => {
     async () => {
       const res = await getRoomList();
       const roomList = res;
-      // user.rooms = user.rooms.concat(res ? res : []);
       return roomList;
     }
   );
 
-  const handleConcatList = () => {
-    refetch();
-  };
+
   return {
     roomList: data,
     isLoadingRoom: isLoading,
     isFetch: isSuccess,
     updateRoomList: refetch,
-    handleConcatList,
   };
 };

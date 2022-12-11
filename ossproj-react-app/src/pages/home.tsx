@@ -1,4 +1,11 @@
-import { Box, Grid } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { Bounce } from "react-awesome-reveal";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,17 +14,33 @@ import { useUserState } from "../context/user-context";
 import { MenuBar } from "../components/commons/menu-bar";
 import { MainTitle } from "../components/home/main-title";
 import { useRefresh } from "../hooks/use-refresing";
+import { useFetchCategory } from "../hooks/use-fetch-category";
+import { CategoryList } from "../components/home/category-list";
+import { padding } from "@mui/system";
 
 export const Home = () => {
   const navigate = useNavigate();
   const [url, setUrl] = useState("");
   const user = useUserState();
+  const [category, setCategory] = useState("politics");
   const handleUrl = (e: ChangeEvent<HTMLInputElement>) =>
     setUrl(e.target.value);
   const handleDelete = () => {
     setUrl("");
   };
   const { refreshHandler } = useRefresh();
+
+  const { categoryList, handleCategory } = useFetchCategory({
+    category,
+  });
+
+  const handleSetCategory = (listItem: string) => {
+    setCategory(listItem);
+  };
+
+  useEffect(() => {
+    handleCategory();
+  }, [category]);
 
   useEffect(() => {
     refreshHandler();
@@ -87,10 +110,47 @@ export const Home = () => {
             onClick={handleSummary}
           />
         </Grid>
-        <Grid item lg={5} md={5} sm={5} xs={5}>
-          <Box sx={{ border: "1px solid black", height: "100%" }}>
-            {"최근 내역"}
-          </Box>
+        <Grid
+          item
+          container
+          lg={5}
+          md={5}
+          sm={5}
+          xs={5}
+          direction={"column"}
+          textAlign={"center"}
+        >
+          <CategoryList handleCategory={handleSetCategory} />
+          <Grid
+            item
+            lg={10}
+            md={10}
+            sm={10}
+            xs={10}
+            display={"flex"}
+            alignItems={"center"}
+          >
+            <Card sx={{ width: "30vh", height: "25vh", margin: "10px" }}>
+              <CardContent>
+                <Typography fontSize={"20px"}>
+                  {"url: https://mui.com/material-ui/react-card/"}
+                </Typography>
+                <Typography fontSize={"30px"}>
+                  {"미국 나파밸리 와인 업계의 전설로 불리는 더그 ..."}
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{ width: "30vh", height: "25vh", margin: "10px" }}>
+              <CardContent>
+                <Typography fontSize={"20px"}>
+                  {"url: https://mui.com/material-ui/react-card/"}
+                </Typography>
+                <Typography fontSize={"30px"}>
+                  {"미국 나파밸리 와인 업계의 전설로 불리는 더그 ..."}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
       </Grid>
     </Grid>
