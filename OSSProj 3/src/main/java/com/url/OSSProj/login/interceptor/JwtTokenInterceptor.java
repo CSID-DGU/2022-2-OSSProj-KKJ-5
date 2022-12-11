@@ -24,6 +24,7 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
 
         String header = request.getHeader(AuthConstants.AUTHORIZATION_HEADER);
         log.info("request get AUTHORIZATION : " + header);
+        if(header == null) return false;
         if(StringUtils.hasText(header) && header.startsWith(AuthConstants.TOKEN_TYPE)){
             String bearerToken = header.substring(7, header.length());
             log.info("BEARER TOKEN : " + bearerToken);
