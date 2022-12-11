@@ -111,6 +111,10 @@ public class UrlController {
     public UrlResponseDto UrlConvey(@RequestBody UrlDto urlDto, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Member member = memberService.getMemberThroughRequest(request);
 
+        if(member == null) {
+            return null;
+        }
+
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("url", urlDto.getUrl());
 
