@@ -35,7 +35,7 @@ export const Chat = () => {
   const [isChat, setIsChat] = useState(false);
   const [chatMessage, setChatMessage] = useState<IChatDetail>();
   const dispatch = useUserDispatch();
-
+  console.log(user.name);
   const handleDeleteRoomName = () => {
     setRoomName("");
   };
@@ -174,7 +174,6 @@ export const Chat = () => {
         </Grid>
         <Grid item lg={2}>
           <FloatingButton handleOpen={handleOpen} />
-          <SearchButton />
         </Grid>
       </Grid>
       {/* chatting room grid */}

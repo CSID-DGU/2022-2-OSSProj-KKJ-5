@@ -121,7 +121,10 @@ export const Home = () => {
           direction={"column"}
           textAlign={"center"}
         >
-          <CategoryList handleCategory={handleSetCategory} />
+          <CategoryList
+            handleCategory={handleSetCategory}
+            selected={category}
+          />
           <Grid
             item
             lg={10}
@@ -130,6 +133,7 @@ export const Home = () => {
             xs={10}
             display={"flex"}
             alignItems={"center"}
+            sx={{ overflowX: "scroll", width: "72vw" }}
           >
             <UrlCategoryBoxList
               urlCategoryList={categoryList ? categoryList : []}

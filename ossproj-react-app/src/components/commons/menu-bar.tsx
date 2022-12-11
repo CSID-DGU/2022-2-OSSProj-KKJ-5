@@ -31,7 +31,6 @@ export const MenuBar = () => {
       >
         <HomeButton />
         <ChatButton />
-        <MyPageButton />
         <SigninButton />
       </Box>
     </Grid>

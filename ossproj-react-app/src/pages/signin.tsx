@@ -33,7 +33,7 @@ export const SignIn = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("/chat");
+      navigate("/");
     }
   }, [isSuccess]);
   console.log(axios.defaults.headers.common["Authorization"]);

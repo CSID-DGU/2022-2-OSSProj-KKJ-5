@@ -12,17 +12,28 @@ const categoryEngList = [
 ];
 interface ICategoryListProps {
   handleCategory: (listItem: string) => void;
+  selected: string;
 }
-export const CategoryList = ({ handleCategory }: ICategoryListProps) => {
+export const CategoryList = ({
+  handleCategory,
+  selected,
+}: ICategoryListProps) => {
   return (
     <Grid item lg={2} md={2} sm={2} xs={2}>
       {categoryKoList.map((value: string, index: number) => {
+        console.log(value + "" + selected);
         return (
           <Button
             onClick={() => {
               handleCategory(categoryEngList[index]);
             }}
-            sx={{ color: "black", fontSize: "25px", fontFamily: "bitbit" }}
+            sx={{
+              color: "black",
+              fontSize: { lg: "25px", md: "25px", sm: "20px", xs: "20px" },
+              fontFamily: "bitbit",
+              textDecoration:
+                selected === categoryEngList[index] ? "underline" : "",
+            }}
           >
             {value}
           </Button>

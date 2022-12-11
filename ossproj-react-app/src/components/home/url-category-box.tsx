@@ -13,7 +13,7 @@ export const UrlCategoryBox = ({ url, content }: IUrlCategoryBox) => {
       <Card
         sx={{
           width: "30vh",
-          height: "25vh",
+          height: "23vh",
           margin: "10px",
           boxhadow: "0px 3px 12px #00000029",
           padding: "10px",
