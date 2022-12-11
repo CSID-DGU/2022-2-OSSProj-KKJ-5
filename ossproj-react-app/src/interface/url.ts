@@ -12,6 +12,7 @@ export interface IUrlProps {
 export interface ICategoryUrlResponse {
   url: string;
   content: string;
+  category: string;
 }
 
 export enum ECategory {

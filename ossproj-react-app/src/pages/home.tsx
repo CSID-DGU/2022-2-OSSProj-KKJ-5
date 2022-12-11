@@ -17,6 +17,7 @@ import { useRefresh } from "../hooks/use-refresing";
 import { useFetchCategory } from "../hooks/use-fetch-category";
 import { CategoryList } from "../components/home/category-list";
 import { padding } from "@mui/system";
+import { UrlCategoryBoxList } from "../components/home/url-category-box-list";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export const Home = () => {
   const { categoryList, handleCategory } = useFetchCategory({
     category,
   });
-
+  console.log(categoryList);
   const handleSetCategory = (listItem: string) => {
     setCategory(listItem);
   };
@@ -130,26 +131,9 @@ export const Home = () => {
             display={"flex"}
             alignItems={"center"}
           >
-            <Card sx={{ width: "30vh", height: "25vh", margin: "10px" }}>
-              <CardContent>
-                <Typography fontSize={"20px"}>
-                  {"url: https://mui.com/material-ui/react-card/"}
-                </Typography>
-                <Typography fontSize={"30px"}>
-                  {"미국 나파밸리 와인 업계의 전설로 불리는 더그 ..."}
-                </Typography>
-              </CardContent>
-            </Card>
-            <Card sx={{ width: "30vh", height: "25vh", margin: "10px" }}>
-              <CardContent>
-                <Typography fontSize={"20px"}>
-                  {"url: https://mui.com/material-ui/react-card/"}
-                </Typography>
-                <Typography fontSize={"30px"}>
-                  {"미국 나파밸리 와인 업계의 전설로 불리는 더그 ..."}
-                </Typography>
-              </CardContent>
-            </Card>
+            <UrlCategoryBoxList
+              urlCategoryList={categoryList ? categoryList : []}
+            />
           </Grid>
         </Grid>
       </Grid>
