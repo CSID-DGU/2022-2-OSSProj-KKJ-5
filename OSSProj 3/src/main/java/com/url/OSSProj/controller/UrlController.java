@@ -3,13 +3,17 @@ package com.url.OSSProj.controller;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.url.OSSProj.domain.constants.AuthConstants;
+import com.url.OSSProj.domain.dto.UrlCategoryResponse;
 import com.url.OSSProj.domain.dto.UrlDto;
 import com.url.OSSProj.domain.dto.UrlResponseDto;
 import com.url.OSSProj.domain.entity.Member;
+import com.url.OSSProj.domain.entity.OriginUrl;
 import com.url.OSSProj.domain.entity.Url;
 import com.url.OSSProj.exception.UserNotFoundException;
 import com.url.OSSProj.repository.MemberRepository;
+import com.url.OSSProj.repository.OriginUrlRepository;
 import com.url.OSSProj.repository.UrlRepository;
+import com.url.OSSProj.service.MemberService;
 import com.url.OSSProj.service.UrlService;
 import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
@@ -22,19 +26,15 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -43,6 +43,8 @@ public class UrlController {
 
     private WebClient webClient;
     private final UrlService urlService;
+    private final MemberService memberService;
+    private final OriginUrlRepository originUrlRepository;
     private static final String FLASK_SERVER_URL = "http://localhost:5050";
     private static final String WORD_CLOUD_GET_PATH_URL = "http://localhost:8080/image/wordcloud";
     private static final String NETWORK_GRAPH_GET_PATH_URL = "http://localhost:8080/image/network";
@@ -69,7 +71,7 @@ public class UrlController {
 
     @PostMapping("/url")
     public UrlResponseDto UrlConvey(@RequestBody UrlDto urlDto, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Member member = getMemberFromToken(request);
+        Member member = memberService.getMemberThroughRequest(request);
 
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("url", urlDto.getUrl());
@@ -94,6 +96,7 @@ public class UrlController {
         log.info("WordCloud Path : " + urlResponseDto.getWordCloudPath());
         log.info("NetworkGraph Path : " + urlResponseDto.getNetworkGraphPath());
 
+        originUrlRepository.save(OriginUrl.createUrl(urlResponseDto.getUrl(), urlResponseDto.getContent(), urlResponseDto.getCategoryNumber()));
 
         urlService.connectMemberAndUrls(member, urlResponseDto);
 
@@ -114,11 +117,38 @@ public class UrlController {
         return IOUtils.toByteArray(in);
     }
 
-    private Member getMemberFromToken(HttpServletRequest request) {
-        String header = request.getHeader(AuthConstants.AUTHORIZATION_HEADER);
-        String token = header.substring(7, header.length());
+    @GetMapping("/url")
+    public List<UrlCategoryResponse> getUrlCategories(@RequestParam("category") String category, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        String categoryNumber = getCategoryNumber(category);
+        List<OriginUrl> byCategoryNumber = originUrlRepository.findByCategoryNumber(categoryNumber);
+        List<UrlCategoryResponse> urlCategoryResponseList = new ArrayList<>();
+        for (OriginUrl originUrl : byCategoryNumber) {
+            log.info("-----> " + originUrl.getUrl());
+            urlCategoryResponseList.add(UrlCategoryResponse.builder()
+                    .url(originUrl.getUrl())
+                    .content(originUrl.getContent())
+                    .category(categories.get(originUrl.getCategoryNumber())).build());
+        }
 
-        String email = tokenUtils.getUid(token);
-        return memberRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("Not found User"));
+        return urlCategoryResponseList;
     }
+
+    private String getCategoryNumber(String categoryOfString){
+        switch (categoryOfString){
+            case "politics":
+                return "1";
+            case "economy":
+                return "2";
+            case "social":
+                return "3";
+            case "culture":
+                return "4";
+            case "global":
+                return "5";
+            case "science":
+                return "6";
+        }
+        return null;
+    }
+
 }

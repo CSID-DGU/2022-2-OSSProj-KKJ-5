@@ -76,48 +76,6 @@ public class ChatRoomController{
         return all;
     }
 
-//    @ResponseBody
-//    @GetMapping("/roomImage/{id}")
-//    public UrlResource getImage(@PathVariable Long id) throws MalformedURLException {
-//        ChatRoom chatRoom = chatRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("No Such ChatRoom"));
-//
-//        log.info("### ChatRoom GET IMAGE ###");
-//        log.info("ChatRoom Name : " + chatRoom.getName());
-//        log.info("ChatRoom UploadFile Origin Name : " + chatRoom.getUploadFile().getUploadFileName());
-//        log.info("ChatRoom UploadFile Store Name : " + chatRoom.getUploadFile().getStoreFileName());
-//
-//        return new UrlResource("file:" + fileStore.getFullPath(chatRoom.getUploadFile().getStoreFileName()));
-//    }
-
-//    @PostMapping(value="/room", consumes = {"multipart/form-data" })
-//    @ResponseBody
-//    public ResponseChatRoomDto createRoom(@RequestPart(value="name", required=false) String chatRoomName,
-//                                                          @RequestPart(value="pictureFile", required=false) MultipartFile file,
-//                                                          HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        Member member = getMemberThroughRequest(request);
-//
-//        UploadFile uploadFile = fileStore.storeFile(file);
-//
-//        fileRepository.save(uploadFile);
-//
-//        String uploadFileName = uploadFile.getUploadFileName();
-//        String storeFileName = uploadFile.getStoreFileName();
-//
-//        log.info("UploadFile Id : " + uploadFile.getId());
-//        log.info("uploadFileName = " + uploadFileName);
-//        log.info("storeFileName = " + storeFileName);
-//
-//        ChatRoomDto chatRoomDto = chatRoomRepository.createChatRoom(chatRoomName, uploadFile);
-//        memberService.connectMemberAndChatRoom(chatRoomDto.getRoomId(), member.getEmail());
-//
-//        return ResponseChatRoomDto.builder()
-//                .roomId(chatRoomDto.getRoomId())
-//                .name(chatRoomDto.getName())
-//                .image(new UrlResource("file:"+fileStore.getFullPath(chatRoomDto.getImage().getStoreFileName())))
-//                .build();
-//    }
-
     @PostMapping("/room")
     @ResponseBody
     public ChatRoomDto createRoom(@RequestBody NewChatRoomDto newChatRoomDto, HttpServletRequest request, HttpServletResponse response) throws Exception{
