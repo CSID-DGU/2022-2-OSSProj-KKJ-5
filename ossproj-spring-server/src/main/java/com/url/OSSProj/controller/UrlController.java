@@ -163,15 +163,18 @@ public class UrlController {
     public List<UrlCategoryResponse> getUrlCategories(@RequestParam("category") String category, HttpServletRequest request, HttpServletResponse response) throws Exception{
         String categoryNumber = getCategoryNumber(category);
         List<OriginUrl> byCategoryNumber = originUrlRepository.findByCategoryNumber(categoryNumber);
+
+        return getUrlCategoryResponses(byCategoryNumber);
+    }
+
+    private List<UrlCategoryResponse> getUrlCategoryResponses(List<OriginUrl> byCategoryNumber) {
         List<UrlCategoryResponse> urlCategoryResponseList = new ArrayList<>();
         for (OriginUrl originUrl : byCategoryNumber) {
-            log.info("-----> " + originUrl.getUrl());
             urlCategoryResponseList.add(UrlCategoryResponse.builder()
                     .url(originUrl.getUrl())
                     .content(originUrl.getContent())
                     .category(categories.get(originUrl.getCategoryNumber())).build());
         }
-
         return urlCategoryResponseList;
     }
 
