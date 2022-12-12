@@ -26,16 +26,35 @@
 <img width="1365" alt="image" src="https://user-images.githubusercontent.com/80098469/206977591-f58c4db5-a53f-4235-a5ca-c48fb4ad1ab6.png">
 사용자는 URL을 입력하여 위와 같은 요약 결과 화면을 반환받을 수 있다.
 
+
 #### 1.4.2 카테고리 별 요약 결과 관리 
 <img width="1223" alt="image" src="https://user-images.githubusercontent.com/80098469/206978111-87c27479-6bb5-4041-bd9a-00754385afff.png">
 본 웹 사이트를 통해 현재까지 진행한 모든 사용자들의 URL을 카테고리 별로 저장되어있다. 해당 웹 사이트에 인증 및 인가 기능이 존재하기 때문에 인가가 확인이 된 사용자는 다른 사용자가 특정 카테고리 내 어떤 URL을 요약하였는지 쉽게 알 수 있다.
+
 
 #### 1.4.3 채팅 관리 기능
 <img width="1360" alt="image" src="https://user-images.githubusercontent.com/80098469/206978686-166c94bb-2c96-4ecd-9149-d0660a227748.png">
 해당 웹 사이트를 이용하는 다른 사용자들과 채팅 기능을 이용할 수 있다.
 
+
 ### 1.5 데이터베이스 설계
 <img width="778" alt="image" src="https://user-images.githubusercontent.com/80098469/206979285-7b84ebad-2057-4318-b8b0-e3669639b07e.png">
 주요 기능이 URL 요약 및 채팅 기능이기 때문에 해당 기능을 사용하기 위한 데이터베이스 설계는 이와 같이 진행하였다.
 
+
+### 2. Stacks
+#### Environment
+<img src="https://img.shields.io/badge/vscode-#007ACC?style=for-the-badge&logo=vscode&logoColor=white">
+<img src="https://img.shields.io/badge/iTerms2-#000000?style=for-the-badge&logo=iTerms2&logoColor=white">
+<img src="https://img.shields.io/badge/git-#F05032?style=for-the-badge&logo=git&logoColor=white">
+<img src="https://img.shields.io/badge/github-#181717?style=for-the-badge&logo=github&logoColor=white">
+<img src="https://img.shields.io/badge/Intellij IDEA-#000000?style=for-the-badge&logo=Intellij IDEA&logoColor=white">
+
+#### Development
+<img src="https://img.shields.io/badge/Java-#007ACC?style=for-the-badge&logo=Java&logoColor=white">
+<img src="https://img.shields.io/badge/Spring Boot-#007ACC?style=for-the-badge&logo=Spring Boot&logoColor=white">
+<img src="https://img.shields.io/badge/JPA-#007ACC?style=for-the-badge&logo=JPA&logoColor=white">
+<img src="https://img.shields.io/badge/JWT-#007ACC?style=for-the-badge&logo=JWT&logoColor=white">
+<img src="https://img.shields.io/badge/vscode-#007ACC?style=for-the-badge&logo=vscode&logoColor=white">
+<img src="https://img.shields.io/badge/vscode-#007ACC?style=for-the-badge&logo=vscode&logoColor=white">
 
