@@ -25,32 +25,33 @@
 #### 1.4.1 URL 요약 정리 결과 화면
 <img width="1365" alt="image" src="https://user-images.githubusercontent.com/80098469/206977591-f58c4db5-a53f-4235-a5ca-c48fb4ad1ab6.png">
 위 메인 페이지 URL 입력 창에 요약하고자 하는 URL을 입력한다.
+<br>
 
 <img width="1366" alt="image" src="https://user-images.githubusercontent.com/80098469/206985683-1fdb9faa-a41f-4989-959f-fb8e9f041dc2.png">
 사용자는 위와 같이 URL을 입력하여 요약 결과 화면을 반환받을 수 있다.
-
+<br>
 
 
 #### 1.4.2 카테고리 별 요약 결과 관리 
 <img width="1223" alt="image" src="https://user-images.githubusercontent.com/80098469/206978111-87c27479-6bb5-4041-bd9a-00754385afff.png">
 본 웹 사이트를 통해 현재까지 진행한 모든 사용자들의 URL을 카테고리 별로 저장되어있다. 해당 웹 사이트에 인증 및 인가 기능이 존재하기 때문에 인가가 확인이 된 사용자는 다른 사용자가 특정 카테고리 내 어떤 URL을 요약하였는지 쉽게 알 수 있다.
-
+<br>
 
 
 #### 1.4.3 채팅 관리 기능
 <img width="1360" alt="image" src="https://user-images.githubusercontent.com/80098469/206978686-166c94bb-2c96-4ecd-9149-d0660a227748.png">
 해당 웹 사이트를 이용하는 다른 사용자들과 채팅 기능을 이용할 수 있다.
-
+<br>
 
 
 ### 1.5 데이터베이스 설계
 <img width="778" alt="image" src="https://user-images.githubusercontent.com/80098469/206979285-7b84ebad-2057-4318-b8b0-e3669639b07e.png">
 주요 기능이 URL 요약 및 채팅 기능이기 때문에 해당 기능을 사용하기 위한 데이터베이스 설계는 이와 같이 진행하였다.
-
+<br>
 
 
 ### 2. Stacks
-#### Environment
+### Environment
 <div align=center>
   <img src="https://img.shields.io/badge/vscode-007ACC?style=for-the-badge&logo=vscode&logoColor=white">
   <img src="https://img.shields.io/badge/iTerms2-000000?style=for-the-badge&logo=iTerms2&logoColor=white">
@@ -60,7 +61,7 @@
   <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=TensorFlow&logoColor=white">
 </div>
 
-#### Development
+### Development
 <div align=center>
   <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white">
   <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=Flask&logoColor=white">
