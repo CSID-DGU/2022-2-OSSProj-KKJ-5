@@ -44,17 +44,21 @@
 
 ### 2. Stacks
 #### Environment
-<img src="https://img.shields.io/badge/vscode-007ACC?style=for-the-badge&logo=vscode&logoColor=white">
-<img src="https://img.shields.io/badge/iTerms2-#000000?style=for-the-badge&logo=iTerms2&logoColor=white">
-<img src="https://img.shields.io/badge/git-#F05032?style=for-the-badge&logo=git&logoColor=white">
-<img src="https://img.shields.io/badge/github-#181717?style=for-the-badge&logo=github&logoColor=white">
-<img src="https://img.shields.io/badge/Intellij IDEA-#000000?style=for-the-badge&logo=Intellij IDEA&logoColor=white">
+<div align=center>
+  <img src="https://img.shields.io/badge/vscode-007ACC?style=for-the-badge&logo=vscode&logoColor=white">
+  <img src="https://img.shields.io/badge/iTerms2-000000?style=for-the-badge&logo=iTerms2&logoColor=white">
+  <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+  <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/Intellij IDEA-000000?style=for-the-badge&logo=Intellij IDEA&logoColor=white">
+</div>
 
 #### Development
-<img src="https://img.shields.io/badge/Java-#007ACC?style=for-the-badge&logo=Java&logoColor=white">
-<img src="https://img.shields.io/badge/Spring Boot-#007ACC?style=for-the-badge&logo=Spring Boot&logoColor=white">
-<img src="https://img.shields.io/badge/JPA-#007ACC?style=for-the-badge&logo=JPA&logoColor=white">
-<img src="https://img.shields.io/badge/JWT-#007ACC?style=for-the-badge&logo=JWT&logoColor=white">
-<img src="https://img.shields.io/badge/vscode-#007ACC?style=for-the-badge&logo=vscode&logoColor=white">
-<img src="https://img.shields.io/badge/vscode-#007ACC?style=for-the-badge&logo=vscode&logoColor=white">
+<div align=center>
+  <img src="https://img.shields.io/badge/Java-007ACC?style=for-the-badge&logo=Java&logoColor=white">
+  <img src="https://img.shields.io/badge/Spring Boot-007ACC?style=for-the-badge&logo=Spring Boot&logoColor=white">
+  <img src="https://img.shields.io/badge/JPA-007ACC?style=for-the-badge&logo=JPA&logoColor=white">
+  <img src="https://img.shields.io/badge/JWT-007ACC?style=for-the-badge&logo=JWT&logoColor=white">
+  <img src="https://img.shields.io/badge/vscode-007ACC?style=for-the-badge&logo=vscode&logoColor=white">
+  <img src="https://img.shields.io/badge/vscode-007ACC?style=for-the-badge&logo=vscode&logoColor=white">
+</div>
 
