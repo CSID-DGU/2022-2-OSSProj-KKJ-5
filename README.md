@@ -87,12 +87,16 @@ $ git clone https://github.com/CSID-DGU/2022-2-OSSProj-KKJ-5.git
 $ cd 2022-2-OSSProj-KKJ-5
 ```
 
+</br>
+
 ### 2.1.1 React 실행방법
 ```
 $ cd ossproj-react-app
 $ npm install or npm install --force
 $ npm start
 ```
+
+</br>
 
 ### 2.1.2 Flask 실행방법
 #### 외부 라이브러리 사용
@@ -101,20 +105,28 @@ $ npm start
 gensim 라이브러리는 파이썬 4.0 이후부터 지원하지 않는 기능이다. 따라서, 파이썬 환경을 3.8.3에 구성할 수 있는 가상환경을 설정해준다.
 </br> </br>
 
-1. 아나콘다를 설치한다.
+### 1. 아나콘다를 설치한다.
 </br> https://www.anaconda.com/distribution/#download-section
 
-2. 원하는 이름으로 가상 환경을 설정하고 파이썬 3.8.3로 설정해준다.
+</br>
+
+### 2. 원하는 이름으로 가상 환경을 설정하고 파이썬 3.8.3로 설정해준다.
 ```
 $ conda create -n {ENV_NAME} python=3.8.3
 ```
 
-3. 생성한 가상 환경 {ENV_NAME}로 들어갑니다.
+</br>
+
+### 3. 생성한 가상 환경 {ENV_NAME}로 들어간다.
 ```
 $ conda activate {ENV_NAME}
 ```
 
+</br>
+
 위와 같이 가상 환경을 설정하고 아래 과정을 통해 라이브러리까지 다운로드를 받아준다.
+
+</br> </br>
 
 ### Requirements.txt
 본 애플리케이션의 소스코드 내에서 활용한 모든 외부 라이브러리는 requirements.txt에 해당 라이브러리 리스트를 저장하여 실행할 수 있도록 헌다.
@@ -126,10 +138,14 @@ requirements.txt에 저장된 외부 라이브러리를 다운로드 받는 명�
 $ pip install -r requirements.txt
 ```
 
-4. Flask 서버 실행
+</br>
+
+### 4. Flask 서버 실행
 ```
 $ python app.py
 ```
+
+</br>
 
 ### 환경변수 파일
 .gitignore
@@ -138,62 +154,75 @@ $ python app.py
 requirements.txt
 * 파이썬 라이브러리 종속성 
 
+</br>
+
 
 ### 2.1.3 Spring Server 실행 방법
 Spring Server를 실행하기 전 로컬 데이터 베이스인 H2 환경을 먼저 구성해주어야 한다.
 
-1. H2 설치 
-</br> http://h2database.com/html/main.html
+</br>
 
-2. H2 데이터베이스 서버 실행
+## 1. H2 설치 
+http://h2database.com/html/main.html
+
+</br>
+
+### 2. H2 데이터베이스 서버 실행
 압축을 풀고 해당 폴더 안 bin 디렉토리 안으로 이동한 후 h2.bat을 실행해준다. 경로 이동은 개인 환경 설정에 맞도록 작성하여 bin폴더 안으로 이동해준다. 아래는 MacOS 환경에서 이동 경로 예시이다.
 ```
 cd Users/{UserName}/Downloads/h2/bin 
 ./h2.sh
 ```
 
-3. H2 데이터베이스 생성
+</br>
+
+### 3. H2 데이터베이스 생성
 <img width="310" alt="image" src="https://user-images.githubusercontent.com/80098469/207020328-9ba3a19d-b13f-4b64-a0dc-2561aea44f71.png">
 
 Generic H2 (Embedded)로 설정한 후 JDBC URL에 위 사진과 동일한 경로를 작성해준다. 만약 다른 경로로 설정하고 싶은 경우 Spring내 application.yml 파일 내 spring.datasource.url의 이름 또한 설정한 경로로 변경해주도록 한다. </br>
 
 위 과정을 통해 H2 데이터베이스를 생성해준 후 열려있는 창을 닫고 데이터베이스에 재접속 해주도록 한다.
 
-4. H2 데이터베이스 접속
+</br>
+
+### 4. H2 데이터베이스 접속
 <img width="311" alt="image" src="https://user-images.githubusercontent.com/80098469/207021101-0858b593-f82f-4de5-a989-df0acd8b99ce.png">
 
 생성이 아닌 접속이기 때문에 Generic H2 (Server)로 변경해준 후 JDBC URL 또한 위 사진과 동일하게 입력해준 후 연결을 클릭하여 데이터베이스에 접속해주도록 한다.
 
-</br></br></br>
+</br></br>
 
-5. Spring Server 실행 </br>
+## 5. Spring Server 실행 </br>
 본 프로젝트 환경은 Intellij IDEA에서 build와 실행을 함께 진행하였으므로 아래 설명 또한 Intellij IDEA 기준 실행 방법을 소개한다.</br></br></br>
 
-5.1 Intellij IDEA 환경 설정에서 빌드,실행,배포를 검색한 후 빌드 도구를 연다.
+### 5.1 Intellij IDEA 환경 설정에서 빌드,실행,배포를 검색한 후 빌드 도구를 연다.
 <img width="892" alt="image" src="https://user-images.githubusercontent.com/80098469/207022144-0d0eea1c-36b7-4909-8339-e37fdf521d7c.png">
 
 
 다음 사진에서 [다음을 사용하여 빌드 및 실행]의 Gradle이 아닌 Intellij IDEA로 변경해준다. </br></br>
 
-5.2 Intellij IDEA 환경 설정에서 빌드,실행,배포를 검색한 후 컴파일러 도구를 연다.
+### 5.2 Intellij IDEA 환경 설정에서 빌드,실행,배포를 검색한 후 컴파일러 도구를 연다.
 <img width="972" alt="image" src="https://user-images.githubusercontent.com/80098469/207028376-6d1de97e-e0e5-45ab-ac26-f71c50269f3f.png">
 
 다음 사진에서 [어노테이션 처리 활성화] 버튼을 클릭하여 어노테이션이 활성화될 수 있도록 환경을 구성해준다. </br></br>
 
-5.3 Intellij IDEA를 실행한다.
+### 5.3 Intellij IDEA를 실행한다.
 
 OssProjApplication 클래스 내 실행 버튼을 클릭하여 Spring Server를 실행한다.
 
 위 과정을 모두 진행하면 React, Flask, Spring 3개의 Server를 실행했으며 URL창에 localhost:3000을 입력하여 본 프로젝트 웹 사이트에 접속할 수 있다.
+</br></br></br>
 
 ## 3. Attributes
 * 기존 프로젝트 : https://github.com/DGUFARM </br>
 * 기존 프로젝트 License : MIT License </br>
-* 현재 프로젝트 License : GNU General Public License v3.0
+* 현재 프로젝트 License : GNU General Public License v3.0 
+
+</br></br>
 
 ## 4. 프로젝트 자료
-[프로젝트 제안서 바로가기] https://github.com/CSID-DGU/2022-2-OSSProj-KKJ-5/blob/main/KKJ_%EC%A0%9C%EC%95%88%EC%84%9C.pdf </br>
-[프로젝트 제안서 발표자료 바로가기] https://github.com/CSID-DGU/2022-2-OSSProj-KKJ-5/blob/main/kKJ_%EC%A0%9C%EC%95%88%EC%84%9C%EB%B0%9C%ED%91%9C.pptx </br>
-[프로젝트 중간보고서 바로가기] https://github.com/CSID-DGU/2022-2-OSSProj-KKJ-5/blob/main/%EC%A4%91%EA%B0%84%EB%B3%B4%EA%B3%A0%EC%84%9C_KKJ.pdf </br>
-[프로젝트 중간발표자료 바로가기] https://github.com/CSID-DGU/2022-2-OSSProj-KKJ-5/blob/main/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C_KKJ.pdf </br>
+* [프로젝트 제안서 바로가기](https://github.com/CSID-DGU/2022-2-OSSProj-KKJ-5/blob/main/KKJ_%EC%A0%9C%EC%95%88%EC%84%9C.pdf) </br>
+* [프로젝트 제안서 발표자료 바로가기](https://github.com/CSID-DGU/2022-2-OSSProj-KKJ-5/blob/main/kKJ_%EC%A0%9C%EC%95%88%EC%84%9C%EB%B0%9C%ED%91%9C.pptx) </br>
+* [프로젝트 중간보고서 바로가기](https://github.com/CSID-DGU/2022-2-OSSProj-KKJ-5/blob/main/%EC%A4%91%EA%B0%84%EB%B3%B4%EA%B3%A0%EC%84%9C_KKJ.pdf) </br>
+* [프로젝트 중간발표자료 바로가기](https://github.com/CSID-DGU/2022-2-OSSProj-KKJ-5/blob/main/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C_KKJ.pdf) </br>
 
