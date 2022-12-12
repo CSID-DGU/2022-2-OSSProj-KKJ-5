@@ -44,7 +44,7 @@
 
 ### 2. Stacks
 #### Environment
-<img src="https://img.shields.io/badge/vscode-#007ACC?style=for-the-badge&logo=vscode&logoColor=white">
+<img src="https://img.shields.io/badge/vscode-007ACC?style=for-the-badge&logo=vscode&logoColor=white">
 <img src="https://img.shields.io/badge/iTerms2-#000000?style=for-the-badge&logo=iTerms2&logoColor=white">
 <img src="https://img.shields.io/badge/git-#F05032?style=for-the-badge&logo=git&logoColor=white">
 <img src="https://img.shields.io/badge/github-#181717?style=for-the-badge&logo=github&logoColor=white">
