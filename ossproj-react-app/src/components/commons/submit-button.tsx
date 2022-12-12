@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
+    backgroundColor: "#e5e5e5",
   },
 }));
 
@@ -23,7 +24,6 @@ export const SubmitButton = ({
       type="submit"
       fullWidth
       variant="contained"
-      color="primary"
       className={classes.submit}
       onClick={handler}
     >

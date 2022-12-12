@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { MenuBar } from "../components/commons/menu-bar";
 import { useSummaryContent } from "../hooks/use-summary-url";
 import { useRefresh } from "../hooks/use-refresing";
+import wordCloud from "../assets/wordcloud.png";
 export const Result = () => {
   const { search } = useLocation();
   const query = search.split("url=");
@@ -81,7 +82,12 @@ export const Result = () => {
             display={"flex"}
             flexDirection={{ lg: "row", md: "row", sm: "column", xs: "column" }}
             alignItems={"center"}
-            justifyContent={"space-around"}
+            justifyContent={{
+              lg: "space-around",
+              md: "space-around",
+              sm: "none",
+              xs: "none",
+            }}
           >
             <Box
               width={{ lg: "40%", md: "40%", sm: "90%", xs: "90%" }}
@@ -89,7 +95,10 @@ export const Result = () => {
               // border={"1px solid black"}
             >
               <img
-                src={data?.wordCloudPath}
+                src={
+                  // data?.wordCloudPath
+                  wordCloud
+                }
                 width={"100%"}
                 height={"100%"}
                 alt={"src error"}
@@ -102,8 +111,8 @@ export const Result = () => {
             >
               <img
                 src={
-                  data?.networkGraphPath
-                  // network
+                  // data?.networkGraphPath
+                  wordCloud
                 }
                 width={"100%"}
                 height={"100%"}
