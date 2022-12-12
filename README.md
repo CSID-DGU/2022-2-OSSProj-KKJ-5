@@ -166,7 +166,7 @@ Generic H2 (Embedded)로 설정한 후 JDBC URL에 위 사진과 동일한 경�
 
 </br></br></br>
 
-5. Spring Server 실행
+5. Spring Server 실행 </br>
 본 프로젝트 환경은 Intellij IDEA에서 build와 실행을 함께 진행하였으므로 아래 설명 또한 Intellij IDEA 기준 실행 방법을 소개한다.</br></br></br>
 
 5.1 Intellij IDEA 환경 설정에서 빌드,실행,배포를 검색한 후 빌드 도구를 연다.
@@ -176,7 +176,7 @@ Generic H2 (Embedded)로 설정한 후 JDBC URL에 위 사진과 동일한 경�
 다음 사진에서 [다음을 사용하여 빌드 및 실행]의 Gradle이 아닌 Intellij IDEA로 변경해준다. </br></br>
 
 5.2 Intellij IDEA 환경 설정에서 빌드,실행,배포를 검색한 후 컴파일러 도구를 연다.
-
+<img width="972" alt="image" src="https://user-images.githubusercontent.com/80098469/207028376-6d1de97e-e0e5-45ab-ac26-f71c50269f3f.png">
 
 다음 사진에서 [어노테이션 처리 활성화] 버튼을 클릭하여 어노테이션이 활성화될 수 있도록 환경을 구성해준다. </br></br>
 
@@ -185,4 +185,12 @@ Generic H2 (Embedded)로 설정한 후 JDBC URL에 위 사진과 동일한 경�
 OssProjApplication 클래스 내 실행 버튼을 클릭하여 Spring Server를 실행한다.
 
 위 과정을 모두 진행하면 React, Flask, Spring 3개의 Server를 실행했으며 URL창에 localhost:3000을 입력하여 본 프로젝트 웹 사이트에 접속할 수 있다.
+
+## 3. Attributes
+* 기존 프로젝트 : https://github.com/DGUFARM </br>
+* 기존 프로젝트 License : MIT License </br>
+* 현재 프로젝트 License : GNU General Public License v3.0
+
+## 4. 프로젝트 자료
+
 
