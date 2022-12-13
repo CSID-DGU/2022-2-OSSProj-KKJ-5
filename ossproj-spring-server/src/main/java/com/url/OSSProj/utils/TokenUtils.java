@@ -68,6 +68,15 @@ public class TokenUtils {
         );
     }
 
+    public Long getExpiration(String accessToken) {
+        // accessToken 남은 유효시간
+        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(accessToken);
+        Date expiration = claimsJws.getBody().getExpiration();
+        // 현재 시간
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
+    }
+
     public boolean isValidToken(String token){
         try{
             Jws<Claims> claims = Jwts.parser()

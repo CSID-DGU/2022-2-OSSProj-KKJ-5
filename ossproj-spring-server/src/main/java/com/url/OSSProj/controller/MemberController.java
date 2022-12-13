@@ -1,5 +1,6 @@
 package com.url.OSSProj.controller;
 
+import com.url.OSSProj.domain.constants.AuthConstants;
 import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.dto.MemberDto;
 import com.url.OSSProj.domain.dto.SignUpDto;
@@ -8,12 +9,16 @@ import com.url.OSSProj.domain.entity.ChatRoomInfo;
 import com.url.OSSProj.domain.entity.Member;
 import com.url.OSSProj.domain.entity.Url;
 import com.url.OSSProj.service.MemberService;
+import com.url.OSSProj.utils.CookieUtils;
+import com.url.OSSProj.utils.RedisUtils;
 import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -28,6 +33,8 @@ public class MemberController {
 
     private final MemberService memberService;
     private final TokenUtils tokenUtils;
+    private final RedisUtils redisUtils;
+    private final CookieUtils cookieUtils;
 
     @PostMapping("/signUp")
     public ResponseEntity<MemberDto> signUp(@RequestBody SignUpDto signUpDto, HttpServletRequest request, HttpServletResponse response) throws IOException{
@@ -44,6 +51,23 @@ public class MemberController {
             ResponseEntity.status(200);
             return ResponseEntity.ok(memberDto);
         }
+    }
+
+    @PostMapping("/signOut")
+    public String logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        log.info("오긴");
+        String header = request.getHeader(AuthConstants.AUTHORIZATION_HEADER);
+        if(header == null) return "redirect:/";
+        String accessToken = header.substring(7, header.length());
+
+        response.setHeader(AuthConstants.AUTHORIZATION_HEADER, null);
+        Cookie refreshCookie = cookieUtils.getCookie(request, AuthConstants.REFRESH_HEADER);
+        redisUtils.deleteData(refreshCookie.getValue());
+        log.info("삭제 완료");
+
+        String header1 = request.getHeader(AuthConstants.AUTHORIZATION_HEADER);
+        log.info("삭제 했나 ? : " , header1);
+        return "redirect:/";
     }
 
     @GetMapping("/chatrooms")
