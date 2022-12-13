@@ -53,25 +53,24 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/signOut")
-    public String logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        log.info("오긴");
-        String header = request.getHeader(AuthConstants.AUTHORIZATION_HEADER);
-        if(header == null) return "redirect:/";
-        String accessToken = header.substring(7, header.length());
-
-        response.setHeader(AuthConstants.AUTHORIZATION_HEADER, null);
-        Cookie refreshCookie = cookieUtils.getCookie(request, AuthConstants.REFRESH_HEADER);
-        String refreshToken = refreshCookie.getValue();
-        redisUtils.deleteData(refreshCookie.getValue());
-        log.info("삭제 완료");
-
-        String header1 = request.getHeader(AuthConstants.AUTHORIZATION_HEADER);
-        log.info("삭제 했나 ? : " + header1);
-        String data = redisUtils.getData(refreshToken);
-        log.info("쿠키도 ? : " + data);
-        return "redirect:/";
-    }
+//    @PostMapping("/signOut")
+//    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
+//        log.info("오긴");
+//        String header = request.getHeader(AuthConstants.AUTHORIZATION_HEADER);
+//        if(header == null) return;
+//        String accessToken = header.substring(7, header.length());
+//
+//        response.setHeader(AuthConstants.AUTHORIZATION_HEADER, null);
+//        Cookie refreshCookie = cookieUtils.getCookie(request, AuthConstants.REFRESH_HEADER);
+//        String refreshToken = refreshCookie.getValue();
+//        redisUtils.deleteData(refreshCookie.getValue());
+//        log.info("삭제 완료");
+//
+//        request.setAttribute(AuthConstants.AUTHORIZATION_HEADER, null);
+//        String data = redisUtils.getData(refreshToken);
+//        log.info("쿠키도 ? : " + data);
+//        response.sendRedirect("/singIn");
+//    }
 
     @GetMapping("/chatrooms")
     public List<ChatRoomDto> roomList(HttpServletRequest request, HttpServletResponse response){
