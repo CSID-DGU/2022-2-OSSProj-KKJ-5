@@ -6,6 +6,7 @@ import com.url.OSSProj.login.authentication.CustomAuthenticationFilter;
 import com.url.OSSProj.login.authentication.CustomAuthenticationProvider;
 import com.url.OSSProj.login.handler.CustomFormLoginSuccessHandler;
 import com.url.OSSProj.service.MemberDetailsServiceImpl;
+import com.url.OSSProj.service.MemberService;
 import com.url.OSSProj.utils.CookieUtils;
 import com.url.OSSProj.utils.RedisUtils;
 import com.url.OSSProj.utils.TokenUtils;

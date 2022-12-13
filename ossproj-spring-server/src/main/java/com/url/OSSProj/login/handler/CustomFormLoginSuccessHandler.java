@@ -7,6 +7,7 @@ import com.url.OSSProj.domain.dto.Token;
 import com.url.OSSProj.domain.entity.Member;
 import com.url.OSSProj.domain.entity.MyUserDetails;
 import com.url.OSSProj.domain.enums.UserRole;
+import com.url.OSSProj.service.MemberService;
 import com.url.OSSProj.utils.CookieUtils;
 import com.url.OSSProj.utils.RedisUtils;
 import com.url.OSSProj.utils.TokenUtils;
@@ -52,7 +53,6 @@ public class CustomFormLoginSuccessHandler extends SavedRequestAwareAuthenticati
 
         String loginMemberJsonResponse = objectMapper.writeValueAsString(successLoginMemberDto);
         response.getWriter().write(loginMemberJsonResponse);
-
     }
 
 }
