@@ -14,7 +14,7 @@ export const Mypage = () => {
       direction={{ lg: "row", md: "row", sm: "column", xs: "column" }}
     >
       {/* menu grid */}
-      <MenuBar />
+
       {/* result Grid */}
       <Grid
         item

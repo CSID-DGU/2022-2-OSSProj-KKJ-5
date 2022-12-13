@@ -5,11 +5,12 @@ import { MenuBar } from "../components/commons/menu-bar";
 import { useSummaryContent } from "../hooks/use-summary-url";
 import { useRefresh } from "../hooks/use-refresing";
 import wordCloud from "../assets/wordcloud.png";
+import { useSignOut } from "../hooks/use-signout";
 export const Result = () => {
   const { search } = useLocation();
   const query = search.split("url=");
   const { summaryHandler, data } = useSummaryContent({ url: query[1] });
-
+  const { signoutHandler } = useSignOut();
   const { refreshHandler } = useRefresh();
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export const Result = () => {
       direction={{ lg: "row", md: "row", sm: "column", xs: "column" }}
     >
       {/* menu grid */}
-      <MenuBar />
+      <MenuBar handler={signoutHandler} />
       {/* result Grid */}
       <Grid
         item

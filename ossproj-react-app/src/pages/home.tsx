@@ -19,44 +19,14 @@ import { CategoryList } from "../components/home/category-list";
 import { padding } from "@mui/system";
 import { UrlCategoryBoxList } from "../components/home/url-category-box-list";
 import { ICategoryUrlResponse } from "../interface/url";
+import { useSignOut } from "../hooks/use-signout";
 
 export const Home = () => {
   const navigate = useNavigate();
   const [url, setUrl] = useState("");
   const user = useUserState();
+  console.log(user.name);
   const [category, setCategory] = useState("politics");
-  const mockCategory = [
-    {
-      url: "dsfafasfadsfadsfads",
-      content: "sadfasdfadsfsadf",
-      category: "정치",
-    },
-    {
-      url: "dsfafasfadsfadsfads",
-      content: "sadfasdfadsfsadf",
-      category: "정치",
-    },
-    {
-      url: "dsfafasfadsfadsfads",
-      content: "sadfasdfadsfsadf",
-      category: "정치",
-    },
-    {
-      url: "dsfafasfadsfadsfads",
-      content: "sadfasdfadsfsadf",
-      category: "정치",
-    },
-    {
-      url: "dsfafasfadsfadsfads",
-      content: "sadfasdfadsfsadf",
-      category: "정치",
-    },
-    {
-      url: "dsfafasfadsfadsfads",
-      content: "sadfasdfadsfsadf",
-      category: "정치",
-    },
-  ];
   const handleUrl = (e: ChangeEvent<HTMLInputElement>) =>
     setUrl(e.target.value);
   const handleDelete = () => {
@@ -67,6 +37,8 @@ export const Home = () => {
   const { categoryList, handleCategory } = useFetchCategory({
     category,
   });
+  const { signoutHandler } = useSignOut();
+
   console.log(categoryList);
   const handleSetCategory = (listItem: string) => {
     setCategory(listItem);
@@ -98,7 +70,7 @@ export const Home = () => {
       direction={{ lg: "row", md: "row", sm: "column", xs: "column" }}
     >
       {/* menu grid */}
-      <MenuBar />
+      <MenuBar handler={signoutHandler} />
       {/* main grid */}
       <Grid
         item

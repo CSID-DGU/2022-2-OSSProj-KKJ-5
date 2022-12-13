@@ -21,7 +21,6 @@ export const CategoryList = ({
   return (
     <Grid item lg={2} md={2} sm={2} xs={2}>
       {categoryKoList.map((value: string, index: number) => {
-        console.log(value + "" + selected);
         return (
           <Button
             onClick={() => {

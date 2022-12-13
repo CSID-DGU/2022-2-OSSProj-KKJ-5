@@ -1,10 +1,16 @@
 import { Box, Grid } from "@mui/material";
+import { useUserState } from "../../context/user-context";
 import { ChatButton } from "./chat-button";
 import { HomeButton } from "./home-button";
 import { MyPageButton } from "./mypage-button";
 import { SigninButton } from "./signin-button";
+import { SignoutButton } from "./signout-button";
 
-export const MenuBar = () => {
+interface IMenuBar {
+  handler: () => void;
+}
+export const MenuBar = ({ handler }: IMenuBar) => {
+  const user = useUserState();
   return (
     <Grid
       item
@@ -31,7 +37,11 @@ export const MenuBar = () => {
       >
         <HomeButton />
         <ChatButton />
-        <SigninButton />
+        {user.name === "" ? (
+          <SigninButton />
+        ) : (
+          <SignoutButton handler={handler} />
+        )}
       </Box>
     </Grid>
   );

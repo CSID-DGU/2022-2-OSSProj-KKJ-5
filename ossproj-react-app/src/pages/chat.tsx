@@ -22,6 +22,7 @@ import { SubTitle } from "../components/chat/sub-title";
 import { ChatArea } from "../components/chat/chat-area";
 import { DefaultChatArea } from "../components/chat/default-chat-area";
 import { useFetchRooms } from "../hooks/use-fetch-rooms";
+import { useSignOut } from "../hooks/use-signout";
 
 export const Chat = () => {
   const client = useRef<CompatClient>();
@@ -33,6 +34,7 @@ export const Chat = () => {
   const [chatName, setChatName] = useState("");
   const [open, setOpen] = useState(false);
   const [isChat, setIsChat] = useState(false);
+  const { signoutHandler } = useSignOut();
   const [chatMessage, setChatMessage] = useState<IChatDetail>();
   const dispatch = useUserDispatch();
   console.log(user.name);
@@ -141,7 +143,7 @@ export const Chat = () => {
       direction={{ lg: "row", md: "row", sm: "column", xs: "column" }}
     >
       {/* 메뉴 grid */}
-      <MenuBar />
+      <MenuBar handler={signoutHandler} />
       {/* room list grid */}
       <Grid
         item
