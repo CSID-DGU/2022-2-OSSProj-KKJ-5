@@ -21,7 +21,6 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
         String header = request.getHeader(AuthConstants.AUTHORIZATION_HEADER);
         log.info("request get AUTHORIZATION : " + header);
         if(header == null) return false;
