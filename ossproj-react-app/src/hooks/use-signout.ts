@@ -15,11 +15,10 @@ export const useSignOut = () => {
     isSuccess,
   } = useMutation("signup", signOut, {
     onSuccess: () => {
-      console.log(data);
+      axios.defaults.headers.common["Authorization"] = "";
       navigate({
         pathname: "/signin",
       });
-      axios.defaults.headers.common["Authorization"] = "";
       dispatch({ type: "SET_NAME", name: "" });
     },
     onError: (e) => {

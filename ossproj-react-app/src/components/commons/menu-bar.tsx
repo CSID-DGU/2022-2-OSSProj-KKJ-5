@@ -37,11 +37,7 @@ export const MenuBar = ({ handler }: IMenuBar) => {
       >
         <HomeButton />
         <ChatButton />
-        {user.name === "" ? (
-          <SigninButton />
-        ) : (
-          <SignoutButton handler={handler} />
-        )}
+        <SigninButton />
       </Box>
     </Grid>
   );
