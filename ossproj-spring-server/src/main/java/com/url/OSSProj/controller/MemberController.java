@@ -62,11 +62,14 @@ public class MemberController {
 
         response.setHeader(AuthConstants.AUTHORIZATION_HEADER, null);
         Cookie refreshCookie = cookieUtils.getCookie(request, AuthConstants.REFRESH_HEADER);
+        String refreshToken = refreshCookie.getValue();
         redisUtils.deleteData(refreshCookie.getValue());
         log.info("삭제 완료");
 
         String header1 = request.getHeader(AuthConstants.AUTHORIZATION_HEADER);
-        log.info("삭제 했나 ? : " , header1);
+        log.info("삭제 했나 ? : " + header1);
+        String data = redisUtils.getData(refreshToken);
+        log.info("쿠키도 ? : " + data);
         return "redirect:/";
     }
 
