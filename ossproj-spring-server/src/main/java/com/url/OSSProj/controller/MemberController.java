@@ -1,6 +1,5 @@
 package com.url.OSSProj.controller;
 
-import com.url.OSSProj.domain.constants.AuthConstants;
 import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.dto.MemberDto;
 import com.url.OSSProj.domain.dto.SignUpDto;
@@ -14,11 +13,9 @@ import com.url.OSSProj.utils.RedisUtils;
 import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -53,24 +50,6 @@ public class MemberController {
         }
     }
 
-//    @PostMapping("/signOut")
-//    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
-//        log.info("오긴");
-//        String header = request.getHeader(AuthConstants.AUTHORIZATION_HEADER);
-//        if(header == null) return;
-//        String accessToken = header.substring(7, header.length());
-//
-//        response.setHeader(AuthConstants.AUTHORIZATION_HEADER, null);
-//        Cookie refreshCookie = cookieUtils.getCookie(request, AuthConstants.REFRESH_HEADER);
-//        String refreshToken = refreshCookie.getValue();
-//        redisUtils.deleteData(refreshCookie.getValue());
-//        log.info("삭제 완료");
-//
-//        request.setAttribute(AuthConstants.AUTHORIZATION_HEADER, null);
-//        String data = redisUtils.getData(refreshToken);
-//        log.info("쿠키도 ? : " + data);
-//        response.sendRedirect("/singIn");
-//    }
 
     @GetMapping("/chatrooms")
     public List<ChatRoomDto> roomList(HttpServletRequest request, HttpServletResponse response){
