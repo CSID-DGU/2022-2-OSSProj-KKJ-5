@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3e59b379-353f-4591-a471-81df9b3a4d4a" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2HJH73RtUyhqbtBbFWGG4JaVW2D" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/kimjaehan/2022-2-OSSProj-KKJ-5/OSSProj 3&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;1d790fc91a40b2600018b3f1b369d2e0&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="OssProjApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="OSSProj.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.url.OSSProj.OssProjApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3e59b379-353f-4591-a471-81df9b3a4d4a" name="Changes" comment="" />
+      <created>1667996095914</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1667996095914</updated>
+      <workItem from="1667996097227" duration="4071000" />
+      <workItem from="1668005339042" duration="713000" />
+      <workItem from="1668064724911" duration="7689000" />
+      <workItem from="1668183491107" duration="354000" />
+      <workItem from="1668223434331" duration="6162000" />
+      <workItem from="1668422589690" duration="17619000" />
+      <workItem from="1668497768075" duration="188000" />
+      <workItem from="1668581928332" duration="648000" />
+      <workItem from="1668599165848" duration="1639000" />
+      <workItem from="1668657674590" duration="6947000" />
+      <workItem from="1668782864911" duration="3397000" />
+      <workItem from="1668831028734" duration="4628000" />
+      <workItem from="1668927800681" duration="481000" />
+      <workItem from="1668932106539" duration="59000" />
+      <workItem from="1669217518135" duration="674000" />
+      <workItem from="1669351238555" duration="5260000" />
+      <workItem from="1669428055340" duration="613000" />
+      <workItem from="1669522129701" duration="12000" />
+      <workItem from="1669646868547" duration="2457000" />
+      <workItem from="1669891021743" duration="203000" />
+      <workItem from="1670050407724" duration="622000" />
+      <workItem from="1670137554155" duration="1142000" />
+      <workItem from="1670285159734" duration="678000" />
+      <workItem from="1670651132673" duration="64000" />
+      <workItem from="1670654068533" duration="1766000" />
+      <workItem from="1670660682253" duration="1322000" />
+      <workItem from="1670663354067" duration="758000" />
+      <workItem from="1670745447005" duration="759000" />
+      <workItem from="1670750286289" duration="1368000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
