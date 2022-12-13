@@ -1,27 +1,18 @@
 package com.url.OSSProj.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.url.OSSProj.domain.dto.ChatMessage;
-import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.entity.ChatRoom;
 import com.url.OSSProj.domain.entity.ImageUrl;
-import com.url.OSSProj.domain.entity.UploadFile;
 import com.url.OSSProj.repository.ChatRepository;
-import com.url.OSSProj.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.io.IOException;
-import java.util.*;
 
 @Log4j2
 @RequiredArgsConstructor

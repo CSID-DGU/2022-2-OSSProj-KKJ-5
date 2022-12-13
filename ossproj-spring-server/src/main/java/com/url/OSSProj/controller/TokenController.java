@@ -11,18 +11,15 @@ import com.url.OSSProj.domain.entity.ChatRoomInfo;
 import com.url.OSSProj.domain.entity.Member;
 import com.url.OSSProj.domain.enums.UserRole;
 import com.url.OSSProj.repository.MemberRepository;
-import com.url.OSSProj.service.FileStore;
 import com.url.OSSProj.utils.CookieUtils;
 import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,7 +37,6 @@ public class TokenController {
     private final TokenUtils tokenUtils;
     private final CookieUtils cookieUtils;
     private final ObjectMapper objectMapper;
-    private final FileStore fileStore;
     private final MemberRepository memberRepository;
 
     @GetMapping("/token/expired")

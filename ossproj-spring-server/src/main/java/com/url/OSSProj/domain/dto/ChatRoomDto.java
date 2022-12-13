@@ -1,12 +1,9 @@
 package com.url.OSSProj.domain.dto;
 
 import com.url.OSSProj.domain.entity.ImageUrl;
-import com.url.OSSProj.domain.entity.UploadFile;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.io.Serializable;
 
 @Data

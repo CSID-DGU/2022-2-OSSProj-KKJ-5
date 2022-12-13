@@ -4,20 +4,13 @@ import com.url.OSSProj.domain.dto.ChatRoomDto;
 import com.url.OSSProj.domain.entity.ChatRoom;
 import com.url.OSSProj.domain.entity.ImageUrl;
 import com.url.OSSProj.domain.entity.Member;
-import com.url.OSSProj.domain.entity.UploadFile;
 import com.url.OSSProj.service.ChatService;
-import com.url.OSSProj.service.FileStore;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.UrlResource;
-import org.springframework.data.annotation.Persistent;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.net.MalformedURLException;
 import java.util.*;
 
@@ -29,7 +22,6 @@ public class ChatRoomRepository {
     public static final String USER_COUNT = "USER_COUNT"; // 채팅룸에 입장한 클라이언트수 저장
     public static final String ENTER_INFO = "ENTER_INFO"; // 채팅룸에 입장한 클라이언트의 sessionId와 채팅룸 id를 맵핑한 정보 저장
     private final ChatService chatService;
-    private final FileStore fileStore;
 
     @Resource(name = "redisTemplate")
     private HashOperations<String, String, ChatRoom> hashOpsChatRoom;

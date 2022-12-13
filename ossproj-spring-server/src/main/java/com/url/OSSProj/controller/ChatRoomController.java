@@ -6,41 +6,23 @@ import com.url.OSSProj.domain.dto.NewChatRoomDto;
 import com.url.OSSProj.domain.dto.ResponseChatRoomDto;
 import com.url.OSSProj.domain.entity.ChatRoom;
 import com.url.OSSProj.domain.entity.ImageUrl;
-import com.url.OSSProj.domain.entity.UploadFile;
 import com.url.OSSProj.domain.entity.Member;
 import com.url.OSSProj.repository.ChatRepository;
 import com.url.OSSProj.repository.ChatRoomRepository;
-import com.url.OSSProj.repository.FileRepository;
 import com.url.OSSProj.repository.ImageUrlRepository;
 import com.url.OSSProj.service.ChatService;
-import com.url.OSSProj.service.FileStore;
 import com.url.OSSProj.service.MemberService;
 import com.url.OSSProj.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.io.IOUtils;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.rowset.serial.SerialException;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -49,14 +31,12 @@ import java.util.Optional;
 public class ChatRoomController{
 
     private final TokenUtils tokenUtils;
-    private final FileRepository fileRepository;
     private final ChatService chatService;
     private final ServletContext servletContext;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRepository chatRepository;
     private final ImageUrlRepository imageUrlRepository;
     private final MemberService memberService;
-    private final FileStore fileStore;
 
     @GetMapping("/rooms")
     @ResponseBody
