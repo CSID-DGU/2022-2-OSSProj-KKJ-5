@@ -97,8 +97,7 @@ export const Result = () => {
             >
               <img
                 src={
-                  // data?.wordCloudPath
-                  wordCloud
+                  data?.wordCloudPath
                 }
                 width={"100%"}
                 height={"100%"}
@@ -112,8 +111,7 @@ export const Result = () => {
             >
               <img
                 src={
-                  // data?.networkGraphPath
-                  wordCloud
+                  data?.networkGraphPath
                 }
                 width={"100%"}
                 height={"100%"}
